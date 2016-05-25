@@ -1,0 +1,379 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{6407FC6F-595A-48DC-98F2-10DF5AF69A31}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>VolManager</RootNamespace>
+    <AssemblyName>MBAVolManager</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <UseIISExpress>false</UseIISExpress>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <OldToolsVersion>4.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+    <PublishDatabases>false</PublishDatabases>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AjaxControlToolkit, Version=3.5.40412.0, Culture=neutral, PublicKeyToken=28f01b0e84b6d53e, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\AjaxControlToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.ReportViewer.WebForms, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="About.aspx" />
+    <Content Include="App_Themes\VMTheme\StyleSheet.css" />
+    <Content Include="Reports\InfoDeskReport.aspx" />
+    <Content Include="ChangePassword.aspx" />
+    <Content Include="ChangePasswordSuccess.aspx" />
+    <Content Include="GuideImport.aspx" />
+    <Content Include="GuideList.aspx" />
+    <Content Include="Login.aspx" />
+    <Content Include="Images\add.gif" />
+    <Content Include="Images\arrowDown.gif" />
+    <Content Include="Images\arrowUp.gif" />
+    <Content Include="Images\calendar.gif" />
+    <Content Include="Images\cancel.gif" />
+    <Content Include="Images\delete.gif" />
+    <Content Include="Images\iedit.gif" />
+    <Content Include="Images\MBALogo1.jpg" />
+    <Content Include="Images\mbaLogo2.png" />
+    <Content Include="Images\next.gif" />
+    <Content Include="Images\orca.jpg" />
+    <Content Include="Images\previous.gif" />
+    <Content Include="Images\save.gif" />
+    <Content Include="Images\select.gif" />
+    <Content Include="ManageUsers.aspx" />
+    <Content Include="ManageVolAccess.aspx" />
+    <Content Include="Recovery\Default.aspx" />
+    <Content Include="Reports\CaptainsReport.aspx" />
+    <Content Include="Reports\SumReport.aspx" />
+    <Content Include="GuideRoles.aspx" />
+    <Content Include="ShiftDetail.aspx" />
+    <Content Include="ShiftList.aspx" />
+    <Content Include="ShiftTimes.aspx" />
+    <Content Include="Styles\Site.css" />
+    <Content Include="Default.aspx" />
+    <Content Include="Global.asax" />
+    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.4.1.js" />
+    <Content Include="Scripts\jquery-1.4.1.min.js" />
+    <Content Include="ShiftCalendar.aspx" />
+    <Content Include="TextEditor.aspx" />
+    <Content Include="UserControls\DateSelector.ascx" />
+    <Content Include="UserControls\MessageEdit.ascx" />
+    <Content Include="UserControls\MessageList.ascx" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="About.aspx.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="About.aspx.designer.cs">
+      <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\InfoDeskReport.aspx.cs">
+      <DependentUpon>InfoDeskReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\InfoDeskReport.aspx.designer.cs">
+      <DependentUpon>InfoDeskReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePassword.aspx.designer.cs">
+      <DependentUpon>ChangePassword.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ChangePasswordSuccess.aspx.cs">
+      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ChangePasswordSuccess.aspx.designer.cs">
+      <DependentUpon>ChangePasswordSuccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GuideImport.aspx.cs">
+      <DependentUpon>GuideImport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GuideImport.aspx.designer.cs">
+      <DependentUpon>GuideImport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GuideList.aspx.cs">
+      <DependentUpon>GuideList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GuideList.aspx.designer.cs">
+      <DependentUpon>GuideList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Login.aspx.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Login.aspx.designer.cs">
+      <DependentUpon>Login.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="ManageUsers.aspx.cs">
+      <DependentUpon>ManageUsers.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageUsers.aspx.designer.cs">
+      <DependentUpon>ManageUsers.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ManageVolAccess.aspx.cs">
+      <DependentUpon>ManageVolAccess.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ManageVolAccess.aspx.designer.cs">
+      <DependentUpon>ManageVolAccess.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recovery\Default.aspx.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Recovery\Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\CaptainsReport.aspx.cs">
+      <DependentUpon>CaptainsReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\CaptainsReport.aspx.designer.cs">
+      <DependentUpon>CaptainsReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SumReport.aspx.cs">
+      <DependentUpon>SumReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SumReport.aspx.designer.cs">
+      <DependentUpon>SumReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="GuideRoles.aspx.cs">
+      <DependentUpon>GuideRoles.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="GuideRoles.aspx.designer.cs">
+      <DependentUpon>GuideRoles.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Secondary.Master.cs">
+      <DependentUpon>Secondary.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Secondary.Master.designer.cs">
+      <DependentUpon>Secondary.Master</DependentUpon>
+    </Compile>
+    <Compile Include="ShiftDetail.aspx.cs">
+      <DependentUpon>ShiftDetail.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShiftDetail.aspx.designer.cs">
+      <DependentUpon>ShiftDetail.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ShiftList.aspx.cs">
+      <DependentUpon>ShiftList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShiftList.aspx.designer.cs">
+      <DependentUpon>ShiftList.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="ShiftTimes.aspx.cs">
+      <DependentUpon>ShiftTimes.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShiftTimes.aspx.designer.cs">
+      <DependentUpon>ShiftTimes.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Site.Master.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Site.Master.designer.cs">
+      <DependentUpon>Site.Master</DependentUpon>
+    </Compile>
+    <Compile Include="ShiftCalendar.aspx.cs">
+      <DependentUpon>ShiftCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="ShiftCalendar.aspx.designer.cs">
+      <DependentUpon>ShiftCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="TextEditor.aspx.cs">
+      <DependentUpon>TextEditor.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="TextEditor.aspx.designer.cs">
+      <DependentUpon>TextEditor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DateSelector.ascx.cs">
+      <DependentUpon>DateSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\DateSelector.ascx.designer.cs">
+      <DependentUpon>DateSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MessageEdit.ascx.cs">
+      <DependentUpon>MessageEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\MessageEdit.ascx.designer.cs">
+      <DependentUpon>MessageEdit.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\MessageList.ascx.cs">
+      <DependentUpon>MessageList.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\MessageList.ascx.designer.cs">
+      <DependentUpon>MessageList.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="WebUtil\AlertMsg.cs" />
+    <Compile Include="WebUtil\DateValidator.cs" />
+    <Compile Include="WebUtil\ErrorMessage.cs" />
+    <Compile Include="WebUtil\Recursor.cs" />
+    <Compile Include="WebUtil\TreeViewState.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\Captains.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Site.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Bus\Bus.csproj">
+      <Project>{1AA58A4E-E8A5-4EA9-B71E-087E8C7CBFB7}</Project>
+      <Name>Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Controls\Controls.csproj">
+      <Project>{85FDA7A7-545F-43DD-A034-14F90CEFFEBA}</Project>
+      <Name>Controls</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{D85A0057-FB4E-4720-8174-FA2996FB4F66}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DB\DB.csproj">
+      <Project>{DCA21AFE-5283-431A-BFB9-20961CAFF052}</Project>
+      <Name>DB</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Recovery\Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\SumReport.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Secondary.Master" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Themes\VMTheme\CVS\Entries" />
+    <None Include="App_Themes\VMTheme\CVS\Entries.Extra" />
+    <None Include="App_Themes\VMTheme\CVS\Entries.Extra.Old" />
+    <None Include="App_Themes\VMTheme\CVS\Entries.Old" />
+    <None Include="App_Themes\VMTheme\CVS\Repository" />
+    <None Include="App_Themes\VMTheme\CVS\Root" />
+    <Content Include="App_Themes\VMTheme\VolSkin.skin" />
+    <None Include="Properties\PublishProfiles\MBA.pubxml" />
+    <None Include="Properties\PublishProfiles\Profile1.pubxml" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>13700</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

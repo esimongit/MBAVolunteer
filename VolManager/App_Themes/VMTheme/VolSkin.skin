@@ -1,0 +1,66 @@
+
+<asp:ValidationSummary  BorderColor="#E7E7FF"  BorderWidth="1px"  BackColor="#FFECAD" runat="server" />
+<asp:table runat="server" width="100%" border=1 bgcolor="#008834" >
+</asp:table>
+ <cc2:NQNGridView runat="server" AllowPaging="True" AllowSorting="True"
+        AutoGenerateColumns="False"  BorderColor="#E7E7FF"  BorderWidth="2px" 
+        GridLines="Both" CaptionAlign="left" cellspacing="2" 
+        BackColor="White" HeaderStyle-HorizontalAlign="left" BorderStyle="Solid"  ForeColor="Black">
+        <RowStyle BackColor="#E7E7FF" ForeColor="Black" BorderWidth="1" />
+        <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="#F7F7F7" />
+        <PagerStyle  Font-Size="10pt" Font-Bold="True" BackColor="#4A3C8C" ForeColor="White" HorizontalAlign="Left" />
+        <HeaderStyle BackColor="#008dec"  Font-Bold="True" ForeColor="White" />
+        <EditRowStyle ForeColor="Black" />
+         <AlternatingRowStyle BackColor="#F7F7F7" />
+        <FooterStyle BackColor="#008dec" ForeColor="Black" />
+  </cc2:NQNGridView>  
+  <asp:GridView runat="server"  BackColor="White" HeaderStyle-HorizontalAlign="Left" 
+        BorderColor="#E7E7FF" BorderStyle="None" BorderWidth="1px" >
+        <FooterStyle BackColor="#008dec" ForeColor="Black" />
+        <RowStyle BackColor="#E7E7FF" ForeColor="Black" />
+        <SelectedRowStyle BackColor="#738A9C" Font-Bold="True" ForeColor="#F7F7F7" />
+        <PagerStyle BackColor="#E7E7FF" ForeColor="#4A3C8C" HorizontalAlign="Right" />
+        <HeaderStyle BackColor="#008dec"   Font-Bold="True" ForeColor="White" />
+        <AlternatingRowStyle BackColor="#F7F7F7" />
+    <EmptyDataRowStyle ForeColor="Black" />
+    <EditRowStyle ForeColor="Black" />
+    </asp:GridView>
+
+  <asp:FormView runat="server" CellPadding="4" CaptionAlign="Right" BackColor="White" BorderColor="#CC9966" 
+    BorderStyle="None" BorderWidth="1px" GridLines="Both" Font-Bold="True">
+    <FooterStyle BackColor="#FFFFCC"  ForeColor="#330099" />
+    <InsertRowStyle BackColor="#FFECAD" Font-Bold="True" ForeColor="#663399" />  
+    <EditRowStyle BackColor="#FFECAD" Font-Bold="True" ForeColor="#663399" /> 
+   
+    <RowStyle BackColor="White" ForeColor="#330099" />
+    <PagerStyle BackColor="#FFFFCC" ForeColor="#330099"  HorizontalAlign="Center" />
+</asp:FormView>
+<asp:DetailsView runat="server" BorderColor="#E7E7FF"  BorderWidth="1px" 
+        GridLines="Both" CaptionAlign="left" cellspacing="2" 
+        BackColor="White" HeaderStyle-HorizontalAlign="left" BorderStyle="Solid"  ForeColor="Black">
+        <RowStyle BackColor="#E7E7FF" ForeColor="Black" /> 
+        <PagerStyle  Font-Size="10pt" Font-Bold="True" BackColor="#4A3C8C" ForeColor="White" HorizontalAlign="Left" />
+        <CommandRowStyle BackColor="#B5C7DE" Font-Bold="True" ForeColor="White" />
+        <EditRowStyle ForeColor="Black" />
+         <AlternatingRowStyle BackColor="#F7F7F7" />
+        <FooterStyle BackColor="#B5C7DE" ForeColor="Black" />
+ </asp:DetailsView>  
+             
+
+
+
+<asp:Button Runat="server" Font-Bold="true" ForeColor="black" BackColor="Silver"
+    Font--Names="Verdana"/>
+ <cc2:NQNButton Runat="server" Font-Bold="true" ForeColor="black" BackColor="Silver"
+    Font--Names="Verdana"/> 
+<asp:LinkButton runat="server" ForeColor="Black" Font-Underline="false" Font-size="10" BackColor="Silver" BorderColor="Gray"
+ BorderStyle="Outset"   BorderWidth="2px" /> 
+ <cc2:NQNLinkButton runat="server" ForeColor="Black" Font-Underline="false" Font-size="10" BackColor="Silver" BorderColor="Gray"
+ BorderStyle="Outset"   BorderWidth="2px" />  
+  
+<asp:HyperLink runat="server" BackColor="Silver" BorderColor="Gray"
+    BorderStyle="Outset"  ForeColor="Black" Font-Size="10"  Font-Underline="false"   BorderWidth="2px" />
+   <asp:Table runat="Server" BackColor="#4A3C8C" BorderStyle="Solid" BorderWidth="3px" ForeColor="White" Font-Bold="True" SkinID="NQNGridViewPageInfo" /> 
+ <cc2:NQNHyperLink runat="server" BackColor="Silver" BorderColor="Gray"
+    BorderStyle="Outset"  ForeColor="Black" Font-Size="10"  Font-Underline="false"   BorderWidth="2px" /> 
+  

@@ -1,0 +1,119 @@
+using System;
+using System.Data;
+using System.Collections.Generic;
+using NQN.Core;
+
+namespace NQN.DB 
+{
+    public class SubOffersObject : RootObject
+    {
+        #region AutoAttributes
+        private int _shiftid = 0;
+        public int ShiftID
+        {
+            get
+            {
+                return _shiftid;
+            }
+            set
+            {
+                _shiftid = value;
+            }
+        }
+        private int _guideid = 0;
+        public int GuideID
+        {
+            get
+            {
+                return _guideid;
+            }
+            set
+            {
+                _guideid = value;
+            }
+        }
+        #endregion
+        public string GuideName
+        {
+            get;
+            set;
+        }
+        public string Email
+        {
+            get;
+            set;
+        }
+        public string Phone
+        {
+            get;
+            set;
+        }
+        public string VolID
+        {
+            get;
+            set;
+        }
+        public string HomeShift
+        {
+            get;
+            set;
+        }
+        public string RequestorName
+        {
+            get;
+            set;
+        }
+        public string RequestorID
+        {
+            get;
+            set;
+        }
+        public string RequestorEmail
+        {
+            get;
+            set;
+        }
+        public string RequestorPhone
+        {
+            get;
+            set;
+        }
+        public DateTime dt
+        {
+            get;
+            set;
+        }
+        public string ShiftName
+        {
+            get;
+            set;
+        }
+       
+        public string ShiftLink
+        {
+            get
+            {
+                return String.Format("http://mbav.netqnet.com/SubRequest.aspx?dt={0}", dt.ToShortDateString());
+            }
+        }
+        public int Sequence
+        {
+            get;
+            set;
+        }
+        public string dtString
+        {
+            get
+            {
+                if (dt == null)
+                    return String.Empty;
+                return dt.ToShortDateString();
+            }
+        }
+        public SubOffersObject()
+        {
+            _tablename = "SubOffers";
+            _primarykey = "";
+        }
+    }
+}

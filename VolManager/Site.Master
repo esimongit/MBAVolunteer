@@ -1,0 +1,91 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="VolManager.SiteMaster" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head runat="server">
+    <title>MBA Volunteer Substitute Management</title>
+    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
+   <style type="text/css">
+div.menu > ul > li
+{ 
+    display: inline-block;
+    list-style: none; 
+} 
+
+div.menu ul li ul 
+{ 
+    display: none; 
+}
+</style>
+ <script type="text/javascript" src="../tinymce4/tinymce.min.js" ></script>
+       <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js">       
+    </script>
+</head>
+<body>
+    <form id="form1" runat="server">
+      
+   <table cellspacing="0" border="1" cellpadding="0" width="100%" class="header">
+        <tr ><td colspan="2">
+            <table border="0" cellpadding="0" cellspacing="0" width="100%"  >
+                <tr><td><div style="float:left"> <a  href="/default.aspx"> <asp:Image ID="ImageLogo" runat="server"  Width="300" Height="80"  ImageUrl="/Images/mbaLogo2.png" /> </a>
+               </div>
+               <div style="float:left; margin-top:20px; margin-left: 30px"> <asp:Label ID="ProgramLabel"  Font-Size="X-Large" Font-Bold="true" ForeColor="White" runat="server"></asp:Label></div>
+                    </td> 
+                    <td align="right"  style=" font-size:14pt;">
+                    Welcome  <asp:LoginName ID="LoginName1" Font-Size="14pt" runat="server" />
+                   </td>
+                </tr>
+            </table>
+         
+        </td></tr>
+    <tr><td >
+       
+   <asp:Menu ID="Menu1" SkipLinkText=""  CssClass="menu" runat="server" Orientation="Horizontal" BackColor="#008dec"   
+              Font-Names="Verdana"
+    Font-Size="10pt" ForeColor="White" StaticSubMenuIndent="20px" >
+        <StaticSelectedStyle BackColor="#008dec" />
+        <StaticMenuItemStyle HorizontalPadding="5"  ItemSpacing="20"  VerticalPadding="2"  BorderWidth="0"    />
+       
+        <StaticHoverStyle BackColor="#008dec" ForeColor="White"  />
+        <Items></Items>
+       <DynamicHoverStyle BackColor="#008dec" ForeColor="White"   />
+
+       <DynamicMenuStyle BackColor="#008dec" HorizontalPadding="5px" />
+       <DynamicSelectedStyle BackColor="#008dec" />
+       <DynamicMenuItemStyle HorizontalPadding="5px" VerticalPadding="2px" />
+
+       </asp:Menu> 
+       
+       
+    </td>  
+       <td  align="right"> 
+        <asp:LoginStatus ID="LoginStatus1" runat="server"  Font-Size="Medium" OnLoggingOut="ClearSession" ForeColor="White"  LogoutAction="Redirect"  />
+ 
+    
+    
+     </td>
+      
+  </tr>
+     <tr>  <td  colspan="2"  style="height:30px" >
+     
+        <asp:Label ID="ErrorMessageLabel" runat="server" ForeColor="Red" Font-Size="Medium"></asp:Label>
+        <asp:Label ID="InfoMessageLabel" runat="server"  BorderColor="#008dec"
+               BorderStyle="Groove"
+                  BorderWidth="2px" ForeColor="white" Font-Size="Medium"  ></asp:Label>
+       
+        </td>
+
+      </tr>
+     </table>
+     <table border="0" cellspacing="0" cellpadding="0" width="100%" >
+     <tr>
+        <td style="font-family:Verdana;font-size:16pt;font-weight:bold; color:#000000; background-color:#fff3c8; height: 25px;">&nbsp;
+             <asp:Label ID="TitleLabel" runat="server" Text=""></asp:Label> 
+          </td></tr></table>
+     <div  >
+                <asp:contentplaceholder id="ContentPlaceHolder1" runat="server">
+                </asp:contentplaceholder>           
+ </div>     
+   </form>
+</body>
+</html>
