@@ -101,6 +101,17 @@ namespace NQN.DB
             get;
             set;
         }
+        public bool MaskContactInfo
+        {
+            get; set;
+        }
+        public bool ShowContactInfo
+        {
+            get
+            {
+                return !MaskContactInfo;
+            }
+        }
         public string dtString
         {
             get

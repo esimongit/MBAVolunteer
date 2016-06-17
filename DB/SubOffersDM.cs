@@ -102,6 +102,7 @@ namespace  NQN.DB
             obj.VolID = GetNullableString(reader, "VolID", String.Empty);
             obj.Sequence = GetNullableInt32(reader, "Sequence", 0);
             obj.HomeShift = GetNullableString(reader, "HomeShift", String.Empty);
+            obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
 			return obj;
 		}
 
@@ -117,7 +118,9 @@ namespace  NQN.DB
                 ,g.VolID
                 ,HomeShift=s.ShortName
                 ,s.Sequence
-				FROM SubOffers o join Guides g on o.GuideID = g.GuideID join SHifts s on g.ShiftID = s.ShiftID ";
+                ,r.MaskContactInfo
+				FROM SubOffers o join Guides g on o.GuideID = g.GuideID join SHifts s on g.ShiftID = s.ShiftID 
+                 join Roles r on r.RoleID = g.RoleID ";
 		}
 		public int GetLast()
 		{

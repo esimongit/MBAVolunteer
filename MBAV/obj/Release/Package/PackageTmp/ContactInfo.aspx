@@ -6,7 +6,7 @@
    <asp:QueryStringParameter QueryStringField="ID" Name="GuideID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
 </asp:ObjectDataSource>
-<center>
+ <div style="width:400px; margin-left:auto; margin-right:auto"> 
 <h3>Volunteer Guide Contact Info</h3>
 <asp:FormView ID="FormView1" runat="server" DefaultMode="ReadOnly" DataSourceID="ObjectDataSource1" >
 <ItemTemplate>
@@ -14,17 +14,17 @@
   <tbody>
     <tr>
       <td><font size="-1">&nbsp;Name</font></td>
-      <td><font size="-1">&nbsp;ID Nbr.</font></td>
-      <td><font size="-1">Phone Nbr.</font></td>
+      <td><font size="-1">&nbsp;ID</font></td>
+      <td><font size="-1">Phone</font></td>
 
-<td><font size="-1">&nbsp;E-mail address</font></td>
+<td><font size="-1">&nbsp;Email</font></td>
     </tr>
     <tr>
       <td><asp:Label ID="NameLabel" runat="server"  Font-Bold="true" Text='<%#Eval("GuideName") %>'></asp:Label></td>
       <td align="center"><b><asp:Label ID="Label1"  Font-Bold="true" runat="server" Text='<%#Eval("VolID") %>'></asp:Label></b></td>
-      <td><b><asp:Label ID="Label2" runat="server"   Font-Bold="true" Text='<%#Eval("Phone") %>'></asp:Label></b></td>
+      <td><b><asp:Label ID="Label2" runat="server"   Font-Bold="true" Visible ='<%#Eval("ShowContactInfo") %>' Text='<%#Eval("Phone") %>'></asp:Label></b></td>
 
-<td><asp:Label ID="Label3" runat="server" Font-Bold="true" Text='<%#Eval("Email") %>'></asp:Label></td>
+<td><asp:Label ID="Label3" runat="server" Font-Bold="true" Visible ='<%#Eval("ShowContactInfo") %>'  Text='<%#Eval("Email") %>'></asp:Label></td>
     </tr>
       
     
@@ -32,9 +32,9 @@
 </table>
 </ItemTemplate>
 </asp:FormView>
-<p></p> <input type="button" value="Close Window" onclick="self.close()" />
- <p></p>
-</center>
+ <input type="button" value="Close Window" onclick="self.close()" />
+ 
+</div>
 
  
 </asp:Content>

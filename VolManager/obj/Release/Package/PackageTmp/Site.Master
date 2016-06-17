@@ -18,7 +18,7 @@ div.menu ul li ul
 }
 </style>
  <script type="text/javascript" src="../tinymce4/tinymce.min.js" ></script>
-       <script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.7.min.js">       
+       <script type="text/javascript" src="Scripts/jquery-1.9.1.min.js">       
     </script>
 </head>
 <body>

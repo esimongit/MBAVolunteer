@@ -44,7 +44,19 @@ namespace NQN.DB
 				 _iscaptain = value;
 			}
 		}
-#endregion
+        private bool _maskcontactinfo = false;
+        public bool MaskContactInfo
+        {
+            get
+            {
+                return _maskcontactinfo;
+            }
+            set
+            {
+                _maskcontactinfo = value;
+            }
+        }
+        #endregion
 
         public int Number
         {

@@ -7,7 +7,8 @@ namespace NQN.DB
 {
 	public class GuidesObject : RootObject
 	{
-        public static string ValidEmail = @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,4}|[0-9]{1,3})(\]?)$";
+        //public const string ValidEmail = @"^(?("")("".+?(?<!\\)""@)|(([0-9a-z]((\.(?!\.))|[-!#\$%&'\*\+/=\?\^`\{\}\|~\w])*)(?<=[0-9a-z])@))(?(\[)(\[(\d{1,3}\.){3}\d{1,3}\])|(([0-9a-z][-\w]*[0-9a-z]*\.)+[a-z0-9][\-a-z0-9]{0,22}[a-z0-9]))$";
+        public const string ValidEmail = @"^([a-zA-Z0-9_\-\.]+)@(([a-zA-Z0-9\-]+\.)+)([a-zA-Z]{2,22}|[0-9]{1,3})(\]?)$";
         public static string ValidPhone = @"^(?:(?:\+?1\s*(?:[.-]\s*)?)?(?:\(\s*([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9])\s*\)|([2-9]1[02-9]|[2-9][02-8]1|[2-9][02-8][02-9]))\s*(?:[.-]\s*)?)?([2-9]1[02-9]|[2-9][02-9]1|[2-9][02-9]{2})\s*(?:[.-]\s*)?([0-9]{4})(?:\s*(?:#|x\.?|ext\.?|extension)\s*(\d+))?$";
 #region AutoAttributes
 		private int _guideid = 0;
@@ -256,6 +257,18 @@ namespace NQN.DB
         {
             get;
             set;
+        }
+        public bool MaskContactInfo
+        {
+            get;
+            set;
+        }
+        public bool ShowContactInfo
+        {
+            get
+            {                
+                return !MaskContactInfo;
+            }
         }
         public string Sub
         {

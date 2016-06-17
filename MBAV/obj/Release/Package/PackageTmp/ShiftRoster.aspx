@@ -7,12 +7,12 @@
         SelectMethod="Roster" TypeName="NQN.Bus.GuidesBusiness">
         <SelectParameters>
             <asp:ControlParameter Name="ShiftID" ControlID="ShiftSelect" Type="Int32"  PropertyName="SelectedValue"/>
-            <asp:ControlParameter Name="dt" Type="DateTime" ControlID="DateSelect1" PropertyName="Text" />
+            <asp:ControlParameter Name="dt" Type="DateTime" ControlID="DateSelect1" PropertyName="bDate" />
         </SelectParameters>
     </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ShiftsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="ShiftsForDate">
      <SelectParameters>
-      <asp:ControlParameter  ControlID="DateSelect1" PropertyName="Text" Name="dt" Type="DateTime" />
+      <asp:ControlParameter  ControlID="DateSelect1" PropertyName="bDate" Name="dt" Type="DateTime" />
      </SelectParameters>
     </asp:ObjectDataSource>
      <atk:ToolkitScriptManager ID="ScriptManager1" runat="server">
@@ -21,8 +21,8 @@
     <div style="width:200px; margin-left:auto; margin-right:auto; padding-bottom: 10px">
 <h2 style="color:Black">Shift Roster</h2></div>
     <div style="float:left; font-size:16pt">
-   <%--  <uc3:DateSelect ID="DateSelect1" runat="server" OnDateChanged="RefreshShifts"  AutoPostBack="true"/>--%>
-        <asp:TextBox runat="server" ID="DateSelect1" TextMode="Date" AutoPostBack ="true"></asp:TextBox>
+  <uc3:DateSelect ID="DateSelect1" runat="server" OnDateChanged="RefreshShifts"  AutoPostBack="true" />
+        <asp:TextBox runat="server"    AutoPostBack ="true"></asp:TextBox>
     </div>
      <div style="float:left; padding-left: 100px; font-size:16pt;">Select shift: 
      <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataTextField="Sequence" DataValueField="ShiftID"

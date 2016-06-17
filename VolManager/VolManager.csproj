@@ -98,15 +98,15 @@
     <Content Include="Reports\CaptainsReport.aspx" />
     <Content Include="Reports\SumReport.aspx" />
     <Content Include="GuideRoles.aspx" />
+    <None Include="Scripts\jquery-1.9.1-vsdoc.js" />
+    <Content Include="Scripts\jquery-1.9.1.js" />
+    <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="ShiftDetail.aspx" />
     <Content Include="ShiftList.aspx" />
     <Content Include="ShiftTimes.aspx" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
-    <Content Include="Scripts\jquery-1.4.1-vsdoc.js" />
-    <Content Include="Scripts\jquery-1.4.1.js" />
-    <Content Include="Scripts\jquery-1.4.1.min.js" />
     <Content Include="ShiftCalendar.aspx" />
     <Content Include="TextEditor.aspx" />
     <Content Include="UserControls\DateSelector.ascx" />
@@ -342,6 +342,7 @@
     <Content Include="App_Themes\VMTheme\VolSkin.skin" />
     <None Include="Properties\PublishProfiles\MBA.pubxml" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
+    <Content Include="Scripts\jquery-1.9.1.min.map" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

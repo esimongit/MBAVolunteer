@@ -17,7 +17,7 @@ namespace MBAV
                 return;
             }
             ReportParameter[] parameters = new ReportParameter[1];
-            parameters[0] = new ReportParameter("dt", DateSelect1.Text);
+            parameters[0] = new ReportParameter("dt", DateSelect1.bDate);
 
             ReportViewer1.LocalReport.SetParameters(parameters);
             ReportViewer1.LocalReport.Refresh();

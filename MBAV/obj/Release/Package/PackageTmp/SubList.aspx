@@ -18,14 +18,24 @@
    </div>
  <div class="clear"></div>
  <asp:GridView ID="GridView1" runat="server" DataSourceID = "ObjectDataSource1" 
-        DataKeyNames="GuideID" AutoGenerateColumns="false"
-  Data CellPadding="3" CellSpacing="4" GridLines="None">
+        DataKeyNames="GuideID" AutoGenerateColumns="False"
+    CellPadding="3" CellSpacing="4" GridLines="None">
  <Columns>
  <asp:BoundField DataField="GuideName" HeaderText="Name" />
   <asp:BoundField DataField="HomeShift" HeaderText="Home Shift" />
-   <asp:BoundField DataField="VolID" HeaderText="ID Nbr." />
-   <asp:BoundField  DataFormatString="&lt;a href=mailto:{0}&gt;{0}&lt;/a&gt;" HtmlEncodeFormatString="false" DataField="Email" HeaderText="E-mail address"  />
-     <asp:BoundField DataField="Phone" HeaderText="Phone Nbr." />
+   <asp:BoundField DataField="VolID" HeaderText="ID" />
+     <asp:TemplateField HeaderText="E-mail address">
+        
+         <ItemTemplate>
+             <asp:Label ID="Label1" runat="server" Visible='<%#Eval("ShowContactInfo") %>' Text='<%# Bind("Email", "<a href=mailto:{0}>{0}</a>") %>'></asp:Label>
+         </ItemTemplate>
+     </asp:TemplateField>
+     <asp:TemplateField HeaderText="Phone">
+        
+         <ItemTemplate>
+             <asp:Label ID="Label2"  Visible='<%#Eval("ShowContactInfo") %>' runat="server" Text='<%# Bind("Phone") %>'></asp:Label>
+         </ItemTemplate>
+     </asp:TemplateField>
  </Columns>
  </asp:GridView>
 

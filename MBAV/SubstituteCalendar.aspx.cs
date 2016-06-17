@@ -54,7 +54,7 @@ namespace MBAV
             if (dt < DateTime.Today)
                 return;
            
-            string clr = ShiftsDM.IsAWeek(dt) ? "#aaaaff": "#ffaaaa";
+            string clr = ShiftsDM.IsAWeek(dt) ? "#80ffff": "#aaffaa";
             
             if (e.Day.IsOtherMonth)
                 return;
@@ -66,7 +66,7 @@ namespace MBAV
             CalendarDateObject obj = CurrentEvents.Find(x => x.Dt == e.Day.Date);
             if (obj == null)
                 return;
-            string color = "#330088";
+            string color = "#000000";
             string style = "normal";
             string decoration="inherit";
           

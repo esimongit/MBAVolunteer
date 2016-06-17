@@ -100,7 +100,7 @@
              <EditItemTemplate>
                   
                 <table><tr><td class="formlabel">
-                 ID Nbr:</td><td>
+                 ID:</td><td>
                  <asp:TextBox ID="VolIDTextBox" runat="server" Width="60" Text='<%# Bind("VolID") %>' />&nbsp;&nbsp;
                   <asp:HyperLink ID="MBAVLink" runat="server" Text="Open MBAV site" Target="_blank"  NavigateUrl='<%#Eval("UserId", "http://mbav.netqnet.com/Login.aspx?ID={0}") %>' ></asp:HyperLink>
                   </td></tr>
@@ -240,7 +240,7 @@
                <InsertItemTemplate>
                 <table>
                  <tr><td class="formlabel">
-                 ID Nbr:</td><td>
+                 ID:</td><td>
                  <asp:TextBox ID="VolIDTextBox" runat="server" Text='<%# Bind("VolID") %>' />
                   </td></tr>
                   <tr><td class="formlabel">

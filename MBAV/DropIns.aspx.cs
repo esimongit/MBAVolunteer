@@ -55,6 +55,7 @@ namespace MBAV
                    
                 }
             }
+            InfoMessage.Set("Changes Accepted");
             Repeater1.DataBind();
         }
      

@@ -73,7 +73,7 @@
         <div class="col-md-8">
         
         
-         ID Nbr: 
+         ID: 
          
          <asp:Label ID="VolIDTextBox" runat="server"   Font-Bold="true" Text='<%# Eval("VolID") %>' />
        </div>

@@ -13,15 +13,20 @@
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
 </asp:ObjectDataSource>
+ 
+<div class="row" style="padding-top:10px">
+    <div class="col-md-4" style="font-size:large">  First select a Shift: </div>
+   <div class="col-md-4"> 
  <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataTextField="ShiftName" DataValueField="ShiftID" AppendDataBoundItems="true"
   AutoPostBack="true">
   <asp:ListItem Value="0" Text="(Select a shift)"></asp:ListItem>
  </asp:DropDownList> 
- 
+ </div></div>
   
-  <hr/>
-<h3>In the table below,  check all the boxes for dates  
-you plan to drop in for this shift. </h3><hr/>
+   
+<div class="row" style="padding-top:10px; padding-bottom:20px; font-size:large; margin-left:5px">
+    In the table below,  check all the boxes for dates  
+you plan to drop in for this shift. </div>
   
 <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ObjectDataSource1" >
 <HeaderTemplate><table cellpadding="5"></HeaderTemplate>

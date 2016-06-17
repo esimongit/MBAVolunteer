@@ -35,7 +35,7 @@ Title="Manage Volunteer Logins" %>
           
       
         <asp:TextBox ID="PatternTextBox" runat="server"  Width="200px"  AutoPostBack="true"   ></asp:TextBox>
-        Search by First, Last, ID Nbr. or Email.
+        Search by First, Last, ID or Email.
     </td><td style="height: 51px" > <asp:CheckBox ID="DupCheckBox" runat="server" Text="Duplicates Only" AutoPostBack="true" />
         </td>
       </tr>

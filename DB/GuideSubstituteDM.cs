@@ -178,7 +178,7 @@ namespace  NQN.DB
         public ObjectList<GuideSubstituteObject> SubReport()
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
-            string qry = ReadAllCommand() + @" where SubDate > getdate() order by SubDate";
+            string qry = ReadAllCommand() + @" where SubDate > getdate() order by SubDate, Sequence, g.FirstName";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn); 

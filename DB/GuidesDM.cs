@@ -432,6 +432,7 @@ namespace  NQN.DB
             obj.Sequence = GetNullableInt32(reader, "Sequence", 0);
             obj.DOW = GetNullableInt32(reader, "DOW", 0);
             obj.HasLogin = GetNullableBoolean(reader, "HasLogin", false);
+            obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.GuideName =  obj.FirstName + " " + obj.LastName ;
             obj.CalendarType = GetNullableString(reader, "CalendarType", String.Empty);
           
@@ -456,6 +457,7 @@ namespace  NQN.DB
                 ,[CalendarType]
 				,g.[RoleID]
                 ,g.[AltRoleID]
+                ,r.[MaskContactInfo]
 				,[UpdateBy]
 				,[LastUpdate]
 				,[PreferredName]
