@@ -179,9 +179,9 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 </asp:GridView>
 </div>
 <hr />
-<p style="text-align:center;font-size:12pt"">
+<p style="text-align:center;font-size:12pt">
     Click on "Submit" to record changes. </p>
-    <p style="text-align:center;font-size:12pt"">
+    <p style="text-align:center;font-size:12pt">
     If you check multiple requests, only one will be processed. </p>
     <p style="text-align:center; font-size:12pt">
     Click on "Return to Calendar" to return you to the calendar without
@@ -195,7 +195,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
     <asp:Button ID="Button1" runat="server" Text="Submit" OnCommand="DoSubmit" BackColor="ButtonFace" CommandArgument= "2"/>
   </div>
    <div class="col-md-3 col-xs-3" style="text-align:center; padding-top:2px; padding-bottom:2px ">
-    <input type="reset"> 
+    <input type="reset"/> 
    </div>
     <div class="col-md-2 col-xs-3" style="text-align:center; padding-top:2px; padding-bottom:2px  ">
    <asp:HyperLink ID="HyperLink3" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11" BorderColor="Gray"
@@ -206,8 +206,8 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
  <div class="clear"></div>
  <div>
     <asp:CheckBox ID="TestBox" runat="server" />
-    <font size="+2" color="#AA3333">Practice:</font>
-    If this box is checked no email messages will be sent, but changes <u><b>will</b></u>
+    <span style="font-size:larger; color:#AA3333">Practice:</span>
+    If this box is checked no email messages will be sent, but changes <b>will</b>
     be made to the database. Please undo any changes that you make in practice.
     <hr  />
  </div>
@@ -221,11 +221,11 @@ Volunteer Substitute System</h1>
 </div>
 <div class="row">
 <div class="col-md-6">
-            <font color='black'><font size='+2'>Please remember that you are <u><b>always responsible</b></u> for finding a substitute. </font>
+            <span style="color:black;font-size:larger">Please remember that you are <b>always responsible</b> for finding a substitute. </span>
             <p> 
-             This on-line request system is just for your convenience. <b><i><u>If you do not get a substitute,
-              or five responses to your request within a week</u></i></b> of the date you will be absent,
-               it is recommended that you <b><i><u>get on the phone</u></i></b> and call volunteers to find a substitute the old way. 
+             This on-line request system is just for your convenience. <b><i>If you do not get a substitute,
+              or five responses to your request within a week</i></b> of the date you will be absent,
+               it is recommended that you <b><i>get on the phone</i></b> and call volunteers to find a substitute the old way. 
                </p>
                <p>
            While you are here, please
@@ -247,8 +247,7 @@ Volunteer Substitute System</h1>
    <p><b>NOTE: Please DO NOT refresh this
             page.</b> Every time you do, it sends off a copy of the
             message to everyone.</p>
-            <asp:HyperLink ID="HyperLink1" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11" BorderColor="Gray"
-           BorderStyle="Solid" BorderWidth="1" BackColor="ButtonFace"  Text="Return to Calendar"  NavigateUrl="SubstituteCalendar.aspx"/>
+            <asp:HyperLink ID="HyperLink1" runat="server"  CssClass="btn btn-info"  Text="Return to Calendar"  NavigateUrl="SubstituteCalendar.aspx"/>
 </div>
  
  </asp:View>

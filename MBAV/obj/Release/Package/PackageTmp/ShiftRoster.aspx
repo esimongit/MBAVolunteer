@@ -22,7 +22,7 @@
 <h2 style="color:Black">Shift Roster</h2></div>
     <div style="float:left; font-size:16pt">
   <uc3:DateSelect ID="DateSelect1" runat="server" OnDateChanged="RefreshShifts"  AutoPostBack="true" />
-        <asp:TextBox runat="server"    AutoPostBack ="true"></asp:TextBox>
+        
     </div>
      <div style="float:left; padding-left: 100px; font-size:16pt;">Select shift: 
      <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataTextField="Sequence" DataValueField="ShiftID"
@@ -31,13 +31,16 @@
      
      </asp:DropDownList></div>
      <div class="clear"></div>
-     <div style="float:left; padding-top:10px; padding-left:100px">
-     <asp:Button ID="SubmitButton" runat="server" Text="Submit" OnClick="DoReport" /></div>
-       <div style="float:left; padding-top:10px; padding-left:100px">
-     <input type="button" value="Close Window" onclick="self.close()"/>
-     </div>
-     <div class="clear" style="padding-top:10px"></div>
-    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"  Width="800" Height="800"    
+<div class="row" style="padding-top:20px">
+    <div class="col-xs-5 col-xs-offset-3">
+<asp:Button ID="Button1" runat="server" CSSclass="btn btn-info" Text="Close Window"   OnClientClick='javascript:self.close()' />
+</div>  <div class="col-xs-3">
+     <asp:Button ID="SubmitButton" runat="server" Text="Show Report" OnClick="DoReport" CssClass="btn btn-success" /></div>
+    </div>
+      
+     <div class="row" style="padding-top:10px"> 
+         <div class="col-xs-12">
+    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"  Width="100%"    
         Font-Size="10pt" InteractiveDeviceInfos="(Collection)" 
         WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
         <LocalReport ReportPath="Roster.rdlc">
@@ -46,5 +49,5 @@
             </DataSources>
         </LocalReport>
     </rsweb:ReportViewer>
-
+    </div></div>
 </asp:Content>

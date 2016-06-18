@@ -7,19 +7,21 @@
  <asp:ControlParameter ControlID="ShiftSelect" Name="ShiftID" Type="Int32" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
- <div style="margin-left:auto; margin-right:auto;width:300px">
+    <div class="row"> 
+ <div class="col-md-10 col-md-offset-2">
 <asp:Label ID="TitleLabel" runat="server" Font-Bold="true" ForeColor="Black" Font-Size="X-Large"></asp:Label>
    </div>
-
- <div style="float:right">
- 
+      </div>
+ <div class="row"> 
+ <div class="col-xs-3 col-xs-offset-9" style="font-size:large; font-weight:bold">
    Shift: <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataValueField="ShiftID" DataTextField="ShiftName"
      AutoPostBack="true" OnSelectedIndexChanged="DoList"></asp:DropDownList>
-   </div>
- <div class="clear"></div>
- <asp:GridView ID="GridView1" runat="server" DataSourceID = "ObjectDataSource1" 
-        DataKeyNames="GuideID" AutoGenerateColumns="False"
-    CellPadding="3" CellSpacing="4" GridLines="None">
+   </div></div>
+  <div class="row" style="padding-top:10px"> 
+ <div class="col-xs-12">
+ <asp:GridView ID="GridView1" runat="server" DataSourceID = "ObjectDataSource1"  Width="100%"
+        DataKeyNames="GuideID" AutoGenerateColumns="False" HeaderStyle-Font-Size="Large"
+    CellPadding="5" CellSpacing="4" GridLines="Both" HorizontalAlign="Center">
  <Columns>
  <asp:BoundField DataField="GuideName" HeaderText="Name" />
   <asp:BoundField DataField="HomeShift" HeaderText="Home Shift" />
@@ -37,9 +39,14 @@
          </ItemTemplate>
      </asp:TemplateField>
  </Columns>
- </asp:GridView>
 
-<p> <input type='button' value='Close Window' onClick='self.close()' />
- </p>
+<HeaderStyle Font-Size="Large"></HeaderStyle>
+     <RowStyle HorizontalAlign="Center" />
+ </asp:GridView>
+    </div></div>
+<div class="row" style="padding-top:20px">
+    <div class="col-md-5 col-md-offset-3">
+<asp:Button ID="CloseButton" runat="server" CSSclass="btn btn-info" Text="Close Window"   OnClientClick='javascript:self.close()' />
+</div> </div>
  
 </asp:Content>

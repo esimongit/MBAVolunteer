@@ -12,6 +12,23 @@
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
 </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ObjectDataSource2" runat='server' TypeName="NQN.Bus.SubstitutesBusiness" SelectMethod="FutureDatesForShift"
+  >
+ <SelectParameters>
+   <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
+   <asp:ControlParameter ControlID="ShiftSelect" Name="ShiftID" Type="Int32" DefaultValue="0" />
+ </SelectParameters>
+ </asp:ObjectDataSource>
+ <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchWithSubOffers">
+  <SelectParameters>
+   <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
+ </SelectParameters>
+</asp:ObjectDataSource>
+<asp:MultiView ID="MultiView1" runat="server">
+    <asp:View runat="server" ID="View1">
+
+    <div class="row">
+        <div class="col-md-6">
 <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
  <asp:FormView ID="FormView1" runat="server" DefaultMode="Edit" DataSourceID="ObjectDataSource1"  DataKeyNames="GuideID">
      <EditItemTemplate>
@@ -70,11 +87,8 @@
          </asp:DropDownList>
         </div></div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-8">
-        
-        
+        <div class="col-md-8">      
          ID: 
-         
          <asp:Label ID="VolIDTextBox" runat="server"   Font-Bold="true" Text='<%# Eval("VolID") %>' />
        </div>
         </div> 
@@ -86,21 +100,34 @@
        </div>
        </div>
     
-         <asp:LinkButton ID="UpdateButton" runat="server"  CausesValidation="True" 
-             CommandName="Update" Text="Update"  ForeColor="Black" Font-Underline="false"  Font-Size="11" BorderColor="Gray"
-           BorderStyle="Solid" BorderWidth="1" BackColor="ButtonFace"/>
-         &nbsp;<asp:LinkButton ID="UpdateCancelButton" runat="server" CssClass="Button"
-             CausesValidation="False" CommandName="Cancel" Text="Return to Calendar"  ForeColor="Black" Font-Underline="false"  Font-Size="11" BorderColor="Gray"
-           BorderStyle="Solid" BorderWidth="1" BackColor="ButtonFace" OnClick="ClosePage" />
+         <asp:LinkButton ID="UpdateButton" runat="server"   CausesValidation="True"  CssClass="btn btn-success"
+             CommandName="Update" Text="Update"  />
+         &nbsp;<asp:LinkButton ID="UpdateCancelButton" runat="server" CssClass="btn btn-info"
+             CausesValidation="False" CommandName="Cancel" Text="Return to Calendar"  OnClick="ClosePage" />
      </EditItemTemplate>
     
  </asp:FormView>
- 
+ </div>
+ <div class="col-md-6">
+    <div class="row" style="padding-top:50px">
+<asp:Button ID="View2Button" runat="server" Text="Select shifts for which you can substitute" CssClass="btn btn-info"  BackColor="#5bc0fe" OnClick="ToView2" />
+        </div>
+ <div class="row" style="padding-top:20px">
+<asp:Button ID="Button1" runat="server" Text="Select dates you will drop in on a shift" CssClass="btn btn-info" OnClick="ToView3" BackColor="#6e8ade"/>
+        </div>
+
+ </div>
+    </div>
   
-  <hr/>
+</asp:View>
+     <asp:View runat="server" ID="View2">
+<div class="row"><div class="col-md-12">
 <h3>In the table below,  check all the boxes for shifts on which 
-you can substitute.  No need to click "Update."</h3><hr/>
-  
+you can substitute. </h3><hr/>
+  <div class="row"><div class="col-md-6 col-md-offset-3">
+         <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-info"
+             CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
+  </div></div>
 <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ShiftsDataSource" >
 <HeaderTemplate><table cellpadding="5"></HeaderTemplate>
 <ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#efefef":"background-color:#ffffff" %>'> <td><asp:Label runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></td><td>
@@ -110,4 +137,44 @@ you can substitute.  No need to click "Update."</h3><hr/>
 </ItemTemplate>
 <FooterTemplate></table></FooterTemplate>
 </asp:Repeater>
+    </div></div>
+<div class="row"><div class="col-md-6 col-md-offset-3">
+         <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-info"
+             CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
+  </div></div>
+        </asp:View>
+    <asp:View ID="View3" runat="server">
+
+        <div class="row" style="padding-top:10px">
+    <div class="col-md-4" style="font-size:large; color:purple">  First select a Shift: </div>
+   <div class="col-md-4"> 
+ <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataTextField="ShiftName" DataValueField="ShiftID" AppendDataBoundItems="true"
+  AutoPostBack="true">
+  <asp:ListItem Value="0" Text="(Select a shift)"></asp:ListItem>
+ </asp:DropDownList> 
+ </div></div>
+  
+   
+<div class="row" style="padding-top:10px; padding-bottom:20px; font-size:large; margin-left:5px">
+    In the table below,  check all the boxes for dates  
+you plan to drop in for this shift, then click "Submit". </div>
+  
+<asp:Repeater ID="Repeater2" runat="server" DataSourceID="ObjectDataSource2" >
+<HeaderTemplate><table cellpadding="5"></HeaderTemplate>
+<ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#afcfdf":"background-color:#ffffff" %>'> 
+<td style="padding:2px 4px 2px 2px; text-align:right"><asp:Label ID="DateLabel" runat="server" Text='<%#Eval("DropinDate",  "{0:d}") %>'></asp:Label></td><td>
+<asp:CheckBox ID="DateCheckBox" runat="server" Checked='<%#Eval("Selected") %>'   />
+<asp:HiddenField ID="DropinIDHidden" runat="server" Value='<%#Eval("GuideDropinID") %>' />
+</td></tr>
+</ItemTemplate>
+<FooterTemplate></table></FooterTemplate>
+</asp:Repeater>
+<div class="row"><div class="col-md-offset-2 col-md-4">
+<asp:Button ID="SubmitButton" OnClick="DoSubmit" runat="server" Text="Submit" CssClass="btn btn-success" />
+</div><div class="col-md-4">
+<asp:LinkButton ID="UpdateCancelButton" runat="server" CssClass="btn btn-info"
+             CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
+</div></div>
+    </asp:View>
+         </asp:MultiView>
 </asp:Content>

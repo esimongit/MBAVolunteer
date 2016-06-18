@@ -104,6 +104,7 @@
     <Content Include="ShiftDetail.aspx" />
     <Content Include="ShiftList.aspx" />
     <Content Include="ShiftTimes.aspx" />
+    <Content Include="StaticFields.aspx" />
     <Content Include="Styles\Site.css" />
     <Content Include="Default.aspx" />
     <Content Include="Global.asax" />
@@ -260,6 +261,13 @@
     </Compile>
     <Compile Include="ShiftCalendar.aspx.designer.cs">
       <DependentUpon>ShiftCalendar.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="StaticFields.aspx.cs">
+      <DependentUpon>StaticFields.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="StaticFields.aspx.designer.cs">
+      <DependentUpon>StaticFields.aspx</DependentUpon>
     </Compile>
     <Compile Include="TextEditor.aspx.cs">
       <DependentUpon>TextEditor.aspx</DependentUpon>

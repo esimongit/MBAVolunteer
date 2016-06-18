@@ -24,35 +24,28 @@
     
         <div class="row"    > 
         <div class="col-md-5 col-xs-6" style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
-          <asp:HyperLink ID="HyperLink3" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11" BorderColor="Gray"
-           BorderStyle="Solid" BorderWidth="1" BackColor="ButtonFace"  Text="My Volunteer Profile"  NavigateUrl="Profile.aspx"/>
+          <asp:HyperLink ID="HyperLink3" runat="server" CssClass="btn btn-info" Text="My Volunteer Profile"  NavigateUrl="Profile.aspx"/>
         </div>
         <div class="col-md-5 col-xs-6" style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
-          <asp:HyperLink ID="HyperLink4" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11" BorderColor="Gray"
-           BorderStyle="Solid" BorderWidth="1" BackColor="ButtonFace"  Text="Change Password"  NavigateUrl="ChangePassword.aspx"/>
+          <asp:HyperLink ID="HyperLink4" runat="server"  CssClass="btn btn-info" Text="Change Password"  NavigateUrl="ChangePassword.aspx"/>
         </div>
         </div>
        <div class="row"  > 
         <div class="col-md-5 col-xs-6" style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
-          <asp:HyperLink ID="SubListLink" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11" BorderColor="Gray" BorderStyle="Solid" 
-          BorderWidth="1" BackColor="ButtonFace"  Text="Substitutes for Mon2" Target="_blank" NavigateUrl="SubList.aspx?ShiftID=0"/>
+          <asp:HyperLink ID="SubListLink" runat="server"  CssClass="btn btn-info" Text="Substitutes for Mon2" Target="_blank" NavigateUrl="SubList.aspx?ShiftID=0"/>
            </div>
         <div class="col-md-5 col-xs-6"  style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
           
-            <asp:HyperLink ID="RosterButton" runat="server"   Text="Daily Roster" ForeColor="Black" Font-Underline="false"  Font-Size="11"
-             BorderColor="Gray" BorderStyle="Solid" BorderWidth="1" Target="_blank" BackColor="ButtonFace" NavigateUrl="ShiftRoster.aspx"></asp:HyperLink>
+            <asp:HyperLink ID="RosterButton" runat="server"   Text="Daily Roster" CssClass="btn btn-info" NavigateUrl="ShiftRoster.aspx"></asp:HyperLink>
          </div> 
       </div>
       <div class="row"  > 
       
-        <div class="col-md-5 col-xs-6"  style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
-            <asp:HyperLink ID="HyperLink1" runat="server" Text="Drop in on a Shift" ForeColor="Black" Font-Underline="false"  Font-Size="11"
-             BorderColor="Gray" BorderStyle="Solid" BorderWidth="1" BackColor="ButtonFace"  NavigateUrl="Dropins.aspx"></asp:HyperLink>
-        </div>
-        <div class="col-md-5 col-xs-6" style="margin-left:20px;padding-top:10px; padding-bottom:10px"> 
+         
+        <div class="col-md-9 col-xs-9" style="margin-left:20px;padding-top:10px; padding-bottom:10px"> 
            <div class="row" > 
-            <div class="col-md-6 " style=" max-width:100px;background-color:#80ffff" >A Weeks</div>
-          <div class="col-md-6 " style="max-width:100px;background-color:#AAFFAA" >B Weeks</div>
+            <div class="col-md-6 " style=" max-width:120px;background-color:#80ffff; font-size:large" >A Weeks</div>
+          <div class="col-md-6 " style="max-width:120px;background-color:#AAFFAA; font-size:large" >B Weeks</div>
        </div>
        </div>
       </div>
