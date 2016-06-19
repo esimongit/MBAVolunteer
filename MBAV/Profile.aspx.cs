@@ -31,6 +31,10 @@ namespace MBAV
         {
             MultiView1.SetActiveView(View3);
         }
+        protected void ToView4(object sender, EventArgs e)
+        {
+            MultiView1.SetActiveView(View4);
+        }
         protected void OnUpdated(object sender, ObjectDataSourceStatusEventArgs e)
         {
             if (e.Exception != null)

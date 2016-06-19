@@ -24,6 +24,8 @@ namespace VolManager
                 //Bind the GridView control to the data source.
                 GridView1.DataSource = Session["TaskTable"];
                 GridView1.DataBind();
+                if (Request.QueryString["GuideID"] != null)
+                    MultiView1.SetActiveView(View2);
             }
         }
         protected void DoSearch(object sender, EventArgs e)
@@ -128,32 +130,7 @@ namespace VolManager
         {
             MultiView1.SetActiveView(View3);
         }
-        protected void AddLogin(object sender, EventArgs e)
-        {
-            int GuideID = Convert.ToInt32(Session["GuideID"]);
-            GuidesDM dm = new GuidesDM();
-            GuidesObject obj = dm.FetchGuide(GuideID);
-            MembershipBusiness mb = new MembershipBusiness();
-            mb.InsertVols(obj.VolID, obj.Email);
-            FormView1.DataBind();
-        }
-        protected void CheckChanged(object sender, EventArgs e)
-        {
-            SubOffersDM dm = new SubOffersDM();
-            int GuideID = Convert.ToInt32(Session["GuideID"]);
-            if (GuideID == 0)
-                return;
-            CheckBox cb = (CheckBox)sender;
-            HiddenField hf = (HiddenField)(cb.Parent.FindControl("ShiftIDHidden"));
-            int ShiftID = Convert.ToInt32(hf.Value);
-            if (cb.Checked)
-            {
-                if (!dm.AddSub(GuideID, ShiftID))
-                    cb.Checked = false;
-            }
-            else
-                dm.Delete(GuideID, ShiftID);
-        }
+       
        
     }
 }

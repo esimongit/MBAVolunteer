@@ -111,6 +111,7 @@
     <Content Include="ShiftCalendar.aspx" />
     <Content Include="TextEditor.aspx" />
     <Content Include="UserControls\DateSelector.ascx" />
+    <Content Include="UserControls\GuideEdit.ascx" />
     <Content Include="UserControls\MessageEdit.ascx" />
     <Content Include="UserControls\MessageList.ascx" />
     <Content Include="Web.config">
@@ -282,6 +283,13 @@
     </Compile>
     <Compile Include="UserControls\DateSelector.ascx.designer.cs">
       <DependentUpon>DateSelector.ascx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GuideEdit.ascx.cs">
+      <DependentUpon>GuideEdit.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\GuideEdit.ascx.designer.cs">
+      <DependentUpon>GuideEdit.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\MessageEdit.ascx.cs">
       <DependentUpon>MessageEdit.ascx</DependentUpon>

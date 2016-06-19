@@ -236,19 +236,30 @@ namespace NQN.Bus
         public void SendReminders()
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
-            string ReminderDays = StaticFieldsObject.StaticValue("ReminderDays");
-            int ndays = Convert.ToInt32(ReminderDays);
-            DateTime dt = DateTime.Today;
-            dt.AddDays(ndays);
-            ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(dt);
-            EmailBusiness eb = new EmailBusiness();
-            MailTextDM mtdm = new MailTextDM();
-            MailTextObject mtobj = mtdm.FetchForSymbol("SubReminder");
-
-            foreach (GuideSubstituteObject obj in dList)
+            GuideDropinsDM ddm = new GuideDropinsDM();
+            StaticFieldsDM sdm = new StaticFieldsDM();
+            foreach (StaticFieldsObject stat in sdm.FetchValue("ReminderDays"))
             {
-                if (obj.Email != String.Empty)
-                    eb.SendMail(mtobj.MailFrom, obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                int ndays = Convert.ToInt32(stat.FieldValue);
+                DateTime dt = DateTime.Today;
+                dt.AddDays(ndays);
+                ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(dt);
+                ObjectList<GuideDropinsObject> eList = ddm.FetchForDate(dt);
+                EmailBusiness eb = new EmailBusiness();
+                MailTextDM mtdm = new MailTextDM();
+                MailTextObject mtobj = mtdm.FetchForSymbol("SubReminder");
+
+                foreach (GuideSubstituteObject obj in dList)
+                {
+                    if (obj.Email != String.Empty)
+                        eb.SendMail(mtobj.MailFrom, obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                }
+                mtobj = mtdm.FetchForSymbol("DropinReminder");
+                foreach (GuideDropinsObject obj in eList)
+                {
+                    if (obj.Email != String.Empty)
+                        eb.SendMail(mtobj.MailFrom, obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                }
             }
         }
 

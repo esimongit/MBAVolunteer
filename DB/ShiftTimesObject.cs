@@ -5,7 +5,18 @@ using NQN.Core;
 
 namespace NQN.DB 
 {
-	public class ShiftTimesObject : RootObject
+    public enum ShiftDayOfWeek
+    {
+        Sunday = 1,
+        Monday = 2,
+        Tuesday = 3,
+        Wednesday = 4,
+        Thursday = 5,
+        Friday = 6,
+        Saturday = 7,
+       
+    }
+    public class ShiftTimesObject : RootObject
 	{
 #region AutoAttributes
 		private int _shifttimeid = 0;
@@ -58,6 +69,13 @@ namespace NQN.DB
 		}
 #endregion
 
+        public string TimeString
+        {
+            get
+            {
+                return _shiftstart.ToShortTimeString() + " - " + _shiftend.ToShortTimeString();
+            }
+        }
 		public ShiftTimesObject()
 		{
 			_tablename = "ShiftTimes";

@@ -24,6 +24,18 @@
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
 </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="SubRequestsDataSource" runat="server" TypeName="NQN.DB.GuideSubstituteDM" SelectMethod="FetchAllForGuide"
+ DeleteMethod="Delete">
+ <SelectParameters>
+            <asp:SessionParameter Name="GuideID" SessionField="GuideID" DefaultValue="0" Type="Int32" />
+        </SelectParameters>
+</asp:ObjectDataSource>
+<asp:ObjectDataSource ID="SubCommitmentsDataSource" runat="server" TypeName="NQN.Bus.SubstitutesBusiness" SelectMethod="SelectAllCommitments"
+ DeleteMethod="DeleteCommitment">
+ <SelectParameters>
+            <asp:SessionParameter Name="GuideID" SessionField="GuideID" DefaultValue="0" Type="Int32" />
+        </SelectParameters>
+</asp:ObjectDataSource>
 <asp:MultiView ID="MultiView1" runat="server">
     <asp:View runat="server" ID="View1">
 
@@ -99,11 +111,14 @@
          <asp:Label ID="Label1" runat="server"  Font-Bold="true" Text='<%# Eval("ShiftName") %>' />
        </div>
        </div>
-    
+    <div class="row">
+        <div class="col-xs-3 col-xs-offset-2">
          <asp:LinkButton ID="UpdateButton" runat="server"   CausesValidation="True"  CssClass="btn btn-success"
              CommandName="Update" Text="Update"  />
-         &nbsp;<asp:LinkButton ID="UpdateCancelButton" runat="server" CssClass="btn btn-info"
+            </div>
+         <div class="col-xs-3 col-xs-offset-2"><asp:LinkButton ID="UpdateCancelButton" runat="server" CssClass="btn btn-info"
              CausesValidation="False" CommandName="Cancel" Text="Return to Calendar"  OnClick="ClosePage" />
+        </div>
      </EditItemTemplate>
     
  </asp:FormView>
@@ -115,7 +130,9 @@
  <div class="row" style="padding-top:20px">
 <asp:Button ID="Button1" runat="server" Text="Select dates you will drop in on a shift" CssClass="btn btn-info" OnClick="ToView3" BackColor="#6e8ade"/>
         </div>
-
+ <div class="row" style="padding-top:20px">
+<asp:Button ID="Button2" runat="server" Text="Review your substitute commitments" CssClass="btn btn-info" OnClick="ToView4" BackColor="#6e8aa0"/>
+        </div>
  </div>
     </div>
   
@@ -169,10 +186,62 @@ you plan to drop in for this shift, then click "Submit". </div>
 </ItemTemplate>
 <FooterTemplate></table></FooterTemplate>
 </asp:Repeater>
-<div class="row"><div class="col-md-offset-2 col-md-4">
+<div class="row"><div class="col-xs-offset-2 col-xs-4">
 <asp:Button ID="SubmitButton" OnClick="DoSubmit" runat="server" Text="Submit" CssClass="btn btn-success" />
-</div><div class="col-md-4">
+</div><div class="col-xs-4">
 <asp:LinkButton ID="UpdateCancelButton" runat="server" CssClass="btn btn-info"
+             CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
+</div></div>
+    </asp:View>
+    <asp:View ID="View4" runat="server">
+        <div class="row">
+            <div class="col-md-12"> 
+         <cc2:NQNGridView  ID="GridView2" runat="server"  Caption="<strong>Sub Requests</strong> (click to change)" AlternatingRowStyle-BackColor="#efefef" HeaderStyle-ForeColor="White"
+                 DataSourceID="SubRequestsDataSource" AllowMultiColumnSorting="False" HeaderStyle-BackColor="#0099cc"
+                 AutoGenerateColumns="False"  
+                 Privilege="" AllowSorting="True" DataKeyNames="GuideSubstituteID">
+             <Columns>
+                 <asp:HyperLinkField DataNavigateUrlFields="SubDate" DataNavigateUrlFormatString="SubRequest.aspx?dt={0:d}" DataTextField="SubDate"
+                      DataTextFormatString="{0:d}" />
+                  
+                 <asp:BoundField DataField="ShiftName" HeaderText="Shift"  />
+                 
+                 
+                 <asp:BoundField DataField="Sub" HeaderText="Sub ID"   />
+                
+                 <asp:BoundField DataField="SubName" HeaderText="Sub Name"  />
+                
+                
+             </Columns>
+             <EmptyDataTemplate>No Future Requests</EmptyDataTemplate>
+             </cc2:NQNGridView>
+         </div>
+        </div>
+         <div class="row">
+            <div class="col-md-12">
+          <cc2:NQNGridView  ID="GridView3" runat="server" 
+                  DataSourceID="SubCommitmentsDataSource"  Caption="<strong>Sub Commitments</strong> (click to change)" AlternatingRowStyle-BackColor="#efefef" HeaderStyle-ForeColor="White"
+                 AllowMultiColumnSorting="False" AutoGenerateColumns="False"  DataKeyNames="GuideSubstituteID" HeaderStyle-BackColor="#0099cc"
+                  Privilege="" 
+                  AllowSorting="True">
+              <Columns>
+                <asp:HyperLinkField DataNavigateUrlFields="SubDate" DataNavigateUrlFormatString="SubRequest.aspx?dt={0:d}" DataTextField="SubDate"
+                      DataTextFormatString="{0:d}" />
+                  
+                  <asp:BoundField DataField="ShiftName" HeaderText="Shift"   />
+                 
+                  <asp:BoundField DataField="FirstName" HeaderText="First Name"   />
+                  <asp:BoundField DataField="LastName" HeaderText="Last Name"   />
+                  <asp:BoundField DataField="VolID" HeaderText="VolID"  />
+                   
+              </Columns>
+              <EmptyDataTemplate>No Future Commitments</EmptyDataTemplate>
+             </cc2:NQNGridView>
+         </div>
+          </div>
+        <div class="row" style="padding-top:10px">
+        <div class="col-xs-4 col-xs-offset-4">
+<asp:LinkButton ID="LinkButton3" runat="server" CssClass="btn btn-info"
              CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
 </div></div>
     </asp:View>

@@ -36,7 +36,7 @@
            </div>
         <div class="col-md-5 col-xs-6"  style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
           
-            <asp:HyperLink ID="RosterButton" runat="server"   Text="Daily Roster" CssClass="btn btn-info" NavigateUrl="ShiftRoster.aspx"></asp:HyperLink>
+            <asp:HyperLink ID="RosterButton" runat="server"   Text="Daily Roster" CssClass="btn btn-info" Target="_blank" NavigateUrl="ShiftRoster.aspx"></asp:HyperLink>
          </div> 
       </div>
       <div class="row"  > 

@@ -7,8 +7,13 @@ using NQN.Core;
 
 namespace  NQN.DB
 {
+   
 	public class ShiftTimesDM : DBAccess<ShiftTimesObject>
 	{
+        public override ObjectList<ShiftTimesObject> FetchAll()
+        {
+            return Fetch(" Order by ShiftStart ");
+        }
 		public void Update(ShiftTimesObject obj)
 		{
 			 string qry = @"UPDATE  ShiftTimes SET 

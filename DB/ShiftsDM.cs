@@ -102,6 +102,24 @@ namespace  NQN.DB
             }
             return Results;
         }
+
+        public  ShiftsObject FetchShift(int ShiftID)
+        {
+            ShiftsObject obj = null;
+
+            string qry = ReadAllCommand() + @" WHERE ShiftID = @ShiftID ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                     obj = LoadFrom(reader);
+                    
+                }
+            }
+            return obj;
+        }
         public ObjectList<ShiftsObject> ShiftsForDateAndGuide(DateTime dt, int GuideID)
         {
             if (dt == DateTime.MinValue)

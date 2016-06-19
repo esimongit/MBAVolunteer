@@ -98,7 +98,6 @@
     <Content Include="Images\orca.jpg" />
     <Content Include="Profile.aspx" />
     <Content Include="Recovery\Default.aspx" />
-    <Content Include="Report.aspx" />
     <Content Include="Scripts\common.js" />
     <Content Include="ShiftRoster.aspx" />
     <Content Include="Styles\Site.css" />
@@ -184,13 +183,6 @@
     </Compile>
     <Compile Include="Recovery\Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Report.aspx.cs">
-      <DependentUpon>Report.aspx</DependentUpon>
-      <SubType>ASPXCodeBehind</SubType>
-    </Compile>
-    <Compile Include="Report.aspx.designer.cs">
-      <DependentUpon>Report.aspx</DependentUpon>
     </Compile>
     <Compile Include="Secondary.Master.cs">
       <DependentUpon>Secondary.Master</DependentUpon>

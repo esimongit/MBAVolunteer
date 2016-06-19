@@ -225,7 +225,8 @@ namespace  NQN.DB
             obj.Role = GetNullableString(reader, "Role", String.Empty);
             obj.Sequence = GetNullableInt32(reader, "Sequence", 0);
             obj.ShiftName = GetNullableString(reader, "ShiftName", String.Empty);
-			return obj;
+            obj.Email = GetNullableString(reader, "Email", String.Empty);
+            return obj;
 		}
 
 		protected override string ReadAllCommand()
@@ -238,6 +239,7 @@ namespace  NQN.DB
 				,d.[ShiftID]
 				, g.FirstName  
 				,g.LastName
+                ,g.Email
 				,g.VolID
 				,Role= r.RoleName
                 ,s.Sequence

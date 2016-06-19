@@ -189,17 +189,17 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 <div class="row">
   <div class="col-md-2 col-xs-2"></div>
    <div class="col-md-3  hidden-xs" style="text-align:center; padding-top:2px; padding-bottom:2px ">
-    <asp:Button ID="SubmitButton" runat="server" Text="Submit" OnCommand="DoSubmit" BackColor="ButtonFace" CommandArgument="1"/>
+    <asp:Button ID="SubmitButton" runat="server" Text="Submit" OnCommand="DoSubmit" CssClass="btn btn-success" CommandArgument="1"/>
   </div>
   <div class="col-xs-3  hidden-md hidden-lg hidden-sm" style="text-align:center; padding-top:2px; padding-bottom:2px ">
-    <asp:Button ID="Button1" runat="server" Text="Submit" OnCommand="DoSubmit" BackColor="ButtonFace" CommandArgument= "2"/>
+    <asp:Button ID="Button1" runat="server" Text="Submit" OnCommand="DoSubmit" CssClass="btn btn-success" CommandArgument= "2"/>
   </div>
    <div class="col-md-3 col-xs-3" style="text-align:center; padding-top:2px; padding-bottom:2px ">
-    <input type="reset"/> 
+    <input type="reset" class="btn btn-danger"/> 
    </div>
     <div class="col-md-2 col-xs-3" style="text-align:center; padding-top:2px; padding-bottom:2px  ">
-   <asp:HyperLink ID="HyperLink3" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11" BorderColor="Gray"
-           BorderStyle="Solid" BorderWidth="1" BackColor="ButtonFace"  Text="Return to Calendar"  NavigateUrl="SubstituteCalendar.aspx"/>
+   <asp:HyperLink ID="HyperLink3" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11"
+       CssClass="btn btn-info" Text="Return to Calendar"  NavigateUrl="SubstituteCalendar.aspx"/>
   </div>
   <div class="col-md-2"></div>
   </div>  
