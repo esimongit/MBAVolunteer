@@ -32,11 +32,7 @@
                 SortExpression="LastName" />
             <asp:BoundField DataField="Phone" HeaderText="Phone" SortExpression="Phone"  ReadOnly="true" />
             <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email"  ReadOnly="true" />
-  
- 
-            <asp:BoundField DataField="Notes" HeaderText="Notes" SortExpression="Notes" />
-    
-  
+            <asp:BoundField DataField="Notes" HeaderText="Notes" SortExpression="Notes" /> 
             <asp:BoundField DataField="RoleName" HeaderText="Role"  ReadOnly="true"
                 SortExpression="RoleName" />
    

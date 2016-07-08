@@ -39,15 +39,15 @@
             <asp:HyperLink ID="RosterButton" runat="server"   Text="Daily Roster" CssClass="btn btn-info" Target="_blank" NavigateUrl="ShiftRoster.aspx"></asp:HyperLink>
          </div> 
       </div>
-      <div class="row"  > 
-      
-         
+    
+    </div>
+      <div class="row"  >          
         <div class="col-md-9 col-xs-9" style="margin-left:20px;padding-top:10px; padding-bottom:10px"> 
            <div class="row" > 
             <div class="col-md-6 " style=" max-width:120px;background-color:#80ffff; font-size:large" >A Weeks</div>
           <div class="col-md-6 " style="max-width:120px;background-color:#AAFFAA; font-size:large" >B Weeks</div>
        </div>
-       </div>
+      
       </div>
     </div>
   

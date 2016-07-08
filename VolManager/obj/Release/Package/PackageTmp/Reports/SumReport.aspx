@@ -17,7 +17,7 @@
      <div class="clear"></div>
       
      <div class="clear" style="padding-top:10px"></div>
-    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"  Width="800" Height="800"    
+    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"  Width="1200" Height="800"    
         Font-Size="10pt" InteractiveDeviceInfos="(Collection)" 
         WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
         <LocalReport ReportPath="Reports/SumReport.rdlc">

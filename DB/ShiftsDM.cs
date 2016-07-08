@@ -358,7 +358,7 @@ namespace  NQN.DB
                 ,ShiftEnd=cast (t.ShiftEnd as DateTime)
                 ,[Captains] = dbo.FlattenCaptains(ShiftID)
                 ,[Info] = dbo.FlattenInfo(ShiftID)
-				FROM Shifts s join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID ";
+				FROM Shifts s left join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID ";
         }
         public int GetLast()
         {

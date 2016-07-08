@@ -1,12 +1,17 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ShiftList.aspx.cs" Inherits="VolManager.ShiftList" %>
  <%@ Register Src="~/UserControls/GuideEdit.ascx" TagName="GuideEdit" TagPrefix="uc3" %> 
+ <%@ Register Src="~/UserControls/DateSelector.ascx" TagName="DateSelector" TagPrefix="uc3" %> 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
-        TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchAll" 
+        TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchByCategory" 
         DataObjectTypeName="NQN.DB.ShiftsObject" > 
+    <SelectParameters>
+        <asp:ControlParameter  Name="Recurring" ControlID="RecurringSelect" Type="Boolean" DefaultValue="True" />
+
+    </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" 
-        TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchShift" 
+        TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchShift"  InsertMethod="Save" OnInserted="OnInserted"
         DataObjectTypeName="NQN.DB.ShiftsObject" UpdateMethod="Update">
     <SelectParameters>
         <asp:ControlParameter ControlID="GridView1" Type="Int32" DefaultValue="0" Name="ShiftID" />
@@ -23,8 +28,17 @@
         TypeName="NQN.DB.ShiftTimesDM" SelectMethod="FetchAll"   >
    
 </asp:ObjectDataSource>
+      <atk:ToolkitScriptManager ID="ScriptManager1" runat="server" />
     <asp:Multiview id="MultiView1" runat="server">
         <asp:View ID="View1" runat="server">
+            <div style="float:left">
+        <asp:RadioButtonList ID="RecurringSelect" runat="server" RepeatDirection="Horizontal"  AutoPostBack="true">
+            <asp:ListItem Text="Recurring" Value="True" Selected="true"></asp:ListItem>
+             <asp:ListItem Text="Special" Value="False"></asp:ListItem>
+        </asp:RadioButtonList></div>
+            <div style="float:left;padding-left:10px">
+            <asp:Button ID="AddButton" runat="server" Text="Define a Shift" OnClick="ToView4" /></div>
+        <div style="clear:both"></div>
     <cc2:NQNGridView ID="GridView1" runat="server" AutoGenerateColumns="False"  OnSelectedIndexChanged="ToView2"
         DataSourceID="ObjectDataSource1" DataKeyNames="ShiftID" Selectable="true" PageSize="100">
         <Columns> 
@@ -49,7 +63,16 @@
             <asp:FormView ID="FormView1" runat="server" DataSourceID="ObjectDataSource2" DataKeyNames="ShiftID"
                  DefaultMode="Edit">
                 <EditItemTemplate>
-                    <table><tr><td class="formlabel">
+                    <table>
+                        <tr><td class="formlabel"> 
+                    Recurring:</td><td>
+                    <asp:CheckBox ID="RecurringCheckBox" runat="server" Checked='<%# Eval("Recurring") %>' Enabled="false" />  
+                     </td></tr>
+                     <tr><td class="formlabel">
+                    Shift Date:</td><td>
+                      <asp:Label ID="DateLabel" runat="server" Text='<%#Bind("ShiftDate", "{0:d}") %>' />
+                    </td></tr>
+                        <tr><td class="formlabel">
                     Shift Name:</td><td>
                     <asp:TextBox ID="ShiftNameTextBox" runat="server" Text='<%# Bind("ShiftName") %>' />
                     </td></tr>
@@ -116,5 +139,61 @@
             <uc3:GuideEdit ID="GuideEdit1" runat="server" />
             
         </asp:View>
+         <asp:View ID="View4" runat="server">
+              <asp:FormView ID="FormView2" runat="server" DataSourceID="ObjectDataSource2" DataKeyNames="ShiftID"
+                 DefaultMode="Insert">
+                <InsertItemTemplate>
+                    <table><tr><td class="formlabel">
+                
+                    Recurring:</td><td>
+                    <asp:CheckBox ID="RecurringCheckBox" runat="server" Checked='<%# Bind("Recurring") %>' AutoPostBack="true"
+                         OnCheckedChanged="RecurringChanged" />  
+                     </td></tr>
+                    <tr><td class="formlabel">
+                    Shift Name:</td><td>
+                    <asp:TextBox ID="ShiftNameTextBox" runat="server" Text='<%# Bind("ShiftName") %>' />
+                    </td></tr>
+                    <asp:Panel ID="SpecialPanel" runat="server" Visible ="true" >
+                        
+                   
+                     <tr><td class="formlabel">
+                    Shift Date:</td><td>
+                      <uc3:DateSelector LabelText="" ID="DateSelect" runat="server" bDate='<%#Bind("ShiftDate") %>' />
+                    </td></tr>
+                     </asp:Panel>
+                    <asp:Panel ID="RecurringPanel" runat="server" Visible="false">
+                    <tr><td class="formlabel">
+                    Day of Week:</td><td>
+                    <cc2:DowSelector id="DOWSelect1" runat="server" SelectedValue='<%# Bind("DOW") %>' />
+                     </td></tr>
+                    <tr><td class="formlabel">
+                    AWeek:</td><td>
+                    <asp:CheckBox ID="AWeekCheckBox" runat="server" Checked='<%# Bind("AWeek") %>' />
+                      &nbsp;&nbsp;
+                    BWeek:&nbsp;&nbsp;
+                    <asp:CheckBox ID="BWeekCheckBox" runat="server" Checked='<%# Bind("BWeek") %>' />
+                     </td></tr>
+                   </asp:Panel>
+                    <tr><td class="formlabel">
+                    Sequence:</td><td>
+                    <asp:TextBox ID="SequenceTextBox" runat="server" Width="20" Text='<%# Bind("Sequence") %>' />
+                   </td></tr>
+                    <tr><td class="formlabel">
+                    Short Name:</td><td>
+                    <asp:TextBox ID="ShortNameTextBox" runat="server" Text='<%# Bind("ShortName") %>' />
+                      </td></tr>
+                    <tr><td class="formlabel">
+                    Shift Time:</td><td>
+                    <asp:DropDownList ID="ShiftTimeSelect" DataValueField="ShiftTimeID" DataTextField="TimeString" DataSourceID="ShiftTimesDataSource" runat="server" Text='<%# Bind("ShiftTimeID") %>' />
+                    </td></tr>
+                    </table>
+                   
+                    <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" CommandName="Insert" Text="Save" />
+                    &nbsp;<asp:LinkButton ID="InsertCancelButton" runat="server" CausesValidation="False" CommandName="Cancel" Text="Return to List"
+                        OnClick="ToView1" />
+                </InsertItemTemplate>
+            
+            </asp:FormView>
+             </asp:View>
     </asp:Multiview>
 </asp:Content>

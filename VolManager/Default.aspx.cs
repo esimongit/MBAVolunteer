@@ -13,7 +13,7 @@ namespace VolManager
         {
             MembershipBusiness mb = new MembershipBusiness();
            
-            Label1.Text = String.Format("<b> Current Volunteers On Line:</b> {0} ",   mb.GetCurrentUsers("MBAV"));
+            Label1.Text = String.Format("<b> Current Volunteer IDs On Line:</b> {0} ",   mb.GetCurrentUsers("MBAV"));
         }
     }
 }

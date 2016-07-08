@@ -36,6 +36,11 @@
             <asp:SessionParameter Name="GuideID" SessionField="GuideID" DefaultValue="0" Type="Int32" />
         </SelectParameters>
 </asp:ObjectDataSource>
+     <asp:ObjectDataSource ID="SpecialsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="SpecialShiftsForGuide">
+  <SelectParameters>
+   <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
+ </SelectParameters>
+</asp:ObjectDataSource>
 <asp:MultiView ID="MultiView1" runat="server">
     <asp:View runat="server" ID="View1">
 
@@ -112,7 +117,7 @@
        </div>
        </div>
     <div class="row">
-        <div class="col-xs-3 col-xs-offset-2">
+        <div class="col-xs-3 col-xs-offset-1">
          <asp:LinkButton ID="UpdateButton" runat="server"   CausesValidation="True"  CssClass="btn btn-success"
              CommandName="Update" Text="Update"  />
             </div>
@@ -132,6 +137,9 @@
         </div>
  <div class="row" style="padding-top:20px">
 <asp:Button ID="Button2" runat="server" Text="Review your substitute commitments" CssClass="btn btn-info" OnClick="ToView4" BackColor="#6e8aa0"/>
+        </div>
+<div class="row" style="padding-top:20px">
+<asp:Button ID="Button3" runat="server" Text="Select Special Shifts" CssClass="btn btn-info" OnClick="ToView5" BackColor="#9e8aa0"/>
         </div>
  </div>
     </div>
@@ -203,15 +211,9 @@ you plan to drop in for this shift, then click "Submit". </div>
              <Columns>
                  <asp:HyperLinkField DataNavigateUrlFields="SubDate" DataNavigateUrlFormatString="SubRequest.aspx?dt={0:d}" DataTextField="SubDate"
                       DataTextFormatString="{0:d}" />
-                  
                  <asp:BoundField DataField="ShiftName" HeaderText="Shift"  />
-                 
-                 
-                 <asp:BoundField DataField="Sub" HeaderText="Sub ID"   />
-                
-                 <asp:BoundField DataField="SubName" HeaderText="Sub Name"  />
-                
-                
+                 <asp:BoundField DataField="Sub" HeaderText="Sub ID"   />              
+                 <asp:BoundField DataField="SubName" HeaderText="Sub Name"  />               
              </Columns>
              <EmptyDataTemplate>No Future Requests</EmptyDataTemplate>
              </cc2:NQNGridView>
@@ -245,5 +247,33 @@ you plan to drop in for this shift, then click "Submit". </div>
              CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
 </div></div>
     </asp:View>
+    <asp:View runat="server" ID="View5">
+<div class="row"><div class="col-md-12">
+<h3>In the table below,  check all the boxes for special shifts on which 
+you can participate. </h3><hr/>
+  <div class="row" style="padding-bottom:10px"><div class="col-md-6 col-md-offset-2">
+         <asp:LinkButton ID="LinkButton4" runat="server" CssClass="btn btn-info"
+             CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
+  </div></div>
+<asp:Repeater ID="SpecialRepeater" runat="server" DataSourceID="SpecialsDataSource" >
+<HeaderTemplate><table cellpadding="5" border="1">
+    <tr><th>Date</th><th>Start Time</th><th>Shift</th><th>Check to Participate</th></tr></HeaderTemplate>
+<ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#efefef":"background-color:#ffffff" %>'>
+     <td><asp:Label runat="server" Text='<%#Eval("ShiftDate","{0:d}") %>'></asp:Label></td>
+    <td><asp:Label runat="server" Text='<%#Eval("ShiftStart","{0:t}") %>'></asp:Label></td>
+    <td><asp:Label runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></td>
+    <td style="text-align:center"> 
+    <asp:CheckBox ID="ShiftCheckBox" runat="server" Checked='<%#Eval("Selected") %>' OnCheckedChanged="SpecialShiftChanged"  AutoPostBack="true" />
+    <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />
+   </td></tr>
+</ItemTemplate>
+<FooterTemplate></table></FooterTemplate>
+</asp:Repeater>
+    </div></div>
+<div class="row" style="padding-top:10px"><div class="col-md-6 col-md-offset-2">
+         <asp:LinkButton ID="LinkButton5" runat="server" CssClass="btn btn-info"
+             CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
+  </div></div>
+        </asp:View>
          </asp:MultiView>
 </asp:Content>
