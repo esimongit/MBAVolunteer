@@ -197,8 +197,8 @@ namespace  NQN.DB
             obj.Last = GetNullableString(reader, "LastName", String.Empty);
             obj.UserName = GetNullableString(reader, "UserName", String.Empty);
             obj.Email = GetNullableString(reader, "Email", String.Empty);
-            obj.CreateDate = GetNullableDateTime(reader, "CreateDate", DateTime.MinValue);
-            obj.LastLoginDate = GetNullableDateTime(reader, "LastLoginDate", DateTime.MinValue);
+            obj.CreateDate = GetNullableDateTime(reader, "CreateDate", obj.SQLMinDate);
+            obj.LastLoginDate = GetNullableDateTime(reader, "LastLoginDate", obj.SQLMinDate);
             obj.IsLockedOut = GetNullableBoolean(reader, "IsLockedOut", false);
 			 
             return obj;

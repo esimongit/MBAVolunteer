@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using NQN.Bus;
+using System.Configuration;
 
 namespace BatchOperation
 {
@@ -10,7 +11,9 @@ namespace BatchOperation
         static void Main(string[] args)
         {
             SubstitutesBusiness sb = new SubstitutesBusiness();
-            sb.SendReminders();
+            //sb.SendReminders();
+            
+            sb.SubNotices(ConfigurationManager.AppSettings["VolunteerUrl"].ToString());
         }
     }
 }

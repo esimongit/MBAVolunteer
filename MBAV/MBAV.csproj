@@ -87,6 +87,7 @@
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery.responsivetable.js" />
     <Content Include="Scripts\jquery.responsivetable.min.js" />
+    <Content Include="SpecialShifts.aspx" />
     <Content Include="SumReport.aspx" />
     <Content Include="DateSelector.ascx" />
     <Content Include="Images\calendar.gif" />
@@ -141,6 +142,13 @@
     </Compile>
     <Compile Include="DropIns.aspx.designer.cs">
       <DependentUpon>DropIns.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="SpecialShifts.aspx.cs">
+      <DependentUpon>SpecialShifts.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="SpecialShifts.aspx.designer.cs">
+      <DependentUpon>SpecialShifts.aspx</DependentUpon>
     </Compile>
     <Compile Include="SumReport.aspx.cs">
       <DependentUpon>SumReport.aspx</DependentUpon>

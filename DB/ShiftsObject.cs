@@ -66,7 +66,19 @@ namespace NQN.DB
 				 _bweek = value;
 			}
 		}
-		private int _sequence = 0;
+        private bool _recurring = false;
+        public bool Recurring
+        {
+            get
+            {
+                return _recurring;
+            }
+            set
+            {
+                _recurring = value;
+            }
+        }
+        private int _sequence = 0;
 		public int Sequence 
 		{
 			get
@@ -102,17 +114,25 @@ namespace NQN.DB
                 _shifttimeid = value;
             }
         }
-#endregion
+        private DateTime _shiftdate = DateTime.MinValue;
+        public DateTime ShiftDate
+        {
+            get
+            {
+                return _shiftdate;
+            }
+            set
+            {
+                _shiftdate = value;
+            }
+        }
+        #endregion
         public bool Selected
         {
             get;
             set;
         }
-        public DateTime ShiftDate
-        {
-            get;
-            set;
-        }
+       
         public string Captains
         {
             get;
@@ -142,5 +162,42 @@ namespace NQN.DB
         {
             return String.Format("/ShiftDetail.aspx?ShiftID={0}&ShiftDate={1:d}", _shiftid, dt);
         }
-	}
+         
+    }
+    public class ShiftSummaryObject : RootObject
+    {
+        public int ShiftID
+        { get; set; }
+         public string ShiftName
+        { get; set; }
+        public string ShortName
+        { get; set; }
+        public bool Recurring
+        { get; set; }
+	    public DateTime ShiftDate
+        { get; set; }
+        public DateTime ShiftStart
+        { get; set; }
+        public DateTime ShiftEnd
+        { get; set; }
+        public int Sequence
+        { get; set; }
+        public string Captains
+        { get; set; }
+        public string Info
+        { get; set; }
+        public int Total
+        { get
+            { return BaseCnt + Substitutes + Dropins; }
+        }
+        public int BaseCnt
+        {
+            get;set;
+        }
+        public int Substitutes
+        { get; set; }
+        public int Dropins
+        { get; set; }
+      
+    }
 }

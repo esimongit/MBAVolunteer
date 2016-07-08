@@ -103,7 +103,23 @@ namespace NQN.DB
         {
             get;set;
         }
-		public GuideDropinsObject()
+        public string Phone
+        {
+            get; set;
+        }
+        public bool MaskContactInfo
+        {
+            get;
+            set;
+        }
+        public bool ShowContactInfo
+        {
+            get
+            {
+                return !MaskContactInfo;
+            }
+        }
+        public GuideDropinsObject()
 		{
 			_tablename = "GuideDropins";
 			_primarykey = "GuideDropinID";

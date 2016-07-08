@@ -92,12 +92,12 @@ namespace  NQN.DB
             }
             return obj;
         }
+
         public ObjectList<GuideDropinsObject> FetchAllForGuide(int GuideID, int ShiftID )
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + " WHERE  DropinDate >= getdate() and d.GuideID = @GuideID ";
-            if (ShiftID > 0)
-                qry += " and d.ShiftID = @ShiftID ";
+            string qry = ReadAllCommand() + @" WHERE  DropinDate >= getdate() and d.GuideID = @GuideID 
+                        and d.ShiftID = @ShiftID ";
             qry += " order by DropinDate, s.Sequence  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -117,6 +117,29 @@ namespace  NQN.DB
             return Results;
         }
 
+        public ObjectList<GuideDropinsObject> FetchAllForGuide(int GuideID,  bool SpecialsOnly)
+        {
+            ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
+            string qry = ReadAllCommand() + " WHERE  DropinDate >= getdate() and d.GuideID = @GuideID ";
+            if (SpecialsOnly)
+                qry += " and s.recurring = 0 ";
+            qry += " order by DropinDate, s.Sequence  ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideDropinsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         public ObjectList<GuideDropinsObject> FetchForMonth(int Year, int Month, int GuideID)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
@@ -159,6 +182,14 @@ namespace  NQN.DB
 			}
 		}
 
+        public bool AddSpecial(int GuideID, int ShiftID)
+        {
+            ShiftsDM dm = new ShiftsDM();
+            ShiftsObject obj = dm.FetchShift(ShiftID);
+            Save(GuideID, ShiftID, obj.ShiftDate);
+            return true;
+        }
+
         public void Save(int GuideID, int ShiftID, DateTime dt)
         {
             GuideDropinsObject obj = new GuideDropinsObject();
@@ -167,6 +198,7 @@ namespace  NQN.DB
             obj.DropinDate = dt;
             Save(obj);
         }
+
 		public void Save(GuideDropinsObject obj)
 		{
 			 string qry = @"INSERT INTO GuideDropins (
@@ -199,6 +231,19 @@ namespace  NQN.DB
 				 myc.ExecuteNonQuery();
 			}
 		}
+
+        public void DeleteSpecial(int GuideID, int ShiftID)
+        {
+            string qry = @"DELETE FROM GuideDropins WHERE GuideID = @GuideID and ShiftID = @ShiftID ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                myc.ExecuteNonQuery();
+            }
+        }
+   
         public void DeleteForGuideAndDate(int GuideID, DateTime dt)
         {
             string qry = @"DELETE FROM GuideDropins WHERE GuideID = @GuideID and DropinDate = @dt ";
@@ -210,6 +255,7 @@ namespace  NQN.DB
                 myc.ExecuteNonQuery();
             }
         }
+ 
 		protected override GuideDropinsObject LoadFrom(SqlDataReader reader)
 		{
 			if (reader == null) return null;
@@ -226,6 +272,8 @@ namespace  NQN.DB
             obj.Sequence = GetNullableInt32(reader, "Sequence", 0);
             obj.ShiftName = GetNullableString(reader, "ShiftName", String.Empty);
             obj.Email = GetNullableString(reader, "Email", String.Empty);
+            obj.Phone = GetNullableString(reader, "Phone", String.Empty);
+            obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             return obj;
 		}
 
@@ -237,11 +285,13 @@ namespace  NQN.DB
 				,d.[GuideID]
 				,[DropinDate]
 				,d.[ShiftID]
-				, g.FirstName  
+				,g.FirstName  
 				,g.LastName
                 ,g.Email
+                ,g.Phone
 				,g.VolID
 				,Role= r.RoleName
+                ,r.MaskContactInfo
                 ,s.Sequence
                 ,s.ShiftName
 				FROM GuideDropins d join Guides g on d.GuideID= g.GuideID

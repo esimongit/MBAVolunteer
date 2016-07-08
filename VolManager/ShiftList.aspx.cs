@@ -21,6 +21,42 @@ namespace VolManager
         {
             MultiView1.SetActiveView(View1);
         }
+        protected void ToView4(object sender, EventArgs e)
+        {
+            MultiView1.SetActiveView(View4);
+            FormView2.DataSourceID = null;
+            FormView2.DataSourceID = "ObjectDataSource2";
+        }
+        protected void RecurringChanged(object sender, EventArgs e)
+        {
+            Panel RecurringPanel = (Panel)FormView2.FindControl("RecurringPanel");
+            Panel SpecialPanel = (Panel)FormView2.FindControl("SpecialPanel");
+            CheckBox RecurringCheckBox = (CheckBox)sender;
+            if (RecurringCheckBox.Checked)
+            {
+                RecurringPanel.Visible = true;
+                SpecialPanel.Visible = false;
+            }
+            else
+            {
+                RecurringPanel.Visible = false;
+                SpecialPanel.Visible = true;
+            }
+                
+        }
+        protected void OnInserted(object sender, ObjectDataSourceStatusEventArgs e)
+        {
+            if (e.Exception != null)
+            {
+                Exception ex = e.Exception.GetBaseException();
+                ErrorMessage.Set(ex.Message);
+                e.ExceptionHandled = true;
+                return;
+            }
+            GridView1.DataBind();
+            InfoMessage.Set("New Shift Added");
+            MultiView1.SetActiveView(View1);
+        }
         protected void GuideSelected(object sender, EventArgs e)
         {
             Session["GuideID"] = GridView2.SelectedValue;

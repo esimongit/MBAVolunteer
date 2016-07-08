@@ -71,9 +71,9 @@ namespace VolManager
         {
             if (Session["VolCalDate"] == null)
                 return;
-            ShiftsDM dm = new ShiftsDM();
+            ShiftsBusiness sb = new ShiftsBusiness();
             DateTime curdate = DateTime.Parse(Session["VolCalDate"].ToString());
-            CurrentShifts = dm.ShiftsForMonth(curdate.Year, curdate.Month);
+            CurrentShifts = sb.SelectShiftsForMonth(curdate.Year, curdate.Month);
              
         }
         protected void MonthChanged(Object sender, MonthChangedEventArgs e)

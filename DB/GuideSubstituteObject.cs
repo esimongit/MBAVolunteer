@@ -192,7 +192,19 @@ namespace NQN.DB
             get;
             set;
         }
-		public GuideSubstituteObject()
+        public bool MaskContactInfo
+        {
+            get;
+            set;
+        }
+        public bool ShowContactInfo
+        {
+            get
+            {
+                return !MaskContactInfo;
+            }
+        }
+        public GuideSubstituteObject()
 		{
 			_tablename = "GuideSubstitute";
 			_primarykey = "GuideSubstituteID";

@@ -30,6 +30,24 @@ namespace  NQN.DB
             return Results;
         }
 
+        public List<int> GuidesWithOffers()
+        {
+            List<int> Results = new List<int>();
+            string qry = @"SELECT distinct GuideID from SubOffers";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Results.Add(GetNullableInt32(reader, "GuideID", 0));
+                    }  
+                }
+            }
+            return Results;
+        }
+   
 		public void Save(SubOffersObject obj)
 		{
 			 string qry = @"INSERT INTO SubOffers (

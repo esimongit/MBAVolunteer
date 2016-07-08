@@ -173,8 +173,34 @@ namespace  NQN.DB
              }
             return Results;
         }
-       
 
+        // Fetch all open requests for shifts in which our Sub has expressed an interest (SubOffers)
+        // but this Sub has not yet offered to sub for anybody on that Shift and date
+        public ObjectList<GuideSubstituteObject> FetchRequests(int SubstituteID)
+        {
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            string qry = ReadAllCommand() + @" where SubDate > getdate() and SubstituteID is null 
+				and g.ShiftID in (select ShiftID from SubOffers o where o.GuideID = @GuideID)
+				and not Exists (select 1 from GuideSubstitute s2 join Guides g3 on s2.GuideID = g3.GuideID
+					 where s2.SubstituteID = @GuideID and s2.SubDate = s.SubDate and g3.ShiftID = g.ShiftID)
+                and not Exists (select 1 from GuideDropins where GuideID = @GuideID and DropinDate = s.SubDate and ShiftID = g.ShiftID)
+				order by SubDate, Sequence, g.FirstName";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", SubstituteID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideSubstituteObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         public ObjectList<GuideSubstituteObject> SubReport()
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
@@ -321,6 +347,7 @@ namespace  NQN.DB
              obj.SubRole = GetNullableString(reader, "SubRole", String.Empty);
             obj.NoSub = (obj.SubstituteID == 0);
             obj.HasSub = (obj.SubstituteID > 0);
+            obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
 			return obj;
 		}
 
@@ -342,6 +369,7 @@ namespace  NQN.DB
                 ,g.Phone
 				,g.VolID
 				,Role = r.RoleName
+                ,MaskContactinfo = r.MaskContactInfo
 				,Sub = g2.VolID
 				,SubFirst =  g2.FirstName 
 				,SubLast = g2.LastName

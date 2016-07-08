@@ -28,6 +28,28 @@ namespace NQN.Bus
             }
             return dList;
         }
+
+        public ObjectList<GuideSubstituteObject> SelectForGuide(int GuideID )
+        {
+            GuideSubstituteDM dm = new GuideSubstituteDM();
+            ObjectList<GuideSubstituteObject> dList = dm.FetchAllForGuide(GuideID );
+            GuideDropinsDM ddm = new GuideDropinsDM();
+            foreach (GuideDropinsObject obj in ddm.FetchAllForGuide(GuideID, false))
+            {
+                GuideSubstituteObject newsubs = new GuideSubstituteObject();
+                newsubs.ShiftID = obj.ShiftID;
+                newsubs.Sequence = obj.Sequence;
+                newsubs.Sub = obj.VolID;
+                newsubs.SubDate = obj.DropinDate;
+                newsubs.FirstName = "Drop-in";
+                newsubs.SubFirst = obj.FirstName;
+                newsubs.SubLast = obj.LastName;
+                newsubs.Role = obj.Role;
+                dList.Add(newsubs);
+            }
+            dList.Sort(SubSort);
+            return dList;
+        }
         public ObjectList<GuideSubstituteObject> SelectForDate( DateTime dt)
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
@@ -112,7 +134,10 @@ namespace NQN.Bus
             foreach (GuideDropinsObject drop in pList)
             {
                 GuidesObject obj = new GuidesObject();
-                obj.GuideName = drop.FirstName + " " + drop.LastName;
+                obj.FirstName = drop.FirstName;
+                obj.LastName = drop.LastName;
+                obj.Phone = drop.Phone;
+                obj.Email = drop.Email;
                 obj.VolID = drop.VolID;
                 obj.Sequence = drop.Sequence;
                 obj.GuideID = drop.GuideID;
@@ -234,6 +259,14 @@ namespace NQN.Bus
                 sdm.DeleteAllForGuide(GuideID);
                 odm.DeleteAllForGuide(GuideID);
             }
+        }
+        protected int SubSort(GuideSubstituteObject x, GuideSubstituteObject y)
+        {
+            int ret = 0;
+            ret = x.SubDate.CompareTo(y.SubDate);
+            if (ret == 0)
+                ret = x.Sequence.CompareTo(y.Sequence);
+            return ret;
         }
     }
 }

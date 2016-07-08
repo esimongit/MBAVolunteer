@@ -31,6 +31,10 @@ namespace MBAV
         {
             MultiView1.SetActiveView(View3);
         }
+        protected void ToView5(object sender, EventArgs e)
+        {
+            MultiView1.SetActiveView(View5);
+        }
         protected void ToView4(object sender, EventArgs e)
         {
             MultiView1.SetActiveView(View4);
@@ -62,6 +66,24 @@ namespace MBAV
             else
             {
                 dm.Delete(GuideID, ShiftID);
+                cb.Checked = false;
+            }
+            cb.Focus();
+        }
+        protected void SpecialShiftChanged(object sender, EventArgs e)
+        {
+            GuideDropinsDM dm = new GuideDropinsDM();
+            int GuideID = Convert.ToInt32(Session["GuideID"]);
+            if (GuideID == 0)
+                return;
+            CheckBox cb = (CheckBox)sender;
+            HiddenField hf = (HiddenField)(cb.Parent.FindControl("ShiftIDHidden"));
+            int ShiftID = Convert.ToInt32(hf.Value);
+            if (cb.Checked)
+                cb.Checked = dm.AddSpecial(GuideID, ShiftID);
+            else
+            {
+                dm.DeleteSpecial(GuideID, ShiftID);
                 cb.Checked = false;
             }
             cb.Focus();

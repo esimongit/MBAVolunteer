@@ -16,7 +16,7 @@ namespace NQN.Bus
             ObjectList<GuideSubstituteObject> subs = sdm.FetchAllForSub(GuideID);
 
 
-            ObjectList<GuideDropinsObject> drops = ddm.FetchAllForGuide(GuideID, 0);
+            ObjectList<GuideDropinsObject> drops = ddm.FetchAllForGuide(GuideID, false);
             foreach (GuideDropinsObject drop in drops)
             {
                 GuideSubstituteObject obj = new GuideSubstituteObject();
@@ -30,7 +30,7 @@ namespace NQN.Bus
                 obj.GuideSubstituteID = -drop.GuideDropinID;
                 subs.Add(obj);
             }
-
+            subs.Sort(SubSort);
             return subs;
         }
 
@@ -233,6 +233,46 @@ namespace NQN.Bus
             return Results;
 
         }
+
+        //Nightly notifications of who needs a sub
+        public void SubNotices(string VolunteerUrl)
+        {
+            GuidesDM gdm = new GuidesDM();
+            SubOffersDM dm = new SubOffersDM();
+            GuideSubstituteDM sdm = new GuideSubstituteDM();
+            List<int> Guides = dm.GuidesWithOffers();
+            ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
+            EmailBusiness eb = new EmailBusiness();
+            foreach (int GuideID in Guides)
+            {
+                dList = sdm.FetchRequests(GuideID);
+                if (dList.Count == 0)
+                    continue;
+                GuidesObject guide = gdm.FetchGuide(GuideID);
+                string msg = String.Format("Dear {0}<br/><br/> <p>Here is a list of Guides who have outstanding requests for substitutes on shifts in which you have expressed an interest</p><ul>",
+                    guide.FirstName);
+                DateTime odate = DateTime.Today;
+                foreach (GuideSubstituteObject obj in dList)
+                {
+                    string flag = (obj.DateEntered > DateTime.Today.AddDays(-1)) ? " *NEW*" : String.Empty;
+                    if (odate != obj.SubDate)
+                    {
+                        odate = obj.SubDate;
+                        msg += "<br />";
+                    }
+                        string link = String.Format("{0}/SubRequest.aspx?dt={1}",VolunteerUrl, obj.SubDate);
+                    msg += String.Format("<li><a href='{0}'>{1}: {2} needs a substitute for shift {3} {4}.</a></li>",
+                        link, obj.SubDate.ToLongDateString(),
+                        obj.GuideName, obj.Sequence, flag);
+                   
+                }
+                msg += "</ul>. <p>Click on any record in the list to open the Substitute Website for the date listed.</p>";
+                eb.SendMail("substitute@mbayaq.org", "ed_simon@yahoo.com", "Pending Substitute Requests", msg, true);
+                break;
+            }
+        }
+
+ 
         public void SendReminders()
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
@@ -312,7 +352,16 @@ namespace NQN.Bus
                 }
             }
         }
-       
- 
+
+        protected int SubSort(GuideSubstituteObject x, GuideSubstituteObject y)
+        {
+            int ret = 0;
+            ret = x.SubDate.CompareTo(y.SubDate);
+            if (ret == 0)
+                ret = x.Sequence.CompareTo(y.Sequence);
+            return ret;
+        }
+
+
     }
 }

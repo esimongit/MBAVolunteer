@@ -35,7 +35,7 @@ namespace CodeGenerator
         {
             ObjectClassTextBox.Text = DropDownList1.SelectedValue + "Object";
             DMClassTextBox.Text = DropDownList1.SelectedValue + "DM";
-            FolderTextBox.Text = "E:\\MBAVolunteer\\DB";
+            FolderTextBox.Text = "E:\\MBANewVol\\MBAVolunteer\\DB";
         }
 
       

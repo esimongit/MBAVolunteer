@@ -96,6 +96,7 @@
     <Content Include="ManageVolAccess.aspx" />
     <Content Include="Recovery\Default.aspx" />
     <Content Include="Reports\CaptainsReport.aspx" />
+    <Content Include="Reports\ShiftCountsReport.aspx" />
     <Content Include="Reports\SumReport.aspx" />
     <Content Include="GuideRoles.aspx" />
     <None Include="Scripts\jquery-1.9.1-vsdoc.js" />
@@ -110,6 +111,7 @@
     <Content Include="Global.asax" />
     <Content Include="ShiftCalendar.aspx" />
     <Content Include="TextEditor.aspx" />
+    <Content Include="UserControls\DateRangeSelector.ascx" />
     <Content Include="UserControls\DateSelector.ascx" />
     <Content Include="UserControls\GuideEdit.ascx" />
     <Content Include="UserControls\MessageEdit.ascx" />
@@ -207,6 +209,13 @@
     <Compile Include="Reports\CaptainsReport.aspx.designer.cs">
       <DependentUpon>CaptainsReport.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Reports\ShiftCountsReport.aspx.cs">
+      <DependentUpon>ShiftCountsReport.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\ShiftCountsReport.aspx.designer.cs">
+      <DependentUpon>ShiftCountsReport.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Reports\SumReport.aspx.cs">
       <DependentUpon>SumReport.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -276,6 +285,13 @@
     </Compile>
     <Compile Include="TextEditor.aspx.designer.cs">
       <DependentUpon>TextEditor.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DateRangeSelector.ascx.cs">
+      <DependentUpon>DateRangeSelector.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="UserControls\DateRangeSelector.ascx.designer.cs">
+      <DependentUpon>DateRangeSelector.ascx</DependentUpon>
     </Compile>
     <Compile Include="UserControls\DateSelector.ascx.cs">
       <DependentUpon>DateSelector.ascx</DependentUpon>
@@ -359,6 +375,9 @@
     <None Include="Properties\PublishProfiles\MBA.pubxml" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <Content Include="Scripts\jquery-1.9.1.min.map" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\ShiftCountsReport.rdlc" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

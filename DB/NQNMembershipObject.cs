@@ -195,7 +195,7 @@ namespace NQN.DB
             get { return _nameid; }
             set { _nameid = value; }
         }
-        private DateTime _createdate = DateTime.MinValue;
+        private DateTime _createdate =  DateTime.MinValue;
         public DateTime CreateDate
         {
             get
