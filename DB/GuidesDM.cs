@@ -153,7 +153,7 @@ namespace  NQN.DB
                 qry += " and VolID = @Pattern or (FirstName like @Wildcard or LastName like @Wildcard) ";
             }
             if (ShiftID > 0)
-                qry += " and g.ShiftID = @ShiftID ";
+                qry += " and gs.ShiftID = @ShiftID ";
             qry += " order by FirstName, LastName ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -266,8 +266,7 @@ namespace  NQN.DB
 				FirstName=@FirstName
 				,LastName=@LastName
 				,Phone=@Phone
-				,Email=@Email
-				,ShiftID=@ShiftID
+				,Email=@Email 
 				,Inactive=@Inactive
 				,PhoneDigits=@PhoneDigits 
 				,Notes=@Notes
@@ -286,8 +285,7 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("FirstName",obj.FirstName));
 				myc.Parameters.Add(new SqlParameter("LastName",obj.LastName));
 				myc.Parameters.Add(new SqlParameter("Phone",obj.Phone));
-				myc.Parameters.Add(new SqlParameter("Email",obj.Email));
-				myc.Parameters.Add(new SqlParameter("ShiftID",obj.ShiftID));
+				myc.Parameters.Add(new SqlParameter("Email",obj.Email)); 
 				myc.Parameters.Add(new SqlParameter("Inactive",obj.Inactive));
 				myc.Parameters.Add(new SqlParameter("PhoneDigits",GuidesObject.DigitsOnly(obj.Phone))); 
 				myc.Parameters.Add(new SqlParameter("Notes",obj.Notes));
@@ -310,8 +308,7 @@ namespace  NQN.DB
 				[FirstName]
 				,[LastName]
 				,[Phone]
-				,[Email]
-				,[ShiftID]
+				,[Email] 
 				,[Inactive]
 				,[PhoneDigits]
 				,[Notes]
@@ -327,8 +324,7 @@ namespace  NQN.DB
 				@FirstName
 				,@LastName
 				,@Phone
-				,@Email
-				,@ShiftID
+				,@Email 
 				,@Inactive
 				,@PhoneDigits 
 				,@Notes
@@ -346,8 +342,7 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("FirstName",obj.FirstName));
 				myc.Parameters.Add(new SqlParameter("LastName",obj.LastName));
 				myc.Parameters.Add(new SqlParameter("Phone",obj.Phone));
-				myc.Parameters.Add(new SqlParameter("Email",obj.Email));
-				myc.Parameters.Add(new SqlParameter("ShiftID",obj.ShiftID));
+				myc.Parameters.Add(new SqlParameter("Email",obj.Email)); 
 				myc.Parameters.Add(new SqlParameter("Inactive",obj.Inactive));
 				myc.Parameters.Add(new SqlParameter("PhoneDigits",GuidesObject.DigitsOnly(obj.Phone))); 
 				myc.Parameters.Add(new SqlParameter("Notes",obj.Notes));
@@ -359,6 +354,9 @@ namespace  NQN.DB
                 myc.Parameters.Add(new SqlParameter("CalendarType", obj.CalendarType));
 				myc.ExecuteNonQuery();
 			}
+            int GuideID = GetLast();
+            if (obj.ShiftID > 0)
+                SaveGuideShift(GuideID, obj.ShiftID, true);
 		}
 
         public void Delete(GuidesObject obj)
@@ -404,6 +402,19 @@ namespace  NQN.DB
 			}
 		}
 
+        protected void SaveGuideShift(int GuideID, int ShiftID, bool IsPrimary)
+        {
+            string qry = @"insert into GuideShift (GuideID, ShiftID, IsPrimary)
+                select @GuideID, @ShiftID, @IsPrimary where not exists (select 1 from GuideShift where GuideID = @GuideID and ShiftID = @ShiftID)";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                myc.Parameters.Add(new SqlParameter("IsPrimary", IsPrimary));
+                myc.ExecuteNonQuery();
+            }
+        }
 		protected override GuidesObject LoadFrom(SqlDataReader reader)
 		{
 			if (reader == null) return null;
@@ -443,12 +454,12 @@ namespace  NQN.DB
 		{
 			return @"
 			SELECT
-				[GuideID]
+				g.[GuideID]
 				,[FirstName]
 				,[LastName]
 				,[Phone]
 				,[Email]
-				,g.[ShiftID]
+				,gs.[ShiftID]
 				,[Inactive]
 				,[PhoneDigits]
 				,[SearchKey]
@@ -469,7 +480,7 @@ namespace  NQN.DB
                 ,s.DOW
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
 				FROM Guides g join Roles r on g.RoleID = r.RoleID
-                join Shifts s on s.ShiftID = g.ShiftID 
+                join GuideShift gs on g.GuideID = gs.GuideID and gs.IsPrimary =1 join Shifts s on s.ShiftID = gs.ShiftID 
                 left join Roles r2 on g.AltRoleID = r2.RoleID ";
 		}
 		public int GetLast()

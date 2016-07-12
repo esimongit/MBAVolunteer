@@ -45,18 +45,30 @@ namespace NQN.DB
 			}
 		}
 		private int _substituteid = 0;
-		public int SubstituteID 
-		{
-			get
-			{
-				return _substituteid;
-			}
-			set
-			{
-				 _substituteid = value;
-			}
-		}
-		private DateTime _dateentered = new DateTime();
+		public int SubstituteID
+        {
+            get
+            {
+                return _substituteid;
+            }
+            set
+            {
+                _substituteid = value;
+            }
+        }
+        private int _shiftid = 0;
+        public int ShiftID
+        {
+            get
+            {
+                return _shiftid;
+            }
+            set
+            {
+                _shiftid = value;
+            }
+        }
+        private DateTime _dateentered = new DateTime();
 		public DateTime DateEntered 
 		{
 			get
@@ -104,11 +116,7 @@ namespace NQN.DB
         {
             get; set;
         }
-        public int ShiftID
-        {
-            get;
-            set;
-        }
+         
         public string SubFirst
         {
             get; set;

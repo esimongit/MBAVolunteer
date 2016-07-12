@@ -137,7 +137,7 @@ namespace  NQN.DB
                 ,HomeShift=s.ShortName
                 ,s.Sequence
                 ,r.MaskContactInfo
-				FROM SubOffers o join Guides g on o.GuideID = g.GuideID join SHifts s on g.ShiftID = s.ShiftID 
+				FROM SubOffers o join (Guides g join GuideShift gs on g.GuideID = gs.GuideID and gs.IsPrimary = 1) on o.GuideID = g.GuideID join Shifts s on gs.ShiftID = s.ShiftID 
                  join Roles r on r.RoleID = g.RoleID ";
 		}
 		public int GetLast()

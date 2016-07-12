@@ -34,7 +34,7 @@ namespace MBAV
             GuidesDM dm = new GuidesDM();
             GuideSubstituteDM sdm = new GuideSubstituteDM();
             GuideSubstituteObject sub = sdm.FetchForGuide(GuideID, DateTime.Parse(Request.QueryString["dt"]));
-            GuidesObject guide = dm.FetchRecord("GuideID", GuideID);
+            GuidesObject guide = dm.FetchRecord("g.GuideID", GuideID);
             DateTime dt = DateTime.Today;
             try
             {

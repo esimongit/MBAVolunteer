@@ -12,7 +12,7 @@ namespace  NQN.DB
         public ObjectList<GuideSubstituteObject> FetchForShift(int ShiftID, DateTime dt)
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
-            string qry = ReadAllCommand() + " WHERE g.ShiftID = @ShiftID and SubDate = @dt order by g.VolID";
+            string qry = ReadAllCommand() + " WHERE s.ShiftID = @ShiftID and SubDate = @dt order by g.VolID";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -94,7 +94,7 @@ namespace  NQN.DB
         public  GuideSubstituteObject FetchBySub(int SubstituteID, DateTime dt, int ShiftID)
         {
             GuideSubstituteObject obj = null;
-            string qry = ReadAllCommand() + " WHERE s.SubstituteID = @SubstituteID and SubDate = @dt   and g.ShiftID = @ShiftID ";
+            string qry = ReadAllCommand() + " WHERE s.SubstituteID = @SubstituteID and SubDate = @dt   and s.ShiftID = @ShiftID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -180,10 +180,10 @@ namespace  NQN.DB
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
             string qry = ReadAllCommand() + @" where SubDate > getdate() and SubstituteID is null 
-				and g.ShiftID in (select ShiftID from SubOffers o where o.GuideID = @GuideID)
-				and not Exists (select 1 from GuideSubstitute s2 join Guides g3 on s2.GuideID = g3.GuideID
-					 where s2.SubstituteID = @GuideID and s2.SubDate = s.SubDate and g3.ShiftID = g.ShiftID)
-                and not Exists (select 1 from GuideDropins where GuideID = @GuideID and DropinDate = s.SubDate and ShiftID = g.ShiftID)
+				and s.ShiftID in (select ShiftID from SubOffers o where o.GuideID = @GuideID)
+				and not Exists (select 1 from GuideSubstitute s2 join Guides g3 join (GuideShift gs on g3.GuideID = gs.GuideID) on s2.GuideID = g3.GuideID
+					 where s2.SubstituteID = @GuideID and s2.SubDate = s.SubDate and gs.ShiftID = s.ShiftID)
+                and not Exists (select 1 from GuideDropins where GuideID = @GuideID and DropinDate = s.SubDate and ShiftID = s.ShiftID)
 				order by SubDate, Sequence, g.FirstName";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -235,6 +235,7 @@ namespace  NQN.DB
 			 string qry = @"UPDATE  GuideSubstitute SET 
 				GuideID=@GuideID
 				,SubDate=@SubDate
+                ,ShiftID = @ShiftID
 				,SubstituteID=nullif(@SubstituteID,0)
 				,DateEntered=@DateEntered
 				 WHERE GuideSubstituteID = @GuideSubstituteID";
@@ -245,7 +246,8 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("GuideID",obj.GuideID));
 				myc.Parameters.Add(new SqlParameter("SubDate",obj.SubDate));
 				myc.Parameters.Add(new SqlParameter("SubstituteID",obj.SubstituteID));
-				myc.Parameters.Add(new SqlParameter("DateEntered",obj.DateEntered));
+                myc.Parameters.Add(new SqlParameter("ShiftID", obj.ShiftID));
+                myc.Parameters.Add(new SqlParameter("DateEntered",obj.DateEntered));
 				myc.ExecuteNonQuery();
 			}
 		}
@@ -257,12 +259,14 @@ namespace  NQN.DB
 			 string qry = @"INSERT INTO GuideSubstitute (
 				[GuideID]
 				,[SubDate]
+                ,[ShiftID]
 				,[SubstituteID]
 				,[DateEntered]
 				)
 			VALUES(
 				@GuideID
 				,@SubDate
+                ,@ShiftID
 				,nullif(@SubstituteID,0)
 				,@DateEntered
 				)";
@@ -271,7 +275,8 @@ namespace  NQN.DB
 				SqlCommand myc = new SqlCommand(qry, conn);
 				myc.Parameters.Add(new SqlParameter("GuideID",obj.GuideID));
 				myc.Parameters.Add(new SqlParameter("SubDate",obj.SubDate));
-				myc.Parameters.Add(new SqlParameter("SubstituteID",obj.SubstituteID));
+                myc.Parameters.Add(new SqlParameter("ShiftID", obj.ShiftID));
+                myc.Parameters.Add(new SqlParameter("SubstituteID",obj.SubstituteID));
 				myc.Parameters.Add(new SqlParameter("DateEntered",obj.DateEntered));
 				myc.ExecuteNonQuery();
 			}
@@ -360,7 +365,7 @@ namespace  NQN.DB
 				,[SubDate]
 				,[SubstituteID]
 				,[DateEntered]
-                ,g.ShiftID
+                ,s.ShiftID
 				,h.ShiftName
 				,h.Sequence
 				,FirstName =   g.FirstName  
@@ -377,7 +382,7 @@ namespace  NQN.DB
                 ,SubPhone = g2.Phone
                 ,SubRole = r2.RoleName
 				FROM GuideSubstitute s join Guides g on s.GuideID = g.GuideID
-				join Shifts h on h.ShiftID = g.ShiftID
+				join Shifts h on h.ShiftID = s.ShiftID
 				join Roles r on r.RoleID = g.RoleID
 				left join (Guides g2 join Roles r2 on g2.RoleID = r2.RoleID) on g2.GuideID = s.SubstituteID ";
 		}

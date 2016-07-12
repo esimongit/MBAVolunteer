@@ -88,7 +88,7 @@ namespace  NQN.DB
             ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
 
 
-            string qry = ReadAllCommand() + @"(recurring = 1 and dow = datepart(dw, @dt)  and ((dbo.AB(@dt) = 'AWeek' and AWeek = 1)
+            string qry = ReadAllCommand() + @" where(recurring = 1 and dow = datepart(dw, @dt)  and ((dbo.AB(@dt) = 'AWeek' and AWeek = 1)
                     or (dbo.AB(@dt) = 'BWeek' and BWeek = 1)))
 		            or (recurring = 0 and ShiftDate = @dt)
                 order by Sequence ";

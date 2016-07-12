@@ -24,7 +24,7 @@ namespace MBAV
             if (GuideID == 0)
                 Response.Redirect("Login.aspx");
             GuidesDM dm = new GuidesDM();
-            GuidesObject guide = dm.FetchRecord("GuideID", GuideID);
+            GuidesObject guide = dm.FetchRecord("g.GuideID", GuideID);
             
             NameLabel.Text = guide.GuideName;
             ShiftsDM sdm = new ShiftsDM();

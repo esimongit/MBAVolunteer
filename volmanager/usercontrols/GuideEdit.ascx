@@ -53,7 +53,7 @@
                  <asp:TextBox ID="EmailTextBox" runat="server"  Width="250" Text='<%# Bind("Email") %>' />
                   </td></tr>
                  <tr><td class="formlabel">
-                 Shift:</td><td>
+                 Primary Shift:</td><td>
                  <cc2:ShiftSelector ID="ShiftSelector1" runat="server" SelectedValue='<%#Bind("ShiftID") %>'></cc2:ShiftSelector>
                  </td></tr>
                    <tr><td class="formlabel">

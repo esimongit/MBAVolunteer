@@ -58,6 +58,7 @@
             <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
             <asp:CheckBoxField DataField="Inactive" HeaderText="Inactive" 
                 SortExpression="Inactive" />
+            <asp:CheckBoxField DataField="HasLogin" HeaderText="Login" SortExpression="HasLogin" />
             <asp:BoundField DataField="Notes" HeaderText="Notes" SortExpression="Notes" />
            
            

@@ -120,10 +120,11 @@ namespace NQN.Bus
                     guide.Email = import.Email;
                     guide.Phone = import.Phone;
                     guide.RoleID = import.RoleID;
-                    guide.ShiftID = import.ShiftID;
+                    //guide.ShiftID = import.ShiftID;
                     guide.UpdateBy = UserSecurity.GetUserName();
                     guide.LastUpdate = DateTime.Now;
                     gdm.Save(guide);
+                    
                     dm.Delete(import.ImportID);
                 }
                 if (import.ImportStatus == (int)ImportStatusValues.MatchFound)
@@ -131,7 +132,10 @@ namespace NQN.Bus
                     cnt++;
                     guide = gdm.FetchGuide(import.ID);
                     guide.RoleID = import.RoleID;
-                    guide.ShiftID = import.ShiftID;
+                    if (guide.ShiftID != import.ShiftID)
+                    {
+                        // Do what here?
+                    }
                     guide.Phone = import.Phone;
                     guide.Email = import.Email;
                     guide.UpdateBy = UserSecurity.GetUserName();

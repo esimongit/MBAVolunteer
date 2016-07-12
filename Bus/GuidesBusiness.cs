@@ -243,7 +243,10 @@ namespace NQN.Bus
             guide.FirstName = FirstName;
             guide.Phone = Phone;
             guide.Email = Email;
-            guide.ShiftID = ShiftID;
+            if ( guide.ShiftID != ShiftID)
+            {
+                // Do what here?
+            }
             guide.RoleID = RoleID;
             guide.AltRoleID = AltRoleID;
             guide.Inactive = Inactive;
