@@ -249,11 +249,14 @@ namespace NQN.Bus
                 if (dList.Count == 0)
                     continue;
                 GuidesObject guide = gdm.FetchGuide(GuideID);
+                bool HasInfo = guide.RoleName == "Info Desk" || guide.AltRoleName == "InfoDesk";
                 string msg = String.Format("Dear {0}<br/><br/> <p>Here is a list of Guides who have outstanding requests for substitutes on shifts in which you have expressed an interest</p><ul>",
                     guide.FirstName);
                 DateTime odate = DateTime.Today;
                 foreach (GuideSubstituteObject obj in dList)
                 {
+                    if (obj.Role == "Info Desk" && !HasInfo)
+                        continue;
                     string flag = (obj.DateEntered > DateTime.Today.AddDays(-1)) ? " *NEW*" : String.Empty;
                     if (odate != obj.SubDate)
                     {
@@ -261,9 +264,9 @@ namespace NQN.Bus
                         msg += "<br />";
                     }
                         string link = String.Format("{0}/SubRequest.aspx?dt={1}",VolunteerUrl, obj.SubDate);
-                    msg += String.Format("<li><a href='{0}'>{1}: {2} needs a substitute for shift {3} {4}.</a></li>",
+                    msg += String.Format("<li><a href='{0}'>{1}: {2} (3) needs a substitute for shift {4} {5}.</a></li>",
                         link, obj.SubDate.ToLongDateString(),
-                        obj.GuideName, obj.Sequence, flag);
+                        obj.GuideName, obj.Role, obj.Sequence, flag);
                    
                 }
                 msg += "</ul>. <p>Click on any record in the list to open the Substitute Website for the date listed.</p>";

@@ -3,6 +3,7 @@
 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectForDate">
 <SelectParameters>  
   <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
+     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectRequestsForDate">
@@ -29,7 +30,13 @@
 </asp:ObjectDataSource>
 <asp:MultiView ID="MultiView1" runat="server">
 <asp:View ID="View1" runat="server">
-
+    <style type="text/css">
+ td, th
+ {
+     padding: 4px 4px 4px 4px
+     
+ }
+ </style>
 <div class="row">
  <div class="col-md-2"> 
  <img alt="Orca" src="/Images/orca.jpg"/></div>
@@ -118,13 +125,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
  </div>
  
  
- <style type="text/css">
- td, th
- {
-     padding-left:2px;
-     padding-right:2px;
- }
- </style>
+ 
  
 <div  style="margin-left:10px;margin-right:auto;  ">
 <div  class="row hidden-xs">
@@ -137,12 +138,19 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 <asp:BoundField DataField="VolID" HeaderText="ID" /> 
 <asp:HyperLinkField DataNavigateUrlFields="GuideID" ControlStyle-ForeColor="#330088"  ControlStyle-Font-Underline="false" ControlStyle-Font-Bold="true" DataNavigateUrlFormatString="ContactInfo.aspx?ID={0}"     Target="_blank" 
   HeaderText="Requestor (Click for Contact Info)" DataTextField="GuideName" /> 
-<asp:TemplateField HeaderText="I can sub">
+<asp:TemplateField HeaderText="I can sub"  ItemStyle-HorizontalAlign="Center">
  <ItemTemplate>
-  <asp:CheckBox ID="SubCheckBox" runat="server" Enabled = '<%#Eval("NoSub") %>' Visible='<%#Eval("NoSub") %>' Checked = '<%#Bind("SubOffer") %>' />
+ 
+  <asp:Label ID="SubLabel" runat="server" Visible ='<%#Eval("IsSub") %>' Text="Already subbing"></asp:Label>
+   <asp:CheckBox ID="SubCheckBox" runat="server"  Enabled = '<%#Eval("NoSub") %>' Visible='<%#Eval("NoSub") %>' Checked = '<%#Bind("SubOffer") %>' />
  </ItemTemplate>
 </asp:TemplateField>
-<asp:BoundField DataField="SubName" HeaderText="Substitute" />
+<asp:TemplateField HeaderText="Substitute">
+    <ItemTemplate>
+    <asp:Label ID="SubNameLabel" runat="server" Text='<%#Eval("SubName") %>' ForeColor='<%#Eval("SubColor") %>' ></asp:Label>
+    </ItemTemplate>
+</asp:TemplateField>
+ 
 <asp:BoundField DataField="Sub" HeaderText="Sub ID" />
 </Columns>
   

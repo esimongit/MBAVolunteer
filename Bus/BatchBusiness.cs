@@ -120,7 +120,7 @@ namespace NQN.Bus
                     guide.Email = import.Email;
                     guide.Phone = import.Phone;
                     guide.RoleID = import.RoleID;
-                    //guide.ShiftID = import.ShiftID;
+                    guide.ShiftID = import.ShiftID;
                     guide.UpdateBy = UserSecurity.GetUserName();
                     guide.LastUpdate = DateTime.Now;
                     gdm.Save(guide);

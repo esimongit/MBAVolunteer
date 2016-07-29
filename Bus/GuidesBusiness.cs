@@ -50,10 +50,26 @@ namespace NQN.Bus
             dList.Sort(SubSort);
             return dList;
         }
-        public ObjectList<GuideSubstituteObject> SelectForDate( DateTime dt)
+        public ObjectList<GuideSubstituteObject> SelectForDate( DateTime dt, int GuideID)
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
+            ObjectList<GuideSubstituteObject> eList = dm.FetchForSub(GuideID, dt);
             ObjectList<GuideSubstituteObject> dList = dm.FetchForDate( dt);
+            List<int> ShiftsOccupied = new List<int>();
+            foreach(GuideSubstituteObject obj in eList)
+            {
+                if (!ShiftsOccupied.Contains(obj.Sequence))
+                    ShiftsOccupied.Add(obj.Sequence);
+            }
+            for (int i = 0; i < dList.Count; i++)
+            {
+                if (ShiftsOccupied.Contains(dList[i].Sequence) && dList[i].SubstituteID != GuideID)
+                {
+                    dList[i].NoSub = false;
+                    dList[i].IsSub = true;
+                }
+                 
+            }
             GuideDropinsDM ddm = new GuideDropinsDM();
             foreach (GuideDropinsObject obj in ddm.FetchForDate( dt))
             {

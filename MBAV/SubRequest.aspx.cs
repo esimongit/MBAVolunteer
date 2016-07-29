@@ -299,8 +299,8 @@ namespace MBAV
                 {
                     msg = "The following message has been sent: <br /> " + msg;
                     sb.Notify(NotifyList, msg);
-                    if (NotifyInterestedSubs > 0)
-                        sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
+                    //if (NotifyInterestedSubs > 0)
+                    //    sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
                 }
                 MsgLabel.Text = msg;
 

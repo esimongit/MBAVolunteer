@@ -15,12 +15,12 @@ namespace VolManager
 
         protected void Form_PreRender(object sender, EventArgs e)
         {
-            Panel clonetable = (Panel)FormView1.FindControl("CloneTable");
-            if (clonetable == null)
-                return;
-            clonetable.Visible = CanClone;
-            NQN.Controls.NQNButton CloneButton = (NQN.Controls.NQNButton)FormView1.FindControl("CloneButton");
-            CloneButton.Visible = CanClone;
+            //Panel clonetable = (Panel)FormView1.FindControl("CloneTable");
+            //if (clonetable == null)
+            //    return;
+            //clonetable.Visible = CanClone;
+            //NQN.Controls.NQNButton CloneButton = (NQN.Controls.NQNButton)FormView1.FindControl("CloneButton");
+            //CloneButton.Visible = CanClone;
         }
 
         public void Setup()
@@ -32,27 +32,27 @@ namespace VolManager
             if (MessageChanged != null)
                 MessageChanged(this, e);
         }
-        public void CloneMessage(object sender, EventArgs e)
-        {
-            int MailTextID = 0;
-            try
-            {
-                MailTextID = Convert.ToInt32(Session["MailTextID"]);
-            }
-            catch { }
-            if (MailTextID == 0) return;
-            TextBox NewSymbolTextBox = (TextBox) FormView1.FindControl("NewSymbolTextBox");
-            string NewSymbol = NewSymbolTextBox.Text;
-            if (NewSymbol == String.Empty)
-            {
-                ErrorMessage.Set("Please Enter a new Symbol");
-                return;
-            }
-            MailTextDM dm = new MailTextDM();
-            dm.Clone(MailTextID, NewSymbol);
-            InfoMessage.Set("New Message Created");
-            OnMessageChanged(new EventArgs());
-        }
+        //public void CloneMessage(object sender, EventArgs e)
+        //{
+        //    int MailTextID = 0;
+        //    try
+        //    {
+        //        MailTextID = Convert.ToInt32(Session["MailTextID"]);
+        //    }
+        //    catch { }
+        //    if (MailTextID == 0) return;
+        //    TextBox NewSymbolTextBox = (TextBox) FormView1.FindControl("NewSymbolTextBox");
+        //    string NewSymbol = NewSymbolTextBox.Text;
+        //    if (NewSymbol == String.Empty)
+        //    {
+        //        ErrorMessage.Set("Please Enter a new Symbol");
+        //        return;
+        //    }
+        //    MailTextDM dm = new MailTextDM();
+        //    dm.Clone(MailTextID, NewSymbol);
+        //    InfoMessage.Set("New Message Created");
+        //    OnMessageChanged(new EventArgs());
+        //}
         protected void CatchDB(object sender, ObjectDataSourceStatusEventArgs e)
         {
             if (e.Exception != null)

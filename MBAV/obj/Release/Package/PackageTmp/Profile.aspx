@@ -116,6 +116,20 @@
          <asp:Label ID="Label1" runat="server"  Font-Bold="true" Text='<%# Eval("ShiftName") %>' />
        </div>
        </div>
+          <div class="row" style="padding-bottom:4px">
+        <div class="col-md-8">
+         Role: 
+       
+         <asp:Label ID="Label2" runat="server"  Font-Bold="true" Text='<%# Eval("RoleName") %>' />
+       </div>
+       </div>
+          <div class="row" style="padding-bottom:4px">
+        <div class="col-md-8">
+         Alternate Role: 
+       
+         <asp:Label ID="Label3" runat="server"  Font-Bold="true" Text='<%# Eval("AltRoleName") %>' />
+       </div>
+       </div>
     <div class="row">
         <div class="col-xs-3 col-xs-offset-1">
          <asp:LinkButton ID="UpdateButton" runat="server"   CausesValidation="True"  CssClass="btn btn-success"

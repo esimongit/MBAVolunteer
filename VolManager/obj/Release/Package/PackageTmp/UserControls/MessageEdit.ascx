@@ -51,10 +51,10 @@
           
             <cc2:NQNLinkButton ID="UpdateButton" runat="server" CausesValidation="True" 
                  CommandName="Update" Text="Save" /> &nbsp;&nbsp;
-            <cc2:NQNButton ID="CloneButton" Text="Clone" runat="server" OnClick="CloneMessage" />&nbsp;&nbsp;
+          <%--  <cc2:NQNButton ID="CloneButton" Text="Clone" runat="server" OnClick="CloneMessage" />&nbsp;&nbsp;
             <asp:Panel ID="CloneTable" runat="server">
            
             New Symbol<asp:TextBox ID="NewSymbolTextBox" runat="server" MaxLength="20"></asp:TextBox>
-            </asp:Panel>
+            </asp:Panel>--%>
         </EditItemTemplate>
     </asp:FormView>

@@ -1,6 +1,7 @@
 using System;
 using System.Data;
 using System.Collections.Generic;
+ 
 using NQN.Core;
 
 namespace NQN.DB 
@@ -168,6 +169,13 @@ namespace NQN.DB
                 return SubFirst + " " + SubLast;
             }
         }
+        public System.Drawing.Color SubColor
+        {
+            get
+            {
+                return System.Drawing.ColorTranslator.FromHtml((SubLast == null || SubLast == String.Empty) ? "#ff0000" : "#000000");
+            }
+        }
         public bool HasSub
         {
             get;
@@ -179,6 +187,11 @@ namespace NQN.DB
             get;
             set;
 
+        }
+        public bool IsSub
+        {
+            get;
+            set;
         }
         public bool SubOffer
         {
