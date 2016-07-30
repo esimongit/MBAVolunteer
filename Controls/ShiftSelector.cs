@@ -13,7 +13,7 @@ namespace NQN.Controls
             {
                 Items.Add(new ListItem("(Select a Shift)", "0"));
                 AppendDataBoundItems = true;
-                ObjectDataSource ods = new ObjectDataSource("NQN.DB.ShiftsDM", "FetchAll");
+                ObjectDataSource ods = new ObjectDataSource("NQN.DB.ShiftsDM", "FetchRecurring");
 
                 DataSource = ods;
                 DataTextField = "ShiftName";

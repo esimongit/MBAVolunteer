@@ -13,6 +13,15 @@ namespace MBAV {
     public partial class SubstituteCalendar {
         
         /// <summary>
+        /// ShiftsDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource ShiftsDataSource;
+        
+        /// <summary>
         /// NameLabel control.
         /// </summary>
         /// <remarks>
@@ -40,13 +49,13 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.HyperLink HyperLink4;
         
         /// <summary>
-        /// SubListLink control.
+        /// SubLinkRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink SubListLink;
+        protected global::System.Web.UI.WebControls.Repeater SubLinkRepeater;
         
         /// <summary>
         /// RosterButton control.

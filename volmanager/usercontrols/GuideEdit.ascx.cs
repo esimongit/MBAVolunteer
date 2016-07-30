@@ -33,6 +33,13 @@ namespace VolManager.UserControls
             mb.InsertVols(obj.VolID, obj.Email);
             FormView1.DataBind();
         }
+        protected void DeleteShift(object sender, GridViewDeleteEventArgs e)
+        {
+            GuidesDM dm = new GuidesDM();
+            dm.DeleteGuideShift(Convert.ToInt32(Session["GuideID"]), Convert.ToInt32(e.Keys[0]));
+            GridView ShiftView = (GridView)FormView1.FindControl("ShiftView");
+            ShiftView.DataBind();
+        }
         protected void CheckChanged(object sender, EventArgs e)
         {
             SubOffersDM dm = new SubOffersDM();

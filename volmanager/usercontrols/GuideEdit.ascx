@@ -23,10 +23,16 @@
             <asp:SessionParameter Name="GuideID" SessionField="GuideID" DefaultValue="0" Type="Int32" />
         </SelectParameters>
 </asp:ObjectDataSource>
+<style>
+    td, th
+    {
+        padding:3px 3px 3px 3px;
+    }
+</style>
 <div style="float:left; padding-left:10px">
       
          <asp:FormView ID="FormView1" runat="server" DataSourceID="ObjectDataSource2" DataKeyNames="GuideID"
-           DefaultMode="Edit" >
+           DefaultMode="Edit"   >
              <EditItemTemplate>
                   
                 <table><tr><td class="formlabel">
@@ -53,8 +59,20 @@
                  <asp:TextBox ID="EmailTextBox" runat="server"  Width="250" Text='<%# Bind("Email") %>' />
                   </td></tr>
                  <tr><td class="formlabel">
-                 Primary Shift:</td><td>
-                 <cc2:ShiftSelector ID="ShiftSelector1" runat="server" SelectedValue='<%#Bind("ShiftID") %>'></cc2:ShiftSelector>
+                 Shift:</td><td>
+                     <div style="float:left"><asp:Label ID="ShiftLabel" runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></div>
+                     <div style="float:left; padding-left:10px">
+                     
+                 Add Shift: <cc2:ShiftSelector ID="ShiftSelector1" runat="server" SelectedValue='<%#Bind("AddShift") %>'></cc2:ShiftSelector><br />
+                         <asp:GridView ID="ShiftView" runat="server" DataSource='<%#Eval("Shifts") %>' AutoGenerateColumns="false" DataKeyNames="ShiftID"
+                              OnRowDeleting="DeleteShift">
+                             <Columns>
+                                  <asp:CommandField ShowDeleteButton="True"  
+                                    ButtonType="Image"   DeleteImageUrl="~/Images/delete.gif"  />
+                                 <asp:BoundField DataField="ShiftName" />
+                             </Columns>
+                         </asp:GridView>
+                         </div>
                  </td></tr>
                    <tr><td class="formlabel">
                 
@@ -153,7 +171,7 @@
           
           <h2>Available to Sub on Shifts:</h2>
          <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ShiftsDataSource" >
-            <HeaderTemplate><table cellpadding="5"></HeaderTemplate>
+            <HeaderTemplate><table ></HeaderTemplate>
             <ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#efefef":"background-color:#ffffff" %>'> <td><asp:Label ID="Label1" runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></td><td>
             <asp:CheckBox ID="ShiftCheckBox" runat="server" Checked='<%#Eval("Selected") %>' OnCheckedChanged="CheckChanged"  AutoPostBack="true" />
             <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />

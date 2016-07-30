@@ -144,16 +144,16 @@
  </div>
  <div class="col-md-6">
     <div class="row" style="padding-top:50px">
-<asp:Button ID="View2Button" runat="server" Text="Select shifts for which you can substitute" CssClass="btn btn-info"  BackColor="#5bc0fe" OnClick="ToView2" />
+<asp:Button ID="View2Button" runat="server" Text="Select shifts for which you can substitute" CssClass="btn btn-info"  CausesValidation="false" BackColor="#5bc0fe" OnClick="ToView2" />
         </div>
  <div class="row" style="padding-top:20px">
-<asp:Button ID="Button1" runat="server" Text="Select dates you will drop in on a shift" CssClass="btn btn-info" OnClick="ToView3" BackColor="#6e8ade"/>
+<asp:Button ID="Button1" runat="server" Text="Select dates you will drop in on a shift" CssClass="btn btn-info" OnClick="ToView3"   CausesValidation="false"  BackColor="#6e8ade"/>
         </div>
  <div class="row" style="padding-top:20px">
-<asp:Button ID="Button2" runat="server" Text="Review your substitute commitments" CssClass="btn btn-info" OnClick="ToView4" BackColor="#6e8aa0"/>
+<asp:Button ID="Button2" runat="server" Text="Review your substitute commitments" CssClass="btn btn-info" OnClick="ToView4"    CausesValidation="false" BackColor="#6e8aa0"/>
         </div>
 <div class="row" style="padding-top:20px">
-<asp:Button ID="Button3" runat="server" Text="Select Special Shifts" CssClass="btn btn-info" OnClick="ToView5" BackColor="#9e8aa0"/>
+<asp:Button ID="Button3" runat="server" Text="Select Special Shifts" CssClass="btn btn-info" OnClick="ToView5"   CausesValidation="false" BackColor="#9e8aa0"/>
         </div>
  </div>
     </div>

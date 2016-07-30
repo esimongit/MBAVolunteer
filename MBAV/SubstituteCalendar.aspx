@@ -3,6 +3,11 @@
 
  
 <asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">
+    <asp:ObjectDataSource ID="ShiftsDataSource" TypeName="NQN.DB.ShiftsDM" SelectMethod="ShiftsForGuide" runat="server">
+        <SelectParameters>
+            <asp:SessionParameter Name="GuideID" SessionField="GuideID" Type="Int32" DefaultValue="0" />
+        </SelectParameters>
+    </asp:ObjectDataSource>
  <div class="row">
  <div class="col-md-2"> 
  <img alt="Orca" src="/Images/orca.jpg"/></div>
@@ -22,7 +27,7 @@
  </div>
 <div class="col-md-6"> 
     
-        <div class="row"    > 
+        <div class="row" > 
         <div class="col-md-5 col-xs-6" style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
           <asp:HyperLink ID="HyperLink3" runat="server" CssClass="btn btn-info" Text="My Volunteer Profile"  NavigateUrl="Profile.aspx"/>
         </div>
@@ -30,9 +35,17 @@
           <asp:HyperLink ID="HyperLink4" runat="server"  CssClass="btn btn-info" Text="Change Password"  NavigateUrl="ChangePassword.aspx"/>
         </div>
         </div>
-       <div class="row"  > 
+       <div class="row" > 
         <div class="col-md-5 col-xs-6" style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
-          <asp:HyperLink ID="SubListLink" runat="server"  CssClass="btn btn-info" Text="Substitutes for Mon2" Target="_blank" NavigateUrl="SubList.aspx?ShiftID=0"/>
+          <asp:Repeater ID="SubLinkRepeater" runat="server" DataSourceID="ShiftsDataSource">
+              <ItemTemplate>
+            <div class="row" style="padding-bottom:3px"  >
+                <div class="col-md-3"> 
+          <asp:HyperLink ID="SubListLink" runat="server"  CssClass="btn btn-info" Text='<%#Eval("ShortName", "Substitutes for {0}") %>' Target="_blank"  NavigateUrl='<%#Eval("ShiftID", "~/SubList.aspx?ShiftID={0}") %>'/>
+            </div></div>
+
+              </ItemTemplate>
+              </asp:Repeater>
            </div>
         <div class="col-md-5 col-xs-6"  style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
           

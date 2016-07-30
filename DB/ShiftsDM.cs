@@ -34,7 +34,10 @@ namespace  NQN.DB
                 return false;
             return ((shift.AWeek && ShiftsDM.IsAWeek(dt)) || !ShiftsDM.IsAWeek(dt) && shift.BWeek);
         }
-
+        public  ObjectList<ShiftsObject> FetchRecurring()
+        {
+            return Fetch(" where Recurring = 1 Order by DOW, Sequence ");
+        }
         public ObjectList<ShiftsObject> FetchByCategory(bool Recurring)
         {
             if (Recurring)
@@ -126,6 +129,31 @@ namespace  NQN.DB
             }
             return obj;
         }
+
+        public ObjectList<ShiftsObject> ShiftsForGuide(int GuideID)
+        {
+           
+            ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
+
+
+            string qry = ReadAllCommand() + @" WHERE 
+                  ShiftID in (select ShiftID from GuideShift where GuideID = @GuideID) order by DOW, Sequence ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID)); 
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    ShiftsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         public ObjectList<ShiftsObject> ShiftsForDateAndGuide(DateTime dt, int GuideID)
         {
             if (dt == DateTime.MinValue)
@@ -135,7 +163,7 @@ namespace  NQN.DB
 
             string qry = ReadAllCommand() + @" WHERE dow = datepart(dw, @dt)  and ((dbo.AB(@dt) = 'AWeek' and AWeek = 1)
                     or (dbo.AB(@dt) = 'BWeek' and BWeek = 1))
-                and ShiftID not in (select ShiftID from Guides where GuideID = @GuideID) order by Sequence ";
+                and ShiftID not in (select ShiftID from GuidesShift where GuideID = @GuideID) order by Sequence ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);

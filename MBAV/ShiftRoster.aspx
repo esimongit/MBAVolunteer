@@ -40,7 +40,7 @@
       
      <div class="row" style="padding-top:10px"> 
          <div class="col-xs-12">
-    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"  Width="100%"    
+    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"  Width="100%"  Height="1000px" 
         Font-Size="10pt" InteractiveDeviceInfos="(Collection)" 
         WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
         <LocalReport ReportPath="Roster.rdlc">

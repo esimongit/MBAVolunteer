@@ -250,7 +250,7 @@ namespace NQN.Bus
             return obj;
         } 
         public void UpdateGuide(int GuideID, string VolID, string FirstName, string LastName, string Phone, string Email, 
-            int ShiftID, int RoleID, int AltRoleID, bool Inactive, string Notes)
+            int AddShift, int RoleID, int AltRoleID, bool Inactive, string Notes)
         {
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(GuideID);
@@ -259,10 +259,8 @@ namespace NQN.Bus
             guide.FirstName = FirstName;
             guide.Phone = Phone;
             guide.Email = Email;
-            if ( guide.ShiftID != ShiftID)
-            {
-                // Do what here?
-            }
+            // If AddShift is set, Update will try to add that shift for this guide
+            guide.AddShift = AddShift;
             guide.RoleID = RoleID;
             guide.AltRoleID = AltRoleID;
             guide.Inactive = Inactive;

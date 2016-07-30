@@ -24,13 +24,11 @@ namespace MBAV
             if (GuideID == 0)
                 Response.Redirect("Login.aspx");
             GuidesDM dm = new GuidesDM();
-            GuidesObject guide = dm.FetchRecord("g.GuideID", GuideID);
+            GuidesObject guide = dm.FetchGuide( GuideID);
             
             NameLabel.Text = guide.GuideName;
-            ShiftsDM sdm = new ShiftsDM();
-            ShiftsObject shift = sdm.FetchRecord("ShiftID", guide.ShiftID);
-            SubListLink.Text = "Substitutes for " + shift.ShortName;
-            SubListLink.NavigateUrl = String.Format("SubList.aspx?ShiftID={0}", guide.ShiftID);
+            
+           
             if (!Page.IsPostBack)
             {
                 if (Session["VolCalDate"] != null)

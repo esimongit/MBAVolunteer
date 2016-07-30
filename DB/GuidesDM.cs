@@ -47,6 +47,7 @@ namespace  NQN.DB
         public GuidesObject FetchByEmail (string Email)
         {
             GuidesObject obj = null;
+            ShiftsDM dm = new ShiftsDM();
             string qry = ReadAllCommand() + " WHERE g.Email = @Email";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -57,11 +58,14 @@ namespace  NQN.DB
                     obj = LoadFrom(reader);
                 }
             }
+            obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
+            
             return obj;
         }
         public GuidesObject FetchByNameAndEmail(string First, string Last, string Email)
         {
             GuidesObject obj = null;
+            ShiftsDM dm = new ShiftsDM();
             string qry = ReadAllCommand() + " WHERE g.FirstName = @First and g.LastName = @Last and g.Email = @Email";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -74,10 +78,12 @@ namespace  NQN.DB
                     obj = LoadFrom(reader);
                 }
             }
+            obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
             return obj;
         }
         public GuidesObject FetchGuide(int GuideID)
         {
+            ShiftsDM dm = new ShiftsDM();
             GuidesObject obj = null;
             string qry = ReadAllCommand() + " WHERE g.GuideID = @GuideID";
             using (SqlConnection conn = ConnectionFactory.getNew())
@@ -89,10 +95,12 @@ namespace  NQN.DB
                     obj = LoadFrom(reader);
                 }
             }
+            obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
             return obj;
         }
         public GuidesObject FetchGuide(string VolID)
         {
+            ShiftsDM dm = new ShiftsDM();
             GuidesObject obj = null;
             string qry = ReadAllCommand() + " WHERE g.VolID = @VolID";
             using (SqlConnection conn = ConnectionFactory.getNew())
@@ -102,8 +110,10 @@ namespace  NQN.DB
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
                     obj = LoadFrom(reader);
+                   
                 }
             }
+            obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
             return obj;
         }
 
@@ -114,7 +124,7 @@ namespace  NQN.DB
             if (role == null)
                 return null;
              ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
-             string qry = ReadAllCommand() + " where  isnull(Inactive,0) = 0 and (r.RoleName = @Role or r2.RoleName = @Role )";
+             string qry = ReadAllShiftsCommand() + " where  isnull(Inactive,0) = 0 and (r.RoleName = @Role or r2.RoleName = @Role )";
              if (ShiftID > 0)
                  qry += " and g.ShiftID = @ShiftID ";
              qry += " order by DOW,Sequence,FirstName  ";
@@ -153,8 +163,9 @@ namespace  NQN.DB
                 qry += " and VolID = @Pattern or (FirstName like @Wildcard or LastName like @Wildcard) ";
             }
             if (ShiftID > 0)
-                qry += " and gs.ShiftID = @ShiftID ";
+                qry += " and @ShiftID in (select ShiftID from GuideShift where GuideID = g.GuideID) ";
             qry += " order by FirstName, LastName ";
+            ShiftsDM dm = new ShiftsDM();
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -166,6 +177,7 @@ namespace  NQN.DB
                     GuidesObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
+                        obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
                         Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
@@ -197,7 +209,7 @@ namespace  NQN.DB
         public ObjectList<GuidesObject> FetchForShift(int ShiftID)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
-            string qry = ReadAllCommand() + " WHERE g.ShiftID = @ShiftID and isnull(Inactive,0) = 0 order by FirstName  ";
+            string qry = ReadAllShiftsCommand() + " WHERE gs.ShiftID = @ShiftID and isnull(Inactive,0) = 0 order by FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -218,9 +230,9 @@ namespace  NQN.DB
         public ObjectList<GuidesObject> FetchCaptains(int ShiftID)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
-            string qry = ReadAllCommand() + " WHERE  isnull(Inactive,0) = 0 and r.IsCaptain = 1 ";
+            string qry = ReadAllShiftsCommand() + " WHERE  isnull(Inactive,0) = 0 and r.IsCaptain = 1 ";
             if (ShiftID > 0)
-                qry += " and g.ShiftID = @ShiftID ";
+                qry += " and gs.ShiftID = @ShiftID ";
             qry += " order by DOW,Sequence,FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -298,13 +310,17 @@ namespace  NQN.DB
                 myc.Parameters.Add(new SqlParameter("CalendarType", obj.CalendarType));
 				myc.ExecuteNonQuery();
 			}
-		}
+            if (obj.AddShift > 0 && obj.AddShift != obj.ShiftID)
+                SaveGuideShift(obj.GuideID, obj.AddShift);
+        }
 
 		public void Save(GuidesObject obj)
 		{
             if (CheckVolID(obj))
                 throw new Exception("An active Guide with this ID Number already exists");
-			 string qry = @"INSERT INTO Guides (
+            obj.Phone = GuidesObject.Standardize(obj.Phone);
+            obj.PhoneDigits = GuidesObject.DigitsOnly(obj.Phone);
+            string qry = @"INSERT INTO Guides (
 				[FirstName]
 				,[LastName]
 				,[Phone]
@@ -356,7 +372,7 @@ namespace  NQN.DB
 			}
             int GuideID = GetLast();
             if (obj.ShiftID > 0)
-                SaveGuideShift(GuideID, obj.ShiftID, true);
+                SaveGuideShift(GuideID, obj.ShiftID);
 		}
 
         public void Delete(GuidesObject obj)
@@ -402,16 +418,26 @@ namespace  NQN.DB
 			}
 		}
 
-        protected void SaveGuideShift(int GuideID, int ShiftID, bool IsPrimary)
+        public void DeleteGuideShift(int GuideID, int ShiftID)
         {
-            string qry = @"insert into GuideShift (GuideID, ShiftID, IsPrimary)
-                select @GuideID, @ShiftID, @IsPrimary where not exists (select 1 from GuideShift where GuideID = @GuideID and ShiftID = @ShiftID)";
+            string qry = @"delete GuideShift  where GuideID = @GuideID and ShiftID = @ShiftID";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
                 myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
-                myc.Parameters.Add(new SqlParameter("IsPrimary", IsPrimary));
+                myc.ExecuteNonQuery();
+            }
+        }
+        protected void SaveGuideShift(int GuideID, int ShiftID)
+        {
+            string qry = @"insert into GuideShift (GuideID, ShiftID)
+                select @GuideID, @ShiftID where not exists (select 1 from GuideShift where GuideID = @GuideID and ShiftID = @ShiftID)";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
                 myc.ExecuteNonQuery();
             }
         }
@@ -450,7 +476,39 @@ namespace  NQN.DB
 			return obj;
 		}
 
-		protected override string ReadAllCommand()
+        protected override string ReadAllCommand()
+        {
+            return @"
+			SELECT
+				g.[GuideID]
+				,[FirstName]
+				,[LastName]
+				,[Phone]
+				,[Email]
+				,[ShiftID] = 0
+				,[Inactive]
+				,[PhoneDigits]
+				,[SearchKey]
+				,[Notes]
+				,[VolID]
+                ,[CalendarType]
+				,g.[RoleID]
+                ,g.[AltRoleID]
+                ,r.[MaskContactInfo]
+				,[UpdateBy]
+				,[LastUpdate]
+				,[PreferredName]
+                ,r.RoleName
+                ,AltRoleName = r2.RoleName
+                ,ShiftName = ''
+                ,ShortName = ''
+                ,Sequence = 0
+                ,DOW = 0
+                ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
+				FROM Guides g join Roles r on g.RoleID = r.RoleID
+                left join Roles r2 on g.AltRoleID = r2.RoleID ";
+        }
+        protected  string ReadAllShiftsCommand()
 		{
 			return @"
 			SELECT
@@ -480,7 +538,7 @@ namespace  NQN.DB
                 ,s.DOW
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
 				FROM Guides g join Roles r on g.RoleID = r.RoleID
-                join GuideShift gs on g.GuideID = gs.GuideID and gs.IsPrimary =1 join Shifts s on s.ShiftID = gs.ShiftID 
+                join GuideShift gs on g.GuideID = gs.GuideID  join Shifts s on s.ShiftID = gs.ShiftID 
                 left join Roles r2 on g.AltRoleID = r2.RoleID ";
 		}
 		public int GetLast()

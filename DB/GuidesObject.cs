@@ -253,6 +253,10 @@ namespace NQN.DB
             get;
             set;
         }
+        public int AddShift
+        {
+            get; set;
+        }
         public bool HasSub
         {
             get;
@@ -308,6 +312,37 @@ namespace NQN.DB
             get;
             set;
         }
+        private ObjectList<ShiftsObject> _shifts = new ObjectList<ShiftsObject>();
+        public ObjectList<ShiftsObject> Shifts
+        {
+            get
+            {
+                return _shifts;
+            }
+            set
+            {
+                _shifts = value;
+                if (_shifts.Count == 1)
+                {
+                    ShiftsObject pshift = Shifts[0];
+                    _shiftid = pshift.ShiftID;
+                    ShiftName = pshift.ShiftName;
+                    ShortName = pshift.ShortName;
+                    Sequence = pshift.Sequence;
+                    DOW = pshift.DOW;
+                }
+                else
+                {
+                    string sep = String.Empty;
+                    foreach (ShiftsObject sobj in _shifts)
+                    {
+                        ShiftName += sep + sobj.ShiftName;
+                        ShortName += sep + sobj.ShortName;
+                        sep = ", ";
+                    }
+                }
+            }
+        }
         public string EmailLink
         {
             get
@@ -353,7 +388,7 @@ namespace NQN.DB
         }
         public static string DigitsOnly(string Phone)
         {
-            if (Phone == null || Phone.Length == 0) return null;
+            if (Phone == null || Phone.Length == 0) return String.Empty;
             string newphone = String.Empty;
             for (int i = 0; i < Phone.Length; i++)
             {
