@@ -879,7 +879,6 @@
                       <PaddingBottom>2pt</PaddingBottom>
                     </Style>
                   </Textbox>
-                  <rd:Selected>true</rd:Selected>
                 </CellContents>
               </TablixHeader>
               <TablixMembers>
@@ -893,6 +892,7 @@
             </TablixMember>
           </TablixMembers>
         </TablixRowHierarchy>
+        <RepeatRowHeaders>true</RepeatRowHeaders>
         <DataSetName>ShiftSummaryObject</DataSetName>
         <Top>0.47792in</Top>
         <Left>0.10292in</Left>

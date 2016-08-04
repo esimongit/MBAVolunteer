@@ -70,7 +70,7 @@
          </cc2:NQNGridView>
      </asp:View>
      <asp:View ID="View2" runat="server">
-        <asp:LinkButton ID="ReturnButton" runat="server"  OnClick="ToView1"
+        <asp:LinkButton ID="ReturnButton" runat="server"  OnClick="ToView1" Font-Bold="true"
                      CausesValidation="False" CommandName="Cancel" Text="Return to List" />
      <uc3:GuideEdit id="GuideEdit1" runat="server"  ></uc3:GuideEdit>
     </asp:View>

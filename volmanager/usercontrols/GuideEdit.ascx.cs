@@ -33,6 +33,24 @@ namespace VolManager.UserControls
             mb.InsertVols(obj.VolID, obj.Email);
             FormView1.DataBind();
         }
+
+        protected void ResetPW(object sender, EventArgs e)
+        {
+            int GuideID = Convert.ToInt32(Session["GuideID"]);
+            GuidesDM dm = new GuidesDM();
+            GuidesObject obj = dm.FetchGuide(GuideID);
+            string pw = String.Empty;
+            try
+            {
+                pw = MembershipBusiness.VolChangePassword(obj.VolID);
+            } catch (Exception ex)
+            {
+                ErrorMessage.Set(ex.Message);
+                return;
+            }
+            InfoMessage.Set(String.Format("New Password: {0}", pw));
+            FormView1.DataBind();
+        }
         protected void DeleteShift(object sender, GridViewDeleteEventArgs e)
         {
             GuidesDM dm = new GuidesDM();

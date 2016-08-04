@@ -163,7 +163,7 @@ namespace  NQN.DB
 
             string qry = ReadAllCommand() + @" WHERE dow = datepart(dw, @dt)  and ((dbo.AB(@dt) = 'AWeek' and AWeek = 1)
                     or (dbo.AB(@dt) = 'BWeek' and BWeek = 1))
-                and ShiftID not in (select ShiftID from GuidesShift where GuideID = @GuideID) order by Sequence ";
+                and ShiftID not in (select ShiftID from GuideShift where GuideID = @GuideID) order by Sequence ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);

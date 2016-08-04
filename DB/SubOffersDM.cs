@@ -134,10 +134,10 @@ namespace  NQN.DB
                 ,g.Email
                 ,g.Phone
                 ,g.VolID
-                ,HomeShift=s.ShortName
+                ,HomeShift=dbo.FlattenShortShifts(o.GuideID)
                 ,s.Sequence
                 ,r.MaskContactInfo
-				FROM SubOffers o join (Guides g join GuideShift gs on g.GuideID = gs.GuideID and gs.IsPrimary = 1) on o.GuideID = g.GuideID join Shifts s on gs.ShiftID = s.ShiftID 
+				FROM SubOffers o  join Guides g on o.GuideID = g.GuideID join Shifts s on s.ShiftID = o.ShiftID
                  join Roles r on r.RoleID = g.RoleID ";
 		}
 		public int GetLast()

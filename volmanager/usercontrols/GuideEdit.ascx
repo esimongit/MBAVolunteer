@@ -38,7 +38,7 @@
                 <table><tr><td class="formlabel">
                  ID:</td><td>
                  <asp:TextBox ID="VolIDTextBox" runat="server" Width="60" Text='<%# Bind("VolID") %>' />&nbsp;&nbsp;
-                  <asp:HyperLink ID="MBAVLink" runat="server" Text="Open MBAV site" Target="_blank"  NavigateUrl='<%#Eval("UserId", "http://mbav.netqnet.com/Login.aspx?ID={0}") %>' ></asp:HyperLink>
+                  <asp:HyperLink ID="MBAVLink" runat="server" Text="Open MBAV site"  Visible='<%#Eval("HasLogin") %>' Target="_blank"  NavigateUrl='<%#Eval("UserId", "http://mbav.netqnet.com/Login.aspx?ID={0}") %>' ></asp:HyperLink>
                   </td></tr>
                  <tr><td class="formlabel">
                First Name:</td><td>
@@ -94,6 +94,7 @@
                  <asp:CheckBox ID="CheckBox1" runat="server" 
                      Checked='<%# Eval("HasLogin") %>' />
                      <asp:Button ID="AddLoginButton" runat="server" Text="Setup Login" Visible = '<%#Eval("NeedsLogin") %>'  OnClick="AddLogin" />
+                 <asp:Button ID="ChangePWButton" runat="server" Text="ResetPW" Visible = '<%#Eval("HasLogin") %>'  OnClick="ResetPW" />
                 
                  </td></tr>
                <tr><td class="formlabel">
@@ -111,12 +112,7 @@
                  <asp:TextBox ID="LastUpdateTextBox" runat="server" 
                      Text='<%# Eval("LastUpdate") %>' />
                  </td></tr>
-                   <%-- <tr><td class="formlabel">
-                 Preferred Name:</td><td>
-                 <asp:TextBox ID="PreferredNameTextBox" runat="server" 
-                     Text='<%# Bind("PreferredName") %>' /> 
                 
-               </td></tr>--%>
                </table>
                  <asp:LinkButton ID="UpdateButton" runat="server" CausesValidation="True" 
                      CommandName="Update" Text="Update" />

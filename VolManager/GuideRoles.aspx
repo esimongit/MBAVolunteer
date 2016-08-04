@@ -18,6 +18,7 @@
            
             <asp:BoundField DataField="RoleName" HeaderText="Role Name"  />
             <asp:CheckBoxField DataField="IsCaptain" HeaderText="Is Captain"  />
+            <asp:CheckBoxField DataField="MaskContactInfo" HeaderText="Mask Info"  />
             <asp:BoundField DataField="Number" HeaderText="Current Count" 
                ReadOnly = "true" />
         </Columns>
@@ -34,7 +35,11 @@
             Is Captain:
             <asp:CheckBox ID="IsCaptainCheckBox" runat="server" 
                 Checked='<%# Bind("IsCaptain") %>' />
-       
+       <br />
+            Mask Contact Info:
+            <asp:CheckBox ID="CheckBox1" runat="server" 
+                Checked='<%# Bind("MaskContactInfo") %>' />
+            <br />
             <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" 
                 CommandName="Insert" Text="Insert" />
            
