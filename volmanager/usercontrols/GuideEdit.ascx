@@ -51,9 +51,15 @@
                      Text='<%# Bind("LastName") %>' />
                 </td></tr>
                  <tr><td class="formlabel">
-                 Phone:</td><td>
+                 Home Phone:</td><td>
                  <asp:TextBox ID="PhoneTextBox" runat="server" TextMode="Phone" Text='<%# Bind("Phone") %>' />
                   </td></tr>
+                 <tr><td class="formlabel">
+                 Cell Phone:</td><td>
+                 <asp:TextBox ID="CellTextBox" runat="server" TextMode="Phone" Text='<%# Bind("Cell") %>' />&nbsp;&nbsp;
+                     <asp:CheckBox ID="CellPreferredCheckBox" runat="server" Checked='<%#Bind("CellPreferred") %>'  Text="Preferred"/>
+                  </td></tr>
+
                  <tr><td class="formlabel">
                  Email:</td><td>
                  <asp:TextBox ID="EmailTextBox" runat="server"  Width="250" Text='<%# Bind("Email") %>' />
@@ -87,6 +93,12 @@
                  Inactive:</td><td>
                  <asp:CheckBox ID="InactiveCheckBox" runat="server" 
                      Checked='<%# Bind("Inactive") %>' /> Checking this box will remove all substitute requests and commitments for this guide.
+                
+                 </td></tr>
+                    <tr><td class="formlabel">
+                 Mask Contact Info:</td><td>
+                 <asp:CheckBox ID="CheckBox2" runat="server" 
+                     Checked='<%# Bind("MaskPersonalInfo") %>' />  
                 
                  </td></tr>
                  <tr><td class="formlabel">

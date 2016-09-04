@@ -64,7 +64,7 @@ namespace NQN.Bus
             if (VolAccessApp == String.Empty)
                 return String.Empty;
             if (Email.Trim() == String.Empty)
-                return String.Empty;             
+                throw new Exception("Email is required for a login.");    
            
             Regex r = new Regex(GuidesObject.ValidEmail, RegexOptions.IgnoreCase);
             Match m = r.Match(Email);
@@ -82,19 +82,13 @@ namespace NQN.Bus
             
             //string password = Membership.GeneratePassword(7, 1);
             GuidesDM gdm = new GuidesDM();
-            GuidesObject guide = gdm.FetchByEmail(Email);
+            GuidesObject guide = gdm.FetchGuide(UserName);
             if (guide == null)
                 return String.Empty;
             string password = guide.FirstName.Substring(0, 1).ToLower() + guide.LastName.ToLower();
             string res = String.Empty;
-            try
-            {
-                MembershipUser u = Membership.CreateUser(UserName, password, Email);
-            }
-            catch (Exception ex)
-            {
-                return ex.Message;
-            }
+             MembershipUser u = Membership.CreateUser(UserName, password, Email);
+             
             //if (u != null)
             //{
             //    PasswordRecoveryDM dm = new PasswordRecoveryDM();
@@ -323,13 +317,13 @@ namespace NQN.Bus
             return col;
         }
        
-        public DataTable SelectVols(string Pattern, bool DupsOnly)
+        public DataTable SelectVols(string Pattern)
         {
             if (Pattern == null)
                 Pattern = String.Empty;
             SiteMembershipDM dm = new SiteMembershipDM(VolAccessApp, VolAccessTable);
             Membership.ApplicationName = VolAccessApp;
-            ObjectList<SiteMembershipUser> dList = DupsOnly ? dm.FetchDups() : dm.FetchAll(Pattern);
+            ObjectList<SiteMembershipUser> dList =   dm.FetchAll(Pattern);
            
             if (dList == null)
                 return null;

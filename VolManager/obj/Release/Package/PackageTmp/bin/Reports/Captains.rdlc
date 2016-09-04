@@ -34,7 +34,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Short Name</Value>
+                              <Value>Shift Name</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -626,6 +626,14 @@
         </TablixRowHierarchy>
         <RepeatRowHeaders>true</RepeatRowHeaders>
         <DataSetName>GuidesObject</DataSetName>
+        <SortExpressions>
+          <SortExpression>
+            <Value>=Fields!ShortName.Value</Value>
+          </SortExpression>
+          <SortExpression>
+            <Value>=Fields!FirstName.Value</Value>
+          </SortExpression>
+        </SortExpressions>
         <Top>0.48625in</Top>
         <Left>0.40292in</Left>
         <Height>0.75in</Height>
@@ -724,10 +732,6 @@
         <Field Name="LastUpdate">
           <DataField>LastUpdate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
-        </Field>
-        <Field Name="PreferredName">
-          <DataField>PreferredName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
         </Field>
         <Field Name="GuideName">
           <DataField>GuideName</DataField>

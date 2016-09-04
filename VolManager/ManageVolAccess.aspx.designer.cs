@@ -103,15 +103,6 @@ namespace VolManager {
         protected global::System.Web.UI.WebControls.TextBox PatternTextBox;
         
         /// <summary>
-        /// DupCheckBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox DupCheckBox;
-        
-        /// <summary>
         /// NQNGridView1 control.
         /// </summary>
         /// <remarks>

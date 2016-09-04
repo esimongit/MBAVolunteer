@@ -119,6 +119,9 @@ namespace NQN.Bus
                     guide.LastName = import.Last;
                     guide.Email = import.Email;
                     guide.Phone = import.Phone;
+                    guide.Cell = import.Cell;
+                    if (String.IsNullOrEmpty(import.Phone) && !String.IsNullOrEmpty(import.Cell))
+                        guide.CellPreferred = true;
                     guide.RoleID = import.RoleID;
                     guide.ShiftID = import.ShiftID;
                     guide.UpdateBy = UserSecurity.GetUserName();

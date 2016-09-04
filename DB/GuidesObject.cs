@@ -59,7 +59,31 @@ namespace NQN.DB
 				 _phone = value;
 			}
 		}
-		private string _email = String.Empty;
+        private string _cell = String.Empty;
+        public string Cell
+        {
+            get
+            {
+                return _cell;
+            }
+            set
+            {
+                _cell = value;
+            }
+        }
+        private bool _cellpreferred = false;
+        public bool CellPreferred
+        {
+            get
+            {
+                return _cellpreferred;
+            }
+            set
+            {
+                _cellpreferred = value;
+            }
+        }
+        private string _email = String.Empty;
 		public string Email 
 		{
 			get
@@ -95,7 +119,19 @@ namespace NQN.DB
 				 _inactive = value;
 			}
 		}
-		private string _phonedigits = String.Empty;
+        private bool _maskpersonalinfo = false;
+        public bool MaskPersonalInfo
+        {
+            get
+            {
+                return _maskpersonalinfo;
+            }
+            set
+            {
+                _maskpersonalinfo = value;
+            }
+        }
+        private string _phonedigits = String.Empty;
 		public string PhoneDigits 
 		{
 			get
@@ -190,19 +226,7 @@ namespace NQN.DB
 			{
 				 _lastupdate = value;
 			}
-		}
-		private string _preferredname = String.Empty;
-		public string PreferredName 
-		{
-			get
-			{
-				return _preferredname;
-			}
-			set
-			{
-				 _preferredname = value;
-			}
-		}
+		} 
         private string _calendartype = String.Empty;
         public string CalendarType
         {
@@ -321,6 +345,7 @@ namespace NQN.DB
             }
             set
             {
+                IrregularShift = false;
                 _shifts = value;
                 if (_shifts.Count == 1)
                 {
@@ -330,6 +355,8 @@ namespace NQN.DB
                     ShortName = pshift.ShortName;
                     Sequence = pshift.Sequence;
                     DOW = pshift.DOW;
+                    if (DOW == 0)
+                        IrregularShift = true;
                 }
                 else
                 {
@@ -342,6 +369,10 @@ namespace NQN.DB
                     }
                 }
             }
+        }
+        public bool IrregularShift
+        {
+            get; set;
         }
         public string EmailLink
         {
@@ -370,10 +401,16 @@ namespace NQN.DB
         {
             
             ShiftsDM dm = new ShiftsDM();
-            return dm.IsShiftOnDate(_shiftid, dt);
+            bool ret = false;
+            foreach (ShiftsObject shift in Shifts)
+            {
+                if (dm.IsShiftOnDate(shift.ShiftID, dt))
+                    ret = true;
+            }
+            return ret;
         }
 
-        public static string DefaultAreaCode = "813";
+        public static string DefaultAreaCode = "831";
         private int _id = 0;
         public int ID
         {

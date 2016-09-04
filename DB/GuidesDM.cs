@@ -58,7 +58,8 @@ namespace  NQN.DB
                     obj = LoadFrom(reader);
                 }
             }
-            obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
+            if (obj != null)
+                obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
             
             return obj;
         }
@@ -78,7 +79,8 @@ namespace  NQN.DB
                     obj = LoadFrom(reader);
                 }
             }
-            obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
+            if (obj != null)
+                obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
             return obj;
         }
         public GuidesObject FetchGuide(int GuideID)
@@ -95,9 +97,11 @@ namespace  NQN.DB
                     obj = LoadFrom(reader);
                 }
             }
-            obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
+            if (obj != null)
+                obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
             return obj;
         }
+         
         public GuidesObject FetchGuide(string VolID)
         {
             ShiftsDM dm = new ShiftsDM();
@@ -113,7 +117,8 @@ namespace  NQN.DB
                    
                 }
             }
-            obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
+            if (obj != null)
+                obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
             return obj;
         }
 
@@ -146,7 +151,7 @@ namespace  NQN.DB
             return Results;
         }
 
-        public DataTable Search(string Pattern, int ShiftID, bool Inactive)
+        public DataTable Search(string Pattern, int ShiftID, int RoleID, bool Inactive)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
             string qry = ReadAllCommand() + " where 1 = 1 ";
@@ -164,6 +169,8 @@ namespace  NQN.DB
             }
             if (ShiftID > 0)
                 qry += " and @ShiftID in (select ShiftID from GuideShift where GuideID = g.GuideID) ";
+            if (RoleID > 0)
+                qry += " and g.RoleID = @RoleID ";
             qry += " order by FirstName, LastName ";
             ShiftsDM dm = new ShiftsDM();
             using (SqlConnection conn = ConnectionFactory.getNew())
@@ -171,6 +178,7 @@ namespace  NQN.DB
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("Pattern", Pattern));
                 myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                myc.Parameters.Add(new SqlParameter("RoleID", RoleID));
                 myc.Parameters.Add(new SqlParameter("Wildcard", Wildcard));
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
@@ -251,7 +259,7 @@ namespace  NQN.DB
             return Results;
         } 
 
-        public void Update(string FirstName, string LastName, string Phone, string Email, string CalendarType,   int GuideID)
+        public void Update(string FirstName, string LastName, string Phone, string Email, string CalendarType,  string Cell, bool CellPreferred, int GuideID, bool MaskPersonalInfo)
         {
             GuidesObject obj = FetchGuide(GuideID);
             if (obj == null)
@@ -259,8 +267,12 @@ namespace  NQN.DB
             obj.FirstName = FirstName;
             obj.LastName = LastName;
             obj.Phone = GuidesObject.Standardize(Phone);
-            obj.PhoneDigits = GuidesObject.DigitsOnly(Phone);
+            obj.Cell = GuidesObject.Standardize(Cell);
+            obj.CellPreferred = CellPreferred;
+            if (String.IsNullOrEmpty(Phone) && !String.IsNullOrEmpty(Cell))
+                obj.CellPreferred = true;
             obj.Email = Email;
+            obj.MaskPersonalInfo = MaskPersonalInfo;
             obj.CalendarType = CalendarType;
             obj.UpdateBy = "self";
             obj.LastUpdate = DateTime.Now;
@@ -272,12 +284,15 @@ namespace  NQN.DB
             if (CheckVolID(obj))
                 throw new Exception("An active Guide with this ID Number already exists");
             obj.Phone = GuidesObject.Standardize(obj.Phone);
-            obj.PhoneDigits = GuidesObject.DigitsOnly(obj.Phone);
+            obj.Cell = GuidesObject.Standardize(obj.Cell);
+            obj.PhoneDigits = GuidesObject.DigitsOnly(obj.CellPreferred ? obj.Cell : obj.Phone);
            
 			 string qry = @"UPDATE  Guides SET 
 				FirstName=@FirstName
 				,LastName=@LastName
 				,Phone=@Phone
+                ,Cell=@Cell
+                ,CellPreferred = @CellPreferred
 				,Email=@Email 
 				,Inactive=@Inactive
 				,PhoneDigits=@PhoneDigits 
@@ -285,9 +300,9 @@ namespace  NQN.DB
 				,VolID=@VolID
 				,RoleID=@RoleID
                 ,AltRoleID=nullif(@AltRoleID,0)
+                ,MaskPersonalInfo = isnull(@MaskPersonalInfo,0)
 				,UpdateBy=@UpdateBy
-				,LastUpdate=@LastUpdate
-				,PreferredName=@PreferredName
+				,LastUpdate=@LastUpdate 
                 ,CalendarType = nullif(@CalendarType, '')
 				 WHERE GuideID = @GuideID";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
@@ -297,16 +312,18 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("FirstName",obj.FirstName));
 				myc.Parameters.Add(new SqlParameter("LastName",obj.LastName));
 				myc.Parameters.Add(new SqlParameter("Phone",obj.Phone));
-				myc.Parameters.Add(new SqlParameter("Email",obj.Email)); 
+                myc.Parameters.Add(new SqlParameter("Cell", obj.Cell));
+                myc.Parameters.Add(new SqlParameter("CellPreferred", obj.CellPreferred));
+                myc.Parameters.Add(new SqlParameter("Email",obj.Email)); 
 				myc.Parameters.Add(new SqlParameter("Inactive",obj.Inactive));
-				myc.Parameters.Add(new SqlParameter("PhoneDigits",GuidesObject.DigitsOnly(obj.Phone))); 
+                myc.Parameters.Add(new SqlParameter("MaskPersonalInfo", obj.MaskPersonalInfo));
+                myc.Parameters.Add(new SqlParameter("PhoneDigits", obj.PhoneDigits));
 				myc.Parameters.Add(new SqlParameter("Notes",obj.Notes));
 				myc.Parameters.Add(new SqlParameter("VolID",obj.VolID));
 				myc.Parameters.Add(new SqlParameter("RoleID",obj.RoleID));
                 myc.Parameters.Add(new SqlParameter("AltRoleID", obj.AltRoleID));
 				myc.Parameters.Add(new SqlParameter("UpdateBy",obj.UpdateBy));
-				myc.Parameters.Add(new SqlParameter("LastUpdate",obj.LastUpdate));
-                myc.Parameters.Add(new SqlParameter("PreferredName", obj.PreferredName));
+				myc.Parameters.Add(new SqlParameter("LastUpdate",obj.LastUpdate)); 
                 myc.Parameters.Add(new SqlParameter("CalendarType", obj.CalendarType));
 				myc.ExecuteNonQuery();
 			}
@@ -319,11 +336,14 @@ namespace  NQN.DB
             if (CheckVolID(obj))
                 throw new Exception("An active Guide with this ID Number already exists");
             obj.Phone = GuidesObject.Standardize(obj.Phone);
-            obj.PhoneDigits = GuidesObject.DigitsOnly(obj.Phone);
+            obj.Cell = GuidesObject.Standardize(obj.Cell);
+            obj.PhoneDigits = GuidesObject.DigitsOnly(obj.CellPreferred ? obj.Cell : obj.Phone);
             string qry = @"INSERT INTO Guides (
 				[FirstName]
 				,[LastName]
 				,[Phone]
+                ,[Cell] 
+                ,[CellPreferred]
 				,[Email] 
 				,[Inactive]
 				,[PhoneDigits]
@@ -332,14 +352,15 @@ namespace  NQN.DB
 				,[RoleID]
                 ,[AltRoleID]
 				,[UpdateBy]
-				,[LastUpdate]
-				,[PreferredName]
+				,[LastUpdate] 
                 ,[CalendarType]
 				)
 			VALUES(
 				@FirstName
 				,@LastName
 				,@Phone
+                ,@Cell 
+                ,@CellPreferred
 				,@Email 
 				,@Inactive
 				,@PhoneDigits 
@@ -348,8 +369,7 @@ namespace  NQN.DB
 				,@RoleID
                 ,nullif(@AltRoleID, 0)
 				,@UpdateBy
-				,getdate()
-				,@PreferredName
+				,getdate() 
                 ,nullif(@CalendarType, '')
 				)";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
@@ -360,13 +380,14 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("Phone",obj.Phone));
 				myc.Parameters.Add(new SqlParameter("Email",obj.Email)); 
 				myc.Parameters.Add(new SqlParameter("Inactive",obj.Inactive));
-				myc.Parameters.Add(new SqlParameter("PhoneDigits",GuidesObject.DigitsOnly(obj.Phone))); 
+                myc.Parameters.Add(new SqlParameter("Cell", obj.Cell));
+                myc.Parameters.Add(new SqlParameter("CellPreferred", obj.CellPreferred));
+                myc.Parameters.Add(new SqlParameter("PhoneDigits", obj.PhoneDigits)); 
 				myc.Parameters.Add(new SqlParameter("Notes",obj.Notes));
 				myc.Parameters.Add(new SqlParameter("VolID",obj.VolID));
 				myc.Parameters.Add(new SqlParameter("RoleID",obj.RoleID));
                 myc.Parameters.Add(new SqlParameter("AltRoleID", obj.AltRoleID));
-				myc.Parameters.Add(new SqlParameter("UpdateBy",obj.UpdateBy)); 
-				myc.Parameters.Add(new SqlParameter("PreferredName",obj.PreferredName));
+				myc.Parameters.Add(new SqlParameter("UpdateBy",obj.UpdateBy));  
                 myc.Parameters.Add(new SqlParameter("CalendarType", obj.CalendarType));
 				myc.ExecuteNonQuery();
 			}
@@ -420,6 +441,9 @@ namespace  NQN.DB
 
         public void DeleteGuideShift(int GuideID, int ShiftID)
         {
+            GuideSubstituteDM dm = new GuideSubstituteDM();
+            if (dm.FetchForGuide(GuideID, ShiftID).Count > 0)
+                throw new Exception("This shift has outstanding substitute requests.");
             string qry = @"delete GuideShift  where GuideID = @GuideID and ShiftID = @ShiftID";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -450,7 +474,9 @@ namespace  NQN.DB
 			obj.FirstName = GetNullableString(reader, "FirstName",String.Empty);
 			obj.LastName = GetNullableString(reader, "LastName",String.Empty);
 			obj.Phone = GetNullableString(reader, "Phone",String.Empty);
-			obj.Email = GetNullableString(reader, "Email",String.Empty);
+            obj.Cell = GetNullableString(reader, "Cell", String.Empty);
+            obj.CellPreferred = GetNullableBoolean(reader, "CellPreferred", false);
+            obj.Email = GetNullableString(reader, "Email",String.Empty);
 			obj.ShiftID = GetNullableInt32(reader, "ShiftID",0);
             obj.Inactive = GetNullableBoolean(reader, "Inactive",false);
 			obj.PhoneDigits = GetNullableString(reader, "PhoneDigits",String.Empty);
@@ -459,8 +485,7 @@ namespace  NQN.DB
 			obj.VolID = GetNullableString(reader, "VolID",String.Empty);
 			obj.RoleID = GetNullableInt32(reader, "RoleID",0);
 			obj.UpdateBy = GetNullableString(reader, "UpdateBy",String.Empty);
-			obj.LastUpdate = GetNullableDateTime(reader, "LastUpdate",new DateTime());
-			obj.PreferredName = GetNullableString(reader, "PreferredName",String.Empty);
+			obj.LastUpdate = GetNullableDateTime(reader, "LastUpdate",new DateTime()); 
             obj.RoleName = GetNullableString(reader, "RoleName", String.Empty);
             obj.AltRoleID = GetNullableInt32(reader, "AltRoleID", 0);
             obj.AltRoleName = GetNullableString(reader, "AltRoleName", String.Empty);
@@ -470,6 +495,7 @@ namespace  NQN.DB
             obj.DOW = GetNullableInt32(reader, "DOW", 0);
             obj.HasLogin = GetNullableBoolean(reader, "HasLogin", false);
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
+            obj.MaskPersonalInfo = GetNullableBoolean(reader, "MaskPersonalInfo", false);
             obj.GuideName =  obj.FirstName + " " + obj.LastName ;
             obj.CalendarType = GetNullableString(reader, "CalendarType", String.Empty);
           
@@ -484,6 +510,8 @@ namespace  NQN.DB
 				,[FirstName]
 				,[LastName]
 				,[Phone]
+                ,[Cell]
+                ,[CellPreferred]
 				,[Email]
 				,[ShiftID] = 0
 				,[Inactive]
@@ -494,10 +522,10 @@ namespace  NQN.DB
                 ,[CalendarType]
 				,g.[RoleID]
                 ,g.[AltRoleID]
-                ,r.[MaskContactInfo]
+                ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
+                ,MaskPersonalInfo
 				,[UpdateBy]
-				,[LastUpdate]
-				,[PreferredName]
+				,[LastUpdate] 
                 ,r.RoleName
                 ,AltRoleName = r2.RoleName
                 ,ShiftName = ''
@@ -516,6 +544,8 @@ namespace  NQN.DB
 				,[FirstName]
 				,[LastName]
 				,[Phone]
+                ,[Cell]
+                ,[CellPreferred]
 				,[Email]
 				,gs.[ShiftID]
 				,[Inactive]
@@ -526,10 +556,10 @@ namespace  NQN.DB
                 ,[CalendarType]
 				,g.[RoleID]
                 ,g.[AltRoleID]
-                ,r.[MaskContactInfo]
+                ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
+                ,MaskPersonalInfo
 				,[UpdateBy]
-				,[LastUpdate]
-				,[PreferredName]
+				,[LastUpdate] 
                 ,r.RoleName
                 ,AltRoleName = r2.RoleName
                 ,s.ShiftName

@@ -143,16 +143,29 @@ namespace NQN.Bus
             }
             return Results;
         }
-        public void SubRequest(int GuideID, DateTime dt, string Sub)
+        public ObjectList<GuideSubstituteObject> SelectOpen()
+        {
+            GuideSubstituteDM dm = new GuideSubstituteDM();
+            ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(DateTime.Today);
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            foreach (GuideSubstituteObject sub in dList)
+            {
+                if (sub.NoSub)
+                    Results.Add(sub);
+            }
+            return Results;
+        }
+        public void SubRequest(int GuideID, DateTime dt, int ShiftID, string Sub)
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
             GuidesDM gdm = new GuidesDM();
-            GuideSubstituteObject obj = dm.FetchForGuide(GuideID, dt);
+            GuideSubstituteObject obj = dm.FetchForGuide(GuideID, ShiftID, dt);
          
             if (obj == null)
             {
                 obj = new GuideSubstituteObject();
                 obj.GuideID = GuideID;
+                obj.ShiftID = ShiftID;
                 obj.DateEntered = DateTime.Now;
                 obj.SubDate = dt;
                 dm.Save(obj);
@@ -180,7 +193,7 @@ namespace NQN.Bus
                 }
                 return false;
             }
-            sub = dm.FetchForGuide(obj.GuideID, obj.SubDate);
+            sub = dm.FetchForGuide(obj.GuideID, obj.ShiftID, obj.SubDate);
             if (sub != null && sub.SubstituteID > 0)
            {
                 throw new Exception(String.Format("{0} is already substituting for {1}.", sub.SubName, sub.GuideName));
@@ -202,7 +215,7 @@ namespace NQN.Bus
             if (ShiftID == 0)
                 return null;
             GuideDropinsDM ddm = new GuideDropinsDM();
-            ObjectList<GuideDropinsObject> dList = ddm.FetchAllForGuide(GuideID,ShiftID);
+            ObjectList<GuideDropinsObject> dList = ddm.FetchOnShiftForGuide(GuideID,ShiftID);
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             ShiftsDM dm = new ShiftsDM();
             ShiftsObject shift = dm.FetchRecord("ShiftID", ShiftID);
@@ -323,8 +336,8 @@ namespace NQN.Bus
                 obj.RequestorEmail = guide.Email;
                 obj.RequestorPhone = guide.Phone;
                 obj.Sequence = guide.Sequence;
-                //eb.SendMail(mtobj.MailFrom,  obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
-                //eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                eb.SendMail(mtobj.MailFrom,  obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
             }
         }
         public void NotifyCaptains(GuideSubstituteObject obj)

@@ -130,7 +130,7 @@ namespace  NQN.DB
 			SELECT
 				o.[ShiftID]
 				,o.[GuideID]
-                ,GuideName =  case  isnull(g.PreferredName, '') WHEN '' then g.FirstName ELSE g.PreferredName END + ' ' + g.LastName
+                ,GuideName =    g.FirstName  + ' ' + g.LastName
                 ,g.Email
                 ,g.Phone
                 ,g.VolID

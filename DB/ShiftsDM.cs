@@ -36,14 +36,14 @@ namespace  NQN.DB
         }
         public  ObjectList<ShiftsObject> FetchRecurring()
         {
-            return Fetch(" where Recurring = 1 Order by DOW, Sequence ");
+            return Fetch(" where Recurring = 1 or nullif(Sequence,0) is null Order by DOW, Sequence ");
         }
         public ObjectList<ShiftsObject> FetchByCategory(bool Recurring)
         {
             if (Recurring)
-                return Fetch(" where Recurring = 1 order by dow, BWeek, Sequence ");
+                return Fetch(" where Recurring = 1 or nullif(Sequence,0) is null order by dow, BWeek, Sequence ");
             else
-                return Fetch(" where Recurring = 0 order by ShiftDate, Sequence ");
+                return Fetch(" where Recurring = 0 and Sequence > 0 order by ShiftDate, Sequence ");
         }
         public ObjectList<ShiftsObject> FetchWithSubOffers(int GuideID)
         {
@@ -148,6 +148,102 @@ namespace  NQN.DB
                     while (obj != null)
                     {
                         Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
+
+        // Find all shifts where you will be present and haven't yet requested  a substitute
+        public ObjectList<ShiftsObject> RegularShiftsForGuideAndDate(DateTime dt, int GuideID)
+        {
+            if (dt == DateTime.MinValue)
+                return null;
+            ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
+            string qry = ReadAllCommand() + @" WHERE  
+                  ShiftID   in (select ShiftID from GuideShift where GuideID = @GuideID) 
+                   and ShiftID not in (select ShiftID from GuideSubstitute where GuideID = @GuideID and SubDate = @dt) ";
+            qry += " union " + ReadAllCommand() + @" WHERE  ShiftID in (select ShiftID from GuideDropins where GuideID = @GuideID
+                    and DropinDate = @dt and OnShift = 1) 
+                 and ShiftID not in (select ShiftID from GuideSubstitute where GuideID = @GuideID and SubDate = @dt) ";
+            qry += "	  order by Sequence ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    ShiftsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        if (IsShiftOnDate(obj.ShiftID, dt))
+                            Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
+        // Find all shifts where you will be absent and need a sub
+        public ObjectList<ShiftsObject> NeedSubShiftsForGuideAndDate(DateTime dt, int GuideID)
+        {
+            if (dt == DateTime.MinValue)
+                return null;
+            ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
+            string qry = ReadAllCommand() + @" WHERE  
+                  ShiftID   in (select ShiftID from GuideShift where GuideID = @GuideID) 
+                   and ShiftID  in (select ShiftID from GuideSubstitute where GuideID = @GuideID and SubDate = @dt and SubstituteID is null) ";
+            qry += " union " + ReadAllCommand() + @" WHERE  ShiftID in (select ShiftID from GuideDropins where GuideID = @GuideID
+                    and DropinDate = @dt and OnShift = 1)
+                  and ShiftID  in (select ShiftID from GuideSubstitute where GuideID = @GuideID and SubDate = @dt and SubstituteID is null) ";
+            qry += "	  order by Sequence ";
+       
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    ShiftsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        if (IsShiftOnDate(obj.ShiftID, dt))
+                            Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
+        // Find all shifts where you will be absent for a date
+        public ObjectList<ShiftsObject> AbsentShiftsForGuideAndDate(DateTime dt, int GuideID)
+        {
+            if (dt == DateTime.MinValue)
+                return null;
+            ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
+            string qry = ReadAllCommand() + @" WHERE  
+                  ShiftID   in (select ShiftID from GuideShift where GuideID = @GuideID) 
+                   and ShiftID  in (select ShiftID from GuideSubstitute where GuideID = @GuideID and SubDate = @dt ) ";
+            qry += " union " + ReadAllCommand() + @" WHERE  ShiftID in (select ShiftID from GuideDropins where GuideID = @GuideID
+                    and DropinDate = @dt and OnShift = 1)
+                  and ShiftID  in (select ShiftID from GuideSubstitute where GuideID = @GuideID and SubDate = @dt) ";
+            qry += "	  order by Sequence ";
+
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    ShiftsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        if (IsShiftOnDate(obj.ShiftID, dt))
+                            Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
                 }

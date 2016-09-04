@@ -20,6 +20,7 @@ namespace  NQN.DB
 				,[First]
 				,[Email]
 				,[Phone]
+                ,[Cell]
 				,i.[Shift]
 				,i.[Role]
 				,[ImportStatus]
@@ -53,6 +54,7 @@ namespace  NQN.DB
 				,First=@First
 				,Email=@Email
 				,Phone=@Phone
+                ,Cell=@Cell
 				,Shift=@Shift
 				,Role=@Role
 				,ImportStatus=@ImportStatus
@@ -67,7 +69,8 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("First",obj.First));
 				myc.Parameters.Add(new SqlParameter("Email",obj.Email));
 				myc.Parameters.Add(new SqlParameter("Phone",obj.Phone));
-				myc.Parameters.Add(new SqlParameter("Shift",obj.Shift));
+                myc.Parameters.Add(new SqlParameter("Cell", obj.Cell));
+                myc.Parameters.Add(new SqlParameter("Shift",obj.Shift));
 				myc.Parameters.Add(new SqlParameter("Role",obj.Role));
 				myc.Parameters.Add(new SqlParameter("ImportStatus",obj.ImportStatus));
 				myc.ExecuteNonQuery();
@@ -82,6 +85,7 @@ namespace  NQN.DB
 				,[First]
 				,[Email]
 				,[Phone]
+                ,[Cell]
 				,[Shift]
 				,[Role]
 				,[ImportStatus]
@@ -92,6 +96,7 @@ namespace  NQN.DB
 				,@First
 				,@Email
 				,@Phone
+                ,@Cell
 				,@Shift
 				,@Role
 				,@ImportStatus
@@ -104,7 +109,8 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("First",obj.First));
 				myc.Parameters.Add(new SqlParameter("Email",obj.Email));
 				myc.Parameters.Add(new SqlParameter("Phone",obj.Phone));
-				myc.Parameters.Add(new SqlParameter("Shift",obj.Shift));
+                myc.Parameters.Add(new SqlParameter("Cell", obj.Cell));
+                myc.Parameters.Add(new SqlParameter("Shift",obj.Shift));
 				myc.Parameters.Add(new SqlParameter("Role",obj.Role));
 				myc.Parameters.Add(new SqlParameter("ImportStatus",obj.ImportStatus));
 				myc.ExecuteNonQuery();
@@ -142,7 +148,8 @@ namespace  NQN.DB
 			obj.First = GetNullableString(reader, "First",String.Empty);
 			obj.Email = GetNullableString(reader, "Email",String.Empty);
 			obj.Phone = GetNullableString(reader, "Phone",String.Empty);
-			obj.Shift = GetNullableString(reader, "Shift",String.Empty);
+            obj.Cell = GetNullableString(reader, "Cell", String.Empty);
+            obj.Shift = GetNullableString(reader, "Shift",String.Empty);
 			obj.Role = GetNullableString(reader, "Role",String.Empty);
 			obj.ImportStatus = GetNullableInt32(reader, "ImportStatus",0);
             
@@ -159,6 +166,7 @@ namespace  NQN.DB
 				,[First]
 				,[Email]
 				,[Phone]
+                ,[Cell]
 				,[Shift]
 				,[Role]
 				,[ImportStatus]

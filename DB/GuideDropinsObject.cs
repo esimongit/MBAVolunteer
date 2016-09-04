@@ -56,6 +56,18 @@ namespace NQN.DB
 				 _shiftid = value;
 			}
 		}
+        private bool _onshift = false;
+        public bool OnShift
+        {
+            get
+            {
+                return _onshift;
+            }
+            set
+            {
+                _onshift = value;
+            }
+        }
 #endregion
         public string FirstName
         {

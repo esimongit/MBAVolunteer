@@ -28,6 +28,24 @@
     <asp:QueryStringParameter QueryStringField="dt" Type="DateTime" Name="dt" />
   </SelectParameters>
 </asp:ObjectDataSource>
+<asp:ObjectDataSource ID="RegularShiftsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="RegularShiftsForGuideAndDate">
+    <SelectParameters>
+    <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
+    <asp:QueryStringParameter QueryStringField="dt" Type="DateTime" Name="dt" />
+  </SelectParameters>
+</asp:ObjectDataSource>
+<asp:ObjectDataSource ID="NeedSubDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="NeedSubShiftsForGuideAndDate">
+    <SelectParameters>
+    <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
+    <asp:QueryStringParameter QueryStringField="dt" Type="DateTime" Name="dt" />
+  </SelectParameters>
+</asp:ObjectDataSource>
+ <asp:ObjectDataSource ID="AbsentShiftsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="AbsentShiftsForGuideAndDate">
+    <SelectParameters>
+    <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
+    <asp:QueryStringParameter QueryStringField="dt" Type="DateTime" Name="dt" />
+  </SelectParameters>
+</asp:ObjectDataSource>
 <asp:MultiView ID="MultiView1" runat="server">
 <asp:View ID="View1" runat="server">
     <style type="text/css">
@@ -55,36 +73,49 @@ Volunteer Guide Substitute Request/Sign-up</h1>
  </div>
 </div>
 <div class="clear"></div>
- 
- <div class="row td1" id="NeedSubCell" runat="server">
-  <div class="col-md-6 "> 
-    If you need a substitute, check here:
-    <asp:CheckBox ID="NeedSubCheckBox" runat="server" />
-  </div>
- 
- 
- <div class="col-md-2  "> 
-  Shift&nbsp;
-   <asp:Label ID="ShiftLabel" Font-Bold="true"   runat="server" ></asp:Label> 
-   </div>
-   </div>
-    <div class="row td4" id="UndoSubCell" runat="server"> 
- <div class="col-md-6  "> 
-   I no longer need a substitute for shift <asp:Label ID="SeqLabel" runat="server"></asp:Label>, check here:  
-   <asp:CheckBox ID="NoNeedCheckbox" runat="server" /> 
-   </div>
-   </div>
-  <div class="row td2" id="HaveSubCell" runat="server"> 
- <div class="col-md-6  "> 
-    If you will be absent and have arranged a substitute,<br/>enter the
-    substitute's Volunteer ID number in this field:&nbsp;&nbsp;&nbsp;
+ <asp:Repeater ID="ShiftNeedRepeater" runat="server" DataSourceID="RegularShiftsDataSource" >
+     <ItemTemplate>
+         <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />
+         <div class="row td1"   runat="server">
+             <div class="col-md-6 ">
+                 If you need a substitute for shift <asp:Label ID="SequenceLabel1" runat="server" Text='<%#Eval("Sequence") %>'></asp:Label>, 
+                 check here:
+                <asp:CheckBox ID="NeedSubCheckBox" runat="server" />
+             </div>
+
+             <div class="col-md-5  ">
+                  Enter Substitute ID: <asp:TextBox ID="SubTextBox" runat="server" Width="80"></asp:TextBox>
+             </div>
+         </div>
+     </ItemTemplate>
+</asp:Repeater>
+ <asp:Repeater ID="AbsentShiftsRepeater" runat="server" DataSourceID="AbsentShiftsDataSource" >
+     <ItemTemplate>
+        <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />
+         <div class="row td4"  runat="server">
+             <div class="col-md-6  ">
+                 I no longer need a substitute for shift
+                 <asp:Label ID="SeqLabel" runat="server"  Text='<%#Eval("Sequence") %>'></asp:Label>, check here:  
+        <asp:CheckBox ID="NoNeedCheckbox" runat="server" />
+             </div>
+         </div>
+        
+      </ItemTemplate>
+</asp:Repeater>
+ <asp:Repeater ID="NeedSubRepeater" runat="server" DataSourceID="NeedSubDataSource" >
+     <ItemTemplate>
+         <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />
+         <div class="row td2"  runat="server">
+             <div class="col-md-6  ">
+                 If you have arranged a substitute for shift  <asp:Label ID="Label1" runat="server"  Text='<%#Eval("Sequence") %>'></asp:Label> ,<br />
+                 enter the  substitute's Volunteer ID number in this field:&nbsp;&nbsp;&nbsp;
     <asp:TextBox ID="SubTextBox" runat="server" Width="80"></asp:TextBox>
-  </div>
-  <div class="col-md-2 td2">Shift&nbsp; 
-   <asp:Label ID="ShiftLabel2" Font-Bold="true"   runat="server" ></asp:Label> 
-   </div>
-  </div>
- 
+             </div>
+             
+         </div>
+     </ItemTemplate>
+</asp:Repeater>
+
  <div id="CurrentSubCell"  class="row td4" runat="server">
  <div class="col-md-6  "> 
 If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="server"></asp:Label>, check here:&nbsp;&nbsp; 
@@ -108,12 +139,12 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
      </div>
 </div>
  <div class="row td3" id="DropinCell" runat="server">
-  <div class="col-md-6  "> 
-    If you will be dropping in, check here: &nbsp;
+  <div class="col-md-6  " style="padding-top:5px"> 
+     If you will be dropping in, check here:  &nbsp;
     <asp:CheckBox ID="NewDropCheckBox" runat="server" />   and select the correct shift.
     </div>
     <div class="col-md-3">
-    <div style="float:left"> Shift
+    <div style="float:left; padding-top:5px"> Shift
     </div>
     <div style="float:left; padding-left:5px">
     

@@ -8,6 +8,7 @@
     <SelectParameters>
       <asp:ControlParameter ControlID="PatternTextBox" Name="Pattern" Type="String" DefaultValue="" />
       <asp:ControlParameter ControlID="ShiftSelect" Name="ShiftID" Type="Int32" DefaultValue="0" />
+        <asp:ControlParameter ControlID="RoleSelect" Name="RoleID" Type="Int32" DefaultValue="0" />
        <asp:ControlParameter ControlID="SearchInactiveCheckBox" Name="Inactive" Type="Boolean" DefaultValue="false" />
     </SelectParameters>
     <DeleteParameters>
@@ -22,7 +23,7 @@
             <td>
                 <strong> Search Criteria</strong></td><td  >
          Filter by Shift: <cc2:ShiftSelector ID="ShiftSelect" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DoSearch" ></cc2:ShiftSelector>
-                                    
+          &nbsp;&nbsp; Filter by Role: <cc2:RoleSelector ID="RoleSelect" runat="server" AutoPostBack="true" OnSelectedIndexChanged="DoSearch"></cc2:RoleSelector>                        
      </td></tr>               
     <tr><td >
       
@@ -119,14 +120,7 @@
                  <asp:TextBox ID="NotesTextBox" runat="server" Text='<%# Bind("Notes") %>' />
                   </td></tr>
                          
-                <%-- <tr><td class="formlabel">
-               
-                 Preferred Name:</td><td>
-                 <asp:TextBox ID="PreferredNameTextBox" runat="server" 
-                     Text='<%# Bind("PreferredName") %>' />
-              
-                
-                   </td></tr>--%></table>
+                </table>
                  <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" 
                      CommandName="Insert" Text="Insert" />
                  &nbsp;<asp:LinkButton ID="InsertCancelButton" runat="server"  OnClick="ToView1"

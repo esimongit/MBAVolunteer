@@ -14,6 +14,19 @@ namespace MBAV
         {
             if (!Page.IsPostBack)
                 MultiView1.SetActiveView(View1);
+            int GuideID = 0;
+            try
+            {
+                GuideID = Convert.ToInt32(Session["GuideID"]);
+            }
+            catch { }
+            GuidesDM dm = new GuidesDM();
+            if (GuideID > 0)
+            {
+                GuidesObject guide = dm.FetchGuide(GuideID);
+                IrregularButton.Visible = guide.IrregularShift;
+            }
+            
         }
         protected void ClosePage(object sender, EventArgs e)
         {
@@ -115,7 +128,7 @@ namespace MBAV
                 {
                     if (DropinID < 0)
                     {
-                        dm.Save(GuideID, ShiftID, dt);
+                        dm.SaveOnShift(GuideID, ShiftID, dt);
 
                     }
                 }

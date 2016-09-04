@@ -437,10 +437,7 @@
           <DataField>LastUpdate</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
-        <Field Name="PreferredName">
-          <DataField>PreferredName</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
+         
         <Field Name="GuideName">
           <DataField>GuideName</DataField>
           <rd:TypeName>System.String</rd:TypeName>

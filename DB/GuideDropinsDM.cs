@@ -12,7 +12,28 @@ namespace  NQN.DB
         public ObjectList<GuideDropinsObject> FetchForShift(int ShiftID, DateTime dt)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt order by d.GuideID ";
+            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt and isnull(OnShift, 0) = 0 order by d.GuideID ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideDropinsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
+        public ObjectList<GuideDropinsObject> FetchOnShift(int ShiftID, DateTime dt)
+        {
+            ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
+            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt and OnShift = 1 order by d.GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -36,7 +57,7 @@ namespace  NQN.DB
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             if (dt == DateTime.MinValue)
                 return Results;
-            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt order by s.Sequence, d.GuideID ";
+            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and isnull(OnShift,0) = 0 order by s.Sequence, d.GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn); 
@@ -56,7 +77,7 @@ namespace  NQN.DB
         public ObjectList<GuideDropinsObject> FetchForGuide(int GuideID, DateTime dt)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and d.GuideID = @GuideID order by s.Sequence  ";
+            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and d.GuideID = @GuideID and isnull(OnShift,0) = 0  order by s.Sequence ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -93,11 +114,11 @@ namespace  NQN.DB
             return obj;
         }
 
-        public ObjectList<GuideDropinsObject> FetchAllForGuide(int GuideID, int ShiftID )
+        public ObjectList<GuideDropinsObject> FetchOnShiftForGuide(int GuideID, int ShiftID )
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             string qry = ReadAllCommand() + @" WHERE  DropinDate >= getdate() and d.GuideID = @GuideID 
-                        and d.ShiftID = @ShiftID ";
+                        and d.ShiftID = @ShiftID and OnShift = 1 ";
             qry += " order by DropinDate, s.Sequence  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -120,7 +141,7 @@ namespace  NQN.DB
         public ObjectList<GuideDropinsObject> FetchAllForGuide(int GuideID,  bool SpecialsOnly)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + " WHERE  DropinDate >= getdate() and d.GuideID = @GuideID ";
+            string qry = ReadAllCommand() + " WHERE  DropinDate >= getdate() and d.GuideID = @GuideID and isnull(OnShift,0) = 0 ";
             if (SpecialsOnly)
                 qry += " and s.recurring = 0 ";
             qry += " order by DropinDate, s.Sequence  ";
@@ -140,6 +161,7 @@ namespace  NQN.DB
             }
             return Results;
         }
+        // Get All Drop-ins including OnShift (Irregular Guides)
         public ObjectList<GuideDropinsObject> FetchForMonth(int Year, int Month, int GuideID)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
@@ -170,6 +192,7 @@ namespace  NQN.DB
 				GuideID=@GuideID
 				,DropinDate=@DropinDate
 				,ShiftID=@ShiftID
+                ,OnShift=@OnShift
 				 WHERE GuideDropinID = @GuideDropinID";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{
@@ -178,7 +201,8 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("GuideID",obj.GuideID));
 				myc.Parameters.Add(new SqlParameter("DropinDate",obj.DropinDate));
 				myc.Parameters.Add(new SqlParameter("ShiftID",obj.ShiftID));
-				myc.ExecuteNonQuery();
+                myc.Parameters.Add(new SqlParameter("OnShift", obj.OnShift));
+                myc.ExecuteNonQuery();
 			}
 		}
 
@@ -198,18 +222,28 @@ namespace  NQN.DB
             obj.DropinDate = dt;
             Save(obj);
         }
-
-		public void Save(GuideDropinsObject obj)
+        public void SaveOnShift(int GuideID, int ShiftID, DateTime dt)
+        {
+            GuideDropinsObject obj = new GuideDropinsObject();
+            obj.GuideID = GuideID;
+            obj.ShiftID = ShiftID;
+            obj.OnShift = true;
+            obj.DropinDate = dt;
+            Save(obj);
+        }
+        public void Save(GuideDropinsObject obj)
 		{
 			 string qry = @"INSERT INTO GuideDropins (
 				[GuideID]
 				,[DropinDate]
 				,[ShiftID]
+                ,[OnShift]
 				)
 			SELECT
 				@GuideID
 				,@DropinDate
 				,@ShiftID
+                ,isnull(@OnShift,0)
 				 where not exists (select 1 from GuideDropins where DropinDate = @DropinDate and GuideID = @GuideID and ShiftID = @ShiftID) "; ;
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{
@@ -217,7 +251,8 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("GuideID",obj.GuideID));
 				myc.Parameters.Add(new SqlParameter("DropinDate",obj.DropinDate));
 				myc.Parameters.Add(new SqlParameter("ShiftID",obj.ShiftID));
-				myc.ExecuteNonQuery();
+                myc.Parameters.Add(new SqlParameter("OnShift", obj.OnShift));
+                myc.ExecuteNonQuery();
 			}
 		}
 
@@ -274,6 +309,7 @@ namespace  NQN.DB
             obj.Email = GetNullableString(reader, "Email", String.Empty);
             obj.Phone = GetNullableString(reader, "Phone", String.Empty);
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
+            obj.OnShift = GetNullableBoolean(reader, "OnShift", false);
             return obj;
 		}
 
@@ -288,10 +324,11 @@ namespace  NQN.DB
 				,g.FirstName  
 				,g.LastName
                 ,g.Email
-                ,g.Phone
+                ,Phone = case g.CellPreferred WHEN 1 THEN g.Cell ELSE g.Phone END
 				,g.VolID
 				,Role= r.RoleName
-                ,r.MaskContactInfo
+                ,d.OnShift 
+                ,MaskContactInfo = r.MaskContactInfo | g.MaskPersonalInfo
                 ,s.Sequence
                 ,s.ShiftName
 				FROM GuideDropins d join Guides g on d.GuideID= g.GuideID

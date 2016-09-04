@@ -2,6 +2,7 @@
 using System.Collections.Generic; 
 using System.Web;
 using System.Web.UI;
+using System.Web.UI.HtmlControls;
 using System.Web.UI.WebControls;
 using NQN.DB;
 using NQN.Bus;
@@ -33,8 +34,8 @@ namespace MBAV
                 Response.Redirect("Login.aspx");
             GuidesDM dm = new GuidesDM();
             GuideSubstituteDM sdm = new GuideSubstituteDM();
-            GuideSubstituteObject sub = sdm.FetchForGuide(GuideID, DateTime.Parse(Request.QueryString["dt"]));
-            GuidesObject guide = dm.FetchRecord("g.GuideID", GuideID);
+           // GuideSubstituteObject sub = sdm.FetchForGuide(GuideID, DateTime.Parse(Request.QueryString["dt"]));
+            GuidesObject guide = dm.FetchGuide( GuideID);
             DateTime dt = DateTime.Today;
             try
             {
@@ -47,13 +48,11 @@ namespace MBAV
             }
             DateLabel.Text = DateTime.Parse(Request.QueryString["dt"]).ToLongDateString();
             NameLabel.Text = guide.GuideName;
-            SeqLabel.Text = guide.Sequence.ToString();
+
+            
             RoleLabel.Text = guide.RoleName;
-            ShiftLabel.Text = guide.Sequence.ToString();
-            ShiftLabel2.Text = guide.Sequence.ToString();
-            UndoSubCell.Visible = (sub != null);
-            NeedSubCell.Visible = guide.HasDate(dt) && (sub == null);
-            HaveSubCell.Visible = guide.HasDate(dt) && (sub == null || sub.SubstituteID == 0);
+            
+         
 
             SubstitutesBusiness sb = new SubstitutesBusiness();
             string SubShifts = sb.SubShiftsForGuideAndDate(GuideID, dt);
@@ -68,9 +67,7 @@ namespace MBAV
 
         protected void ClearCheckBoxes()
         {
-            NeedSubCheckBox.Checked = false;
-            NoNeedCheckbox.Checked = false;
-            SubTextBox.Text = String.Empty;
+           
             NoSubCheckBox.Checked = false;
             NewDropCheckBox.Checked = false;
         }
@@ -85,6 +82,7 @@ namespace MBAV
             SubOffersDM odm = new SubOffersDM();
             SubstitutesBusiness sb = new SubstitutesBusiness();
             GuideDropinsDM ddm = new GuideDropinsDM();
+            ShiftsDM sdm = new ShiftsDM();
             ObjectList<GuidesObject> NotifyList = new ObjectList<GuidesObject>();
             DateTime dt = DateTime.Parse(Request.QueryString["dt"]);
             int NotifyInterestedSubs = 0;
@@ -100,40 +98,78 @@ namespace MBAV
                 Response.Redirect("Login.aspx");
             // Asking for a Substitute.
             GuidesObject guide = gdm.FetchGuide(GuideID);
-            if (NeedSubCheckBox.Checked || SubTextBox.Text != String.Empty)
-            {
-                try
+            foreach (RepeaterItem itm in ShiftNeedRepeater.Items)
+            {               
+                CheckBox NeedSubCheckBox = (CheckBox)itm.FindControl("NeedSubCheckBox");
+                TextBox SubTextBox = (TextBox)itm.FindControl("SubTextBox");
+                if (NeedSubCheckBox.Checked)
                 {
-                    NotifyList.AddRange(gdm.FetchCaptains(guide.ShiftID));
-                    NotifyList.Add(guide);
-                    sb.SubRequest(GuideID, dt, SubTextBox.Text);
-                    RequestProcessed = true;
-                    msg = String.Format("{0} (1) will be absent from Shift {2} on {3}.", guide.GuideName, guide.VolID, guide.Sequence, dt.ToLongDateString());
-                    GuideSubstituteObject sub = dm.FetchForGuide(GuideID, dt);
-                    if (sub.SubstituteID > 0)
-                    {
-                        NotifyList.Add(gdm.FetchGuide(sub.SubstituteID));
-                        msg += String.Format(" {0} ({1}) will be substituting for this Guide.", sub.SubName, sub.Sub);
+                    int ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
+                    ShiftsObject shift = sdm.FetchShift(ShiftID);
+                   
+                    try
+                    {                      
+                        sb.SubRequest(GuideID, dt, ShiftID, SubTextBox.Text);
+                        NotifyList.AddRange(gdm.FetchCaptains(ShiftID));
+                        NotifyList.Add(guide);
+                        RequestProcessed = true;
+                        msg += String.Format("{0} (1) will be absent from Shift {2} on {3}.", guide.GuideName, guide.VolID, shift.Sequence, dt.ToLongDateString());
+                        GuideSubstituteObject sub = dm.FetchForGuide(GuideID, ShiftID, dt);
+                        if (sub.SubstituteID > 0)
+                        {
+                            NotifyList.Add(gdm.FetchGuide(sub.SubstituteID));
+                            msg += String.Format(" {0} ({1}) will be substituting for this Guide.", sub.SubName, sub.Sub);
+                        }
+                        NotifyInterestedSubs = (sub.SubstituteID == 0 && dt == DateTime.Today) ? ShiftID : 0;
                     }
-                    NotifyInterestedSubs = (sub.SubstituteID == 0) ? guide.ShiftID : 0;
+                    catch (Exception ex)
+                    {
+                        ErrorMessage.Set(ex.Message);
+                    }
                 }
-                catch (Exception ex)
+            }
+            // Add a Sub ID for an existing absence.
+            foreach (RepeaterItem itm in NeedSubRepeater.Items)
+            {
+                TextBox SubTextBox = (TextBox)itm.FindControl("SubTextBox");
+                if (SubTextBox.Text != String.Empty)
                 {
-                    ErrorMessage.Set(ex.Message);
+                    int ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
+                    ShiftsObject shift = sdm.FetchShift(ShiftID);
+                    try
+                    {                      
+                        sb.SubRequest(GuideID, dt, ShiftID, SubTextBox.Text);
+                        RequestProcessed = true;
+                          GuideSubstituteObject sub = dm.FetchForGuide(GuideID,ShiftID, dt);
+                        if (sub.SubstituteID > 0)
+                        {
+                            NotifyList.AddRange(gdm.FetchCaptains(ShiftID));
+                            NotifyList.Add(guide);
+                            NotifyList.Add(gdm.FetchGuide(sub.SubstituteID));
+                            msg += String.Format(" {0} ({1}) will be substituting for {2} on {3} Shift {4}.", sub.SubName, sub.Sub,guide.GuideName, dt.ToLongDateString(), shift.Sequence );
+                        }                
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorMessage.Set(ex.Message);
+                    }
                 }
             }
 
 
             // Remove Request for Sub
-            if (!RequestProcessed && NoNeedCheckbox.Checked)
+            foreach (RepeaterItem itm in AbsentShiftsRepeater.Items)
             {
-                NotifyList.AddRange(gdm.FetchCaptains(guide.ShiftID));
-                GuideSubstituteObject sub = dm.FetchForGuide(GuideID, dt);
+                CheckBox NoNeedCheckBox = (CheckBox)itm.FindControl("NoNeedCheckBox");
+                int ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
+                ShiftsObject shift = sdm.FetchShift(ShiftID);
+                NotifyList.AddRange(gdm.FetchCaptains(ShiftID));
+                GuideSubstituteObject sub = dm.FetchForGuide(GuideID, ShiftID, dt);
                 if (sub.SubstituteID > 0)
                     NotifyList.Add(gdm.FetchGuide(sub.SubstituteID));
                 RequestProcessed = true;
                 dm.DeleteForGuideAndDate(GuideID, dt);
-                msg = String.Format("{0} was planning to be absent on Shift {1} on {2}, will be present and no longer needs a substitute.",
+                msg += String.Format("{0} was planning to be absent on Shift {1} on {2}, will be present and no longer needs a substitute.",
                     guide.GuideName, guide.Sequence, dt.ToLongDateString());
             }
             // Remove Sub offer
@@ -201,7 +237,7 @@ namespace MBAV
                         CheckBox cb = null;
                         try
                         {
-                            cb = (CheckBox)row.Cells[Index].Controls[1];
+                            cb = (CheckBox)row.Cells[Index].Controls[3];
                         }
                         catch (Exception ex)
                         {
@@ -299,8 +335,8 @@ namespace MBAV
                 {
                     msg = "The following message has been sent: <br /> " + msg;
                     sb.Notify(NotifyList, msg);
-                    //if (NotifyInterestedSubs > 0)
-                    //    sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
+                    if (NotifyInterestedSubs > 0)
+                        sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
                 }
                 MsgLabel.Text = msg;
 

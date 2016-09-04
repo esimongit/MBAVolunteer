@@ -75,7 +75,7 @@
        PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Saturday"   OnVisibleMonthChanged="MonthChanged" 
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   OnVisibleMonthChanged="MonthChanged" 
         ></asp:Calendar>
    </div>
  </div></div>
@@ -88,7 +88,7 @@
        PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"  ShowNextPrevMonth="false"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Saturday"     
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"     
         ></asp:Calendar>
    </div>
  </div> 
@@ -100,7 +100,7 @@
        NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Saturday"   
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   
         ></asp:Calendar>
    </div>
  </div></div>
@@ -113,7 +113,7 @@
        PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Saturday"   
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   
         ></asp:Calendar>
    </div>
  </div> 
@@ -126,7 +126,7 @@
        PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Saturday"    
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"    
         ></asp:Calendar>
    </div>
  </div></div>

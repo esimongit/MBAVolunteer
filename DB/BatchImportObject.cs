@@ -83,6 +83,18 @@ namespace NQN.DB
                 _phone = value;
             }
         }
+        private string _cell = String.Empty;
+        public string Cell
+        {
+            get
+            {
+                return _cell;
+            }
+            set
+            {
+                _cell = value;
+            }
+        }
         private string _shift = String.Empty;
         public string Shift
         {
@@ -190,6 +202,7 @@ namespace NQN.DB
             _last = obj.Last;
             _email = obj.Email;
             _phone = obj.Phone;
+            _cell = obj.Cell;
             _shift = obj.Shift;
             _role = obj.Role;
 
@@ -222,6 +235,8 @@ namespace NQN.DB
         public string Email;
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         public string Phone;
+        [FieldQuoted('"', QuoteMode.OptionalForBoth)]
+        public string Cell;
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]
         public string Shift;
         [FieldQuoted('"', QuoteMode.OptionalForBoth)]

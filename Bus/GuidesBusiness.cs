@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic; 
 using System.Text;
+using System.Data;
 using NQN.DB;
 using NQN.Core;
 
@@ -126,7 +127,12 @@ namespace NQN.Bus
             }
             return dList;
         }
-        public ObjectList<GuidesObject> Roster(int ShiftID, DateTime dt)
+        
+        public DataTable Roster(int ShiftID, DateTime dt)
+        {
+            return RosterList(ShiftID, dt).RenderAsTable();
+        }
+        public ObjectList<GuidesObject> RosterList(int ShiftID, DateTime dt)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
             GuidesDM dm = new GuidesDM();
@@ -135,6 +141,7 @@ namespace NQN.Bus
             GuideDropinsDM ddm = new GuideDropinsDM();
             ObjectList<GuideSubstituteObject> sList = sdm.FetchForShift(ShiftID, dt);
             ObjectList<GuideDropinsObject> pList = ddm.FetchForShift(ShiftID, dt);
+            ObjectList<GuideDropinsObject> rList = ddm.FetchOnShift(ShiftID, dt);
             foreach (GuidesObject obj in dList)
             {
                 GuideSubstituteObject sub = sList.Find(x => x.GuideID == obj.GuideID);
@@ -166,7 +173,7 @@ namespace NQN.Bus
         }
 
         // Staff Update
-        public void UpdateRoster( string Notes, DateTime dt, bool SubRequested, string Sub,   int GuideID)
+        public void UpdateRoster( string Notes, DateTime dt, bool SubRequested, string Sub,  int ShiftID, int GuideID)
         {
             SubstitutesBusiness sb = new SubstitutesBusiness();
             GuideSubstituteDM dm = new GuideSubstituteDM();
@@ -180,14 +187,14 @@ namespace NQN.Bus
                     throw new Exception("Guide ID entered is unknown");
             }
             // SubstituteID = 0 means remove sub
-            GuideSubstituteObject obj = dm.FetchForGuide(GuideID, dt);
+            GuideSubstituteObject obj = dm.FetchForGuide(GuideID, ShiftID, dt);
             if (SubRequested)
             {
                 if (obj == null)
                 {
                     obj = new GuideSubstituteObject();
                     obj.GuideID = GuideID;
-                    obj.ShiftID = guide.ShiftID;
+                    obj.ShiftID = ShiftID;
                     obj.SubDate = dt;
                     obj.SubstituteID = SubstituteID;
                     obj.DateEntered = DateTime.Today;
@@ -196,6 +203,9 @@ namespace NQN.Bus
                     // Re-fetch to populate fields
                     obj = dm.FetchRecord("GuideSubstituteID", dm.GetLast());
                     sb.NotifyCaptains(obj);
+                    // Immediate notification if the request is for today
+                    if (obj.SubDate == DateTime.Today)
+                        sb.NotifyOffers(GuideID, ShiftID, dt);
                 }
                 else
                 {
@@ -217,18 +227,26 @@ namespace NQN.Bus
                 }
             }
         }
-        public void AddDropin(string VolID, DateTime dt, int ShiftID)
+        public void AddDropIn(string VolID, DateTime dt, int ShiftID)
         {
-            if (VolID == null || VolID.Trim() == String.Empty)
+            if (String.IsNullOrEmpty(VolID))
                 return;
             GuidesDM gdm = new GuidesDM();
             int GuideID = gdm.GuideForVol(VolID);
             if (GuideID == 0)
                 throw new Exception("Guide ID entered is unknown");
             GuideDropinsDM dm = new GuideDropinsDM();
+            // Already dropping in this shift
             GuideDropinsObject dropin = dm.FetchForGuide(GuideID, dt, ShiftID);
             if (dropin != null)
                 return;
+            GuideSubstituteDM sdm = new GuideSubstituteDM();
+            GuideSubstituteObject sub  = sdm.FetchBySub(GuideID, dt, ShiftID );
+            if (sub != null)
+                throw new Exception("Guide is already substituting on this shift and date.");
+            GuidesObject guide = gdm.FetchGuide(GuideID);
+            if (guide.Shifts.Find(x => x.ShiftID == ShiftID) != null)
+                throw new Exception("Guide is serving on this shift.");
             dropin = new GuideDropinsObject();
             dropin.GuideID = GuideID;
             dropin.DropinDate = dt;
@@ -249,8 +267,8 @@ namespace NQN.Bus
             }
             return obj;
         } 
-        public void UpdateGuide(int GuideID, string VolID, string FirstName, string LastName, string Phone, string Email, 
-            int AddShift, int RoleID, int AltRoleID, bool Inactive, string Notes)
+        public void UpdateGuide(int GuideID, string VolID, string FirstName, string LastName, string Phone, string Cell, bool CellPreferred, string Email, 
+            int AddShift, int RoleID, int AltRoleID, bool Inactive, string Notes, bool MaskPersonalInfo)
         {
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(GuideID);
@@ -258,6 +276,10 @@ namespace NQN.Bus
             guide.LastName = LastName;
             guide.FirstName = FirstName;
             guide.Phone = Phone;
+            guide.Cell = Cell;
+            guide.CellPreferred = CellPreferred;
+            if (String.IsNullOrEmpty(Phone) && !String.IsNullOrEmpty(Cell))
+                guide.CellPreferred = true;
             guide.Email = Email;
             // If AddShift is set, Update will try to add that shift for this guide
             guide.AddShift = AddShift;
@@ -265,6 +287,7 @@ namespace NQN.Bus
             guide.AltRoleID = AltRoleID;
             guide.Inactive = Inactive;
             guide.Notes = Notes;
+            guide.MaskPersonalInfo = MaskPersonalInfo;
             guide.VolID = VolID;
             guide.LastUpdate = DateTime.Now;
             guide.UpdateBy = UserSecurity.GetUserName();

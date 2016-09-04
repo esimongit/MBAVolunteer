@@ -18,9 +18,10 @@ namespace VolManager
             {
                 MultiView1.SetActiveView(View1);
                 GuidesDM dm = new GuidesDM();
-                DataTable taskTable = dm.Search("", 0, false);
+                DataTable taskTable = dm.Search("", 0,0, false);
                 Session["TaskTable"] = taskTable;
                 ShiftSelect.DataBind();
+                RoleSelect.DataBind();
                 //Bind the GridView control to the data source.
                 GridView1.DataSource = Session["TaskTable"];
                 GridView1.DataBind();
@@ -33,7 +34,7 @@ namespace VolManager
              
              
                 GuidesDM dm = new GuidesDM();
-                DataTable taskTable = dm.Search(PatternTextBox.Text, Convert.ToInt32(ShiftSelect.SelectedValue), SearchInactiveCheckBox.Checked);
+                DataTable taskTable = dm.Search(PatternTextBox.Text, Convert.ToInt32(ShiftSelect.SelectedValue), Convert.ToInt32(RoleSelect.SelectedValue), SearchInactiveCheckBox.Checked);
                 Session["TaskTable"] = taskTable;
 
                 //Bind the GridView control to the data source.

@@ -153,6 +153,10 @@ namespace NQN.DB
             get;
             set;
         }
+        public int Attendance
+        {
+            get;set;
+        }
 		public ShiftsObject()
 		{
 			_tablename = "Shifts";

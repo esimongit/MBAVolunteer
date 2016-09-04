@@ -8,12 +8,34 @@
  </SelectParameters>
  <UpdateParameters>
  <asp:QueryStringParameter QueryStringField="ShiftDate" Name="dt" Type="DateTime" DefaultValue="1/2/2016" />
+      <asp:QueryStringParameter QueryStringField="ShiftID" Name="ShiftID" Type="Int32" DefaultValue="0" />
  </UpdateParameters>
  <InsertParameters>
   <asp:QueryStringParameter QueryStringField="ShiftID" Name="ShiftID" Type="Int32" DefaultValue="0" />
  <asp:QueryStringParameter QueryStringField="ShiftDate" Name="dt" Type="DateTime" DefaultValue="1/2/2016" />
  </InsertParameters>
 </asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ShiftDataSource" runat="server" TypeName = "NQN.Bus.ShiftsBusiness" SelectMethod="SelectShift"   >
+ <SelectParameters>
+   <asp:QueryStringParameter QueryStringField="ShiftID" Name="ShiftID" Type="Int32" DefaultValue="0" />
+   <asp:QueryStringParameter QueryStringField="ShiftDate" Name="dt" Type="DateTime" DefaultValue="1/2/2016" />
+ </SelectParameters>
+    </asp:ObjectDataSource>
+<asp:FormView ID="ShiftView" runat="server" DataSourceID="ShiftDataSource" DefaultMode="ReadOnly">
+    <ItemTemplate>
+        <table>
+            <tr><td class="formlabel">
+                Shift Name:</td><td>
+                    <asp:Label ID="ShiftNameLabel" Text='<%#Eval("ShortName") %>' runat="server"></asp:Label>
+                </td></tr>
+             <tr><td class="formlabel">
+                Date:</td><td>
+                    <asp:Label ID="DateLabel" Text='<%#Eval("ShiftDate", "{0:D}") %>' runat="server"></asp:Label>
+                </td></tr>
+        </table>
+    </ItemTemplate>
+
+</asp:FormView>
 <cc2:NQNHyperLink ID="ReturnButton" runat="server" Text="Return to Calendar"  NavigateUrl="ShiftCalendar.aspx"></cc2:NQNHyperLink>
 <cc2:NQNButton ID="AddButton" runat="server" Text="Add Drop-in" OnClick="ShowDropin" />
     <cc2:NQNGridView ID="GridView1" runat="server" AutoGenerateColumns="False"  PageSize="50"
@@ -35,10 +57,7 @@
             <asp:BoundField DataField="Notes" HeaderText="Notes" SortExpression="Notes" /> 
             <asp:BoundField DataField="RoleName" HeaderText="Role"  ReadOnly="true"
                 SortExpression="RoleName" />
-   
-         
-   
-          
+           
             <asp:CheckBoxField DataField="SubRequested" HeaderText="Need Sub" 
                 SortExpression="SubRequested" />
           <asp:BoundField DataField="Sub" HeaderText="Sub ID"  ControlStyle-Width="60"  />

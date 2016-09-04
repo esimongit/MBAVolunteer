@@ -5,7 +5,7 @@
 
 <li>ID or</li><li>First + Last + Email or</li>   
 </ul></p>
-<p>Fields:  ID, First, Last, Email, Phone,Shift,Role </p>
+<p>Fields:  ID, First, Last, Email, Phone, Cell,Shift,Role </p>
 <p>Shift is the form "Mon2" or "Sat1A".</p>
 <p>Role is one of: Aquarium Guide, Seasonal Guide, Shift Captain, TCL, Info Desk</p>
     <asp:FileUpload ID="FileUpload1" runat="server"  /> <asp:Button runat="server" ID="ImportButton" Text="Import" OnClick="ImportButton_Click" />
@@ -15,7 +15,7 @@
 <HeaderTemplate>
 <div style="color:Black">
 <h3>Current Pending Records</h3>
-<table><tr><th>ID</th><th>Last</th><th> First</th><th>Email</th><th>Phone</th><th>Shift</th><th>Role</th><th>Status</th></tr> 
+<table><tr><th>ID</th><th>Last</th><th> First</th><th>Email</th><th>Phone</th><th>Cell</th><th>Shift</th><th>Role</th><th>Status</th></tr> 
  
 </HeaderTemplate>
 <ItemTemplate>
@@ -25,6 +25,7 @@
 <td><%#DataBinder.Eval(Container.DataItem, "Last")%></td>
 <td><%#DataBinder.Eval(Container.DataItem, "Email")%></td>
 <td><%#DataBinder.Eval(Container.DataItem, "Phone")%></td> 
+<td><%#DataBinder.Eval(Container.DataItem, "Cell")%></td> 
 <td><%#DataBinder.Eval(Container.DataItem,"Shift") %></td>
 <td><%#DataBinder.Eval(Container.DataItem,"Role") %></td>
 <td><%#DataBinder.Eval(Container.DataItem,"RecordStatus") %></td>

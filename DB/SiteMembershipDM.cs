@@ -115,49 +115,7 @@ namespace  NQN.DB
             return Results;
         }
         
-        public ObjectList<SiteMembershipUser> FetchDups()
-        {
-            ObjectList<SiteMembershipUser> Results = new ObjectList<SiteMembershipUser>();
-            string qry = String.Format(@"SELECT
-                n.VolID,
-                n.FirstName,
-                n.LastName, 
-			     u.Userid,
-                u.UserName, 
-                m.Email,
-                m.CreateDate,
-                m.LastLoginDate, 
-                m.IsLockedOut,
-			    cnt = (select count(*) from  dbo.aspnet_Users u2
-                join {0} n2 on n2.Email = u2.UserName
-	             where u2.ApplicationId = u.ApplicationId
-			     and u2.UserId= u.UserId)
-                 FROM   dbo.aspnet_Membership m join dbo.aspnet_Users u
-                 on    u.UserId = m.UserId  
-                join {0} n on n.Email = m.Email
-	             join aspnet_Applications a on a.ApplicationId = u.ApplicationId
-                    and a.ApplicationName = @ApplicationName
-		           order by cnt desc ", _namestable);            
-
-            using (SqlConnection conn = ConnectionFactory.getNew())
-            {
-                SqlCommand myc = new SqlCommand(qry, conn);
-                myc.Parameters.Add(new SqlParameter("ApplicationName", _applicationname));
-              
-                using (SqlDataReader reader = myc.ExecuteReader())
-                {
-                    SiteMembershipUser obj = LoadFrom(reader);
-                    while (obj != null)
-                    {
-                         if (GetNullableInt32(reader, "cnt", 0) == 1)
-                            break;
-                        Results.Add(obj);
-                        obj = LoadFrom(reader);
-                    }
-                }
-            }
-            return Results;
-        }
+        
 
         public bool MemberExists(string Email)
         {
@@ -181,11 +139,7 @@ namespace  NQN.DB
             }
             return cnt > 0;
         }
-              
-        
-
-        
-
+      
         protected override SiteMembershipUser LoadFrom(SqlDataReader reader)
 		{
 			if (reader == null) return null;

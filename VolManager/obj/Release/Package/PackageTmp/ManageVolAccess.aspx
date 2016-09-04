@@ -5,8 +5,7 @@ Title="Manage Volunteer Logins" %>
         SelectMethod="SelectVols" TypeName="NQN.Bus.MembershipBusiness"  
          DeleteMethod="DeleteVols" OnDeleted="OnDeleted">
     <SelectParameters>
-     <asp:ControlParameter ControlID="PatternTextBox" Name="Pattern" Type="String" DefaultValue="" />
-     <asp:ControlParameter ControlID="DupCheckBox" Name="DupsOnly" Type="Boolean" DefaultValue="0" />
+     <asp:ControlParameter ControlID="PatternTextBox" Name="Pattern" Type="String" DefaultValue="" /> 
     </SelectParameters>
       
     </asp:ObjectDataSource>
@@ -36,8 +35,7 @@ Title="Manage Volunteer Logins" %>
       
         <asp:TextBox ID="PatternTextBox" runat="server"  Width="200px"  AutoPostBack="true"   ></asp:TextBox>
         Search by First, Last, ID or Email.
-    </td><td style="height: 51px" > <asp:CheckBox ID="DupCheckBox" runat="server" Text="Duplicates Only" AutoPostBack="true" />
-        </td>
+    </td> 
       </tr>
     </table>
     <cc2:NQNGridView ID="NQNGridView1" runat="server" AllowMultiColumnSorting="False" OnSelectedIndexChanged="GridView_Selected" PageSize="50"
@@ -50,7 +48,7 @@ Title="Manage Volunteer Logins" %>
                 UpdateImageUrl="~/Images/save.gif"  />
                 <asp:CommandField ButtonType="Button"  HeaderText="Reset Password" 
                       ShowSelectButton="True" SelectText="Reset" />
-                 <asp:TemplateField  HeaderText="Name  ">
+                 <asp:TemplateField  HeaderText="Name" SortExpression="First">
                   <ItemTemplate>
                        <asp:Label ID="nameLabel"
                           Text='<%#Eval("First") + " " + Eval("Last") %>' runat="server" ></asp:Label>

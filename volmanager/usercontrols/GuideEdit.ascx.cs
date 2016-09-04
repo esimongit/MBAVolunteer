@@ -30,8 +30,15 @@ namespace VolManager.UserControls
             GuidesDM dm = new GuidesDM();
             GuidesObject obj = dm.FetchGuide(GuideID);
             MembershipBusiness mb = new MembershipBusiness();
-            mb.InsertVols(obj.VolID, obj.Email);
-            FormView1.DataBind();
+            try
+            {
+                mb.InsertVols(obj.VolID, obj.Email);
+                FormView1.DataBind();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage.Set(ex.Message);
+            }
         }
 
         protected void ResetPW(object sender, EventArgs e)
@@ -54,9 +61,16 @@ namespace VolManager.UserControls
         protected void DeleteShift(object sender, GridViewDeleteEventArgs e)
         {
             GuidesDM dm = new GuidesDM();
-            dm.DeleteGuideShift(Convert.ToInt32(Session["GuideID"]), Convert.ToInt32(e.Keys[0]));
-            GridView ShiftView = (GridView)FormView1.FindControl("ShiftView");
-            ShiftView.DataBind();
+            try
+            {
+                dm.DeleteGuideShift(Convert.ToInt32(Session["GuideID"]), Convert.ToInt32(e.Keys[0]));
+                FormView1.DataBind();
+            }
+            catch(Exception ex)
+            {
+                ErrorMessage.Set(ex.Message);
+            } 
+            
         }
         protected void CheckChanged(object sender, EventArgs e)
         {

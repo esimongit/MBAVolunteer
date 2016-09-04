@@ -58,6 +58,33 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.ObjectDataSource ShiftsDataSource;
         
         /// <summary>
+        /// RegularShiftsDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource RegularShiftsDataSource;
+        
+        /// <summary>
+        /// NeedSubDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource NeedSubDataSource;
+        
+        /// <summary>
+        /// AbsentShiftsDataSource control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.ObjectDataSource AbsentShiftsDataSource;
+        
+        /// <summary>
         /// MultiView1 control.
         /// </summary>
         /// <remarks>
@@ -103,85 +130,31 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.Label RoleLabel;
         
         /// <summary>
-        /// NeedSubCell control.
+        /// ShiftNeedRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl NeedSubCell;
+        protected global::System.Web.UI.WebControls.Repeater ShiftNeedRepeater;
         
         /// <summary>
-        /// NeedSubCheckBox control.
+        /// AbsentShiftsRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox NeedSubCheckBox;
+        protected global::System.Web.UI.WebControls.Repeater AbsentShiftsRepeater;
         
         /// <summary>
-        /// ShiftLabel control.
+        /// NeedSubRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ShiftLabel;
-        
-        /// <summary>
-        /// UndoSubCell control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl UndoSubCell;
-        
-        /// <summary>
-        /// SeqLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label SeqLabel;
-        
-        /// <summary>
-        /// NoNeedCheckbox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox NoNeedCheckbox;
-        
-        /// <summary>
-        /// HaveSubCell control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl HaveSubCell;
-        
-        /// <summary>
-        /// SubTextBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox SubTextBox;
-        
-        /// <summary>
-        /// ShiftLabel2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label ShiftLabel2;
+        protected global::System.Web.UI.WebControls.Repeater NeedSubRepeater;
         
         /// <summary>
         /// CurrentSubCell control.

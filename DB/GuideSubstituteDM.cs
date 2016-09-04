@@ -30,15 +30,16 @@ namespace  NQN.DB
             }
             return Results;
         }
-        // YOu can only ask for a sub for your home shift, so no need to specify the shift.
-        public  GuideSubstituteObject FetchForGuide(int GuideID, DateTime dt )
+       
+        public  GuideSubstituteObject FetchForGuide(int GuideID, int ShiftID,  DateTime dt )
         {
             GuideSubstituteObject obj = null;
-            string qry = ReadAllCommand() + " WHERE g.GuideID = @GuideID and SubDate = @dt ";
+            string qry = ReadAllCommand() + " WHERE g.GuideID = @GuideID and s.ShiftID = @ShiftID and SubDate = @dt ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
                 myc.Parameters.Add(new SqlParameter("dt", dt)); 
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
@@ -48,6 +49,27 @@ namespace  NQN.DB
             return obj;
         }
 
+        public ObjectList<GuideSubstituteObject> FetchForGuide(int GuideID, int ShiftID)
+        {
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            string qry = ReadAllCommand() + " WHERE g.GuideID = @GuideID and s.ShiftID = @ShiftID and SubDate > getdate() ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideSubstituteObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         public ObjectList<GuideSubstituteObject> FetchAllForGuide(int GuideID)
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
@@ -371,7 +393,7 @@ namespace  NQN.DB
 				,FirstName =   g.FirstName  
 				,g.LastName
                 ,g.Email
-                ,g.Phone
+                ,Phone = case g.CellPreferred WHEN 1 THEN g.Cell ELSE g.Phone END
 				,g.VolID
 				,Role = r.RoleName
                 ,MaskContactinfo = r.MaskContactInfo

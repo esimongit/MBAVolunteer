@@ -73,16 +73,29 @@
        </div>
        </div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-5"> <asp:RequiredFieldValidator ID="RequiredFieldValidator2" ControlToValidate="PhoneTextBox" runat="server"
-             ErrorMessage="Phone is required"
-          Display="Dynamic">*</asp:RequiredFieldValidator>
+        <div class="col-md-5"> 
           <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="PhoneTextBox"
                     ValidationExpression='<%# NQN.DB.GuidesObject.ValidPhone %>' ErrorMessage="Phone must have 10 digits"
              Display="Dynamic">*</asp:RegularExpressionValidator>
-         Phone:</div>
+         Home Phone:</div>
          <div class="col-md-4"> 
          <asp:TextBox ID="PhoneTextBox" runat="server" TextMode="Phone"  Text='<%# Bind("Phone") %>' />
         </div>
+        </div>
+          <div class="row" style="padding-bottom:4px">
+        <div class="col-md-5"> 
+          <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="CellPhoneTextBox"
+                    ValidationExpression='<%# NQN.DB.GuidesObject.ValidPhone %>' ErrorMessage="Phone must have 10 digits"
+             Display="Dynamic">*</asp:RegularExpressionValidator>
+         Mobile Phone:</div>
+         <div class="col-md-4"> 
+         <asp:TextBox ID="CellPhoneTextBox" runat="server" TextMode="Phone"  Text='<%# Bind("Cell") %>' />
+        </div>
+        </div>
+           <div class="row" style="padding-bottom:4px">
+         <div class=" col-md-offset-1 col-md-3">
+             <asp:CheckBox ID="CellPreferredCheckBox" runat="server" Text="Preferred" Checked='<%#Bind("CellPreferred") %>' />
+         </div>
         </div>
         <div class="row" style="padding-bottom:4px">
         <div class="col-md-5">
@@ -92,6 +105,20 @@
          Email Address:</div>
          <div class="col-md-4"> 
          <asp:TextBox ID="EmailTextBox"  TextMode="Email" Width="200" runat="server" Text='<%# Bind("Email") %>' />
+        </div></div>
+          <div class="row" style="padding-bottom:4px">
+        <div class="col-md-5">
+         Personal Info:</div>
+              <div class="col-md-7"> 
+             <div style="float:left">My Information should be visible to Volunteers</div>
+                  <div style="float:left; padding-left:4px"> 
+              <asp:RadioButtonList ID="MaskRadio" RepeatDirection="Horizontal" runat="server"  RepeatColumns="2"  CellPadding="3" SelectedValue='<%#Bind("MaskPersonalInfo") %>'
+               >
+             <asp:ListItem Value="True" Text="No" ></asp:ListItem>
+              <asp:ListItem Value="False" Text="Yes" Selected="True"></asp:ListItem>
+           </asp:RadioButtonList></div>
+          <div class="clear"></div>
+         
         </div></div>
          <div class="row" style="padding-bottom:4px">
         <div class="col-md-5">
@@ -147,7 +174,7 @@
 <asp:Button ID="View2Button" runat="server" Text="Select shifts for which you can substitute" CssClass="btn btn-info"  CausesValidation="false" BackColor="#5bc0fe" OnClick="ToView2" />
         </div>
  <div class="row" style="padding-top:20px">
-<asp:Button ID="Button1" runat="server" Text="Select dates you will drop in on a shift" CssClass="btn btn-info" OnClick="ToView3"   CausesValidation="false"  BackColor="#6e8ade"/>
+<asp:Button ID="IrregularButton" runat="server" Text="Select dates you plan to be on a shift" CssClass="btn btn-info" OnClick="ToView3"   CausesValidation="false"  BackColor="#6e8ade"/>
         </div>
  <div class="row" style="padding-top:20px">
 <asp:Button ID="Button2" runat="server" Text="Review your substitute commitments" CssClass="btn btn-info" OnClick="ToView4"    CausesValidation="false" BackColor="#6e8aa0"/>
@@ -196,7 +223,7 @@ you can substitute. </h3><hr/>
    
 <div class="row" style="padding-top:10px; padding-bottom:20px; font-size:large; margin-left:5px">
     In the table below,  check all the boxes for dates  
-you plan to drop in for this shift, then click "Submit". </div>
+you plan to be a guide for this shift, then click "Submit". If you later discover that you will be absent on a selected date, please request a substitute.</div>
   
 <asp:Repeater ID="Repeater2" runat="server" DataSourceID="ObjectDataSource2" >
 <HeaderTemplate><table cellpadding="5"></HeaderTemplate>
