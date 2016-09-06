@@ -95,6 +95,7 @@ namespace  NQN.DB
                     or (dbo.AB(@dt) = 'BWeek' and BWeek = 1)))
 		            or (recurring = 0 and ShiftDate = @dt)
                 order by Sequence ";
+           
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -109,7 +110,52 @@ namespace  NQN.DB
                     }
                 }
             }
+            for (int i = 0; i < Results.Count; i++)
+            {
+                Results[i].Captains = CaptainsForDate(Results[i].ShiftID, dt);
+                Results[i].InfoDesk = InfoForDate(Results[i].ShiftID, dt);
+            }
             return Results;
+        }
+        public string CaptainsForDate(int ShiftID, DateTime dt)
+        {
+            string qry = @"select Captains=dbo.FlattenDateCaptains(@ShiftID, @dt)";
+            string res = String.Empty;
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+
+                try
+                {
+                    res = myc.ExecuteScalar().ToString();
+                }
+                catch { }
+            }
+
+            return res;
+        }
+        public string InfoForDate(int ShiftID, DateTime dt)
+        {
+            string qry = @"select Info=dbo.FlattenDateInfo(@ShiftID, @dt)";
+            string res = String.Empty;
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+
+                try
+                {
+                    res = myc.ExecuteScalar().ToString();
+                }
+                catch { }
+            }
+
+            return res;
         }
 
         public ShiftsObject FetchShift(int ShiftID)

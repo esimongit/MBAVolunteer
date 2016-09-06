@@ -40,10 +40,20 @@ namespace NQN.Bus
         {
             ShiftsDM dm = new ShiftsDM();
             ObjectList<ShiftsObject> dList = dm.ShiftsForDate(dt);
-            GuidesBusiness gb = new GuidesBusiness();
+            GuidesDM gdm = new GuidesDM();
+            GuideSubstituteDM sdm = new GuideSubstituteDM();
+            GuideDropinsDM ddm = new GuideDropinsDM();
+
             for (int i = 0; i < dList.Count; i++)
             {
-                dList[i].Attendance = gb.RosterList(dList[i].ShiftID, dt).Count;
+                int Current = gdm.FetchForShift(dList[i].ShiftID).Count;
+                foreach (GuideSubstituteObject sub in sdm.FetchForShift(dList[i].ShiftID, dt))
+                {
+                    if (sub.NoSub)
+                        Current--;
+                }
+               Current += ddm.FetchForShift(dList[i].ShiftID, dt).Count;
+                dList[i].Attendance = Current;
             }
             return dList;
         }
