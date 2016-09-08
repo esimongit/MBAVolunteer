@@ -93,16 +93,26 @@ namespace VolManager
             GuidesDM dm = new GuidesDM();
             ObjectList<GuidesObject> dList = dm.FetchMissingLogins();
             MembershipBusiness mb = new MembershipBusiness();
-            string res = String.Empty;
+            int cnt = 0;
+            string err = String.Empty;
             foreach (GuidesObject obj in dList)
             {
                 if (obj.Email != null  )
                 {
-                    res += "<br/>" + mb.InsertVols(obj.VolID, obj.Email);
-
+                    try
+                    {
+                         mb.InsertVols(obj.VolID, obj.Email);
+                        cnt++;
+                    }
+                    catch (Exception ex)
+                    {
+                        err += String.Format("<br />{0} {1}", ex.Message, obj.Email);
+                    }
                 }
             }
-            InfoMessage.Set(res);
+            if (err != String.Empty)
+                ErrorMessage.Set(err);
+            InfoMessage.Set(String.Format("{0} Logins created", cnt));
         }
     }
 }

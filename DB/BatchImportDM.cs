@@ -26,7 +26,7 @@ namespace  NQN.DB
 				,[ImportStatus]
                 , s.ShiftID
                 ,r.RoleID
-				FROM BatchImport i join Shifts s on i.Shift = s.ShortName join Roles r on r.RoleName = i.Role ";
+				FROM BatchImport i left join Shifts s on i.Shift = s.ShortName join Roles r on r.RoleName = i.Role ";
 
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
