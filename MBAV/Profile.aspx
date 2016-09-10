@@ -53,7 +53,7 @@
         <h3>Please correct this information</h3>
         </div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-5">
+        <div class="col-md-4">
         <asp:RequiredFieldValidator ID="FirstRequired" ControlToValidate="FirstNameTextBox" runat="server" ErrorMessage="First Name is required"
           Display="Dynamic">*</asp:RequiredFieldValidator>
          First Name: </div>
@@ -63,7 +63,7 @@
            </div>
          </div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-5">
+        <div class="col-md-4">
          <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="LastNameTextBox" runat="server" ErrorMessage="Last Name is required"
           Display="Dynamic">*</asp:RequiredFieldValidator>
          Last Name:</div>
@@ -73,7 +73,7 @@
        </div>
        </div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-5"> 
+        <div class="col-md-4"> 
           <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="PhoneTextBox"
                     ValidationExpression='<%# NQN.DB.GuidesObject.ValidPhone %>' ErrorMessage="Phone must have 10 digits"
              Display="Dynamic">*</asp:RegularExpressionValidator>
@@ -83,7 +83,7 @@
         </div>
         </div>
           <div class="row" style="padding-bottom:4px">
-        <div class="col-md-5"> 
+        <div class="col-md-4"> 
           <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="CellPhoneTextBox"
                     ValidationExpression='<%# NQN.DB.GuidesObject.ValidPhone %>' ErrorMessage="Phone must have 10 digits"
              Display="Dynamic">*</asp:RegularExpressionValidator>
@@ -91,14 +91,13 @@
          <div class="col-md-4"> 
          <asp:TextBox ID="CellPhoneTextBox" runat="server" TextMode="Phone"  Text='<%# Bind("Cell") %>' />
         </div>
-        </div>
-           <div class="row" style="padding-bottom:4px">
-         <div class=" col-md-offset-1 col-md-3">
+         
+         <div class="col-md-3">
              <asp:CheckBox ID="CellPreferredCheckBox" runat="server" Text="Preferred" Checked='<%#Bind("CellPreferred") %>' />
          </div>
         </div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-5">
+        <div class="col-md-4">
          <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="EmailTextBox"
                     ValidationExpression='<%# NQN.DB.GuidesObject.ValidEmail %>' ErrorMessage="Email is not Valid"
              Display="Dynamic">*</asp:RegularExpressionValidator>
@@ -107,7 +106,7 @@
          <asp:TextBox ID="EmailTextBox"  TextMode="Email" Width="200" runat="server" Text='<%# Bind("Email") %>' />
         </div></div>
           <div class="row" style="padding-bottom:4px">
-        <div class="col-md-5">
+        <div class="col-md-4">
          Personal Info:</div>
               <div class="col-md-7"> 
              <div style="float:left">My Information should be visible to Volunteers</div>

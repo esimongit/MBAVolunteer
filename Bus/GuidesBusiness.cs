@@ -87,6 +87,7 @@ namespace NQN.Bus
                 newsubs.Role = obj.Role;
                 dList.Add(newsubs);
             }
+            dList.Sort((x, y) => x.Sequence.CompareTo(y.Sequence));
             return dList;
         }
         public ObjectList<GuideSubstituteObject> SelectRequestsForDate(DateTime dt)
