@@ -5,6 +5,7 @@
 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" TypeName="NQN.DB.SubOffersDM" SelectMethod="FetchForShift">
 <SelectParameters>
  <asp:ControlParameter ControlID="ShiftSelect" Name="ShiftID" Type="Int32" DefaultValue="0" />
+    <asp:SessionParameter SessionField="IsCaptain" Name="IsCaptain" Type="Boolean" DefaultValue="false" />
 </SelectParameters>
 </asp:ObjectDataSource>
     <div class="row"> 

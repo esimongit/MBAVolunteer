@@ -9,10 +9,12 @@ namespace  NQN.DB
 {
 	public class SubOffersDM : DBAccess<SubOffersObject>
 	{
-        public ObjectList<SubOffersObject> FetchForShift(int ShiftID)
+        public ObjectList<SubOffersObject> FetchForShift(int ShiftID, bool IsCaptain)
         {
             ObjectList<SubOffersObject> Results = new ObjectList<SubOffersObject>();
-            string qry = ReadAllCommand() + " WHERE o.ShiftID = @ShiftID order by VolID  ";
+            
+
+            string qry = ReadAllCommand() + " WHERE o.ShiftID = @ShiftID order by g.FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -22,6 +24,8 @@ namespace  NQN.DB
                     SubOffersObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
+                        if (IsCaptain)
+                            obj.MaskContactInfo = false;
                         Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
@@ -136,7 +140,7 @@ namespace  NQN.DB
                 ,g.VolID
                 ,HomeShift=dbo.FlattenShortShifts(o.GuideID)
                 ,s.Sequence
-                ,r.MaskContactInfo
+               ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
 				FROM SubOffers o  join Guides g on o.GuideID = g.GuideID join Shifts s on s.ShiftID = o.ShiftID
                  join Roles r on r.RoleID = g.RoleID ";
 		}

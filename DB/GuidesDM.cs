@@ -83,6 +83,13 @@ namespace  NQN.DB
                 obj.Shifts = dm.ShiftsForGuide(obj.GuideID);
             return obj;
         }
+        public GuidesObject FetchGuide(int GuideID, bool IsCaptain)
+        {            
+            GuidesObject obj =  FetchGuide(GuideID);
+            if (obj != null && IsCaptain)
+                obj.MaskContactInfo = false;
+            return obj;
+        }
         public GuidesObject FetchGuide(int GuideID)
         {
             ShiftsDM dm = new ShiftsDM();

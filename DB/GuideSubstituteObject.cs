@@ -93,6 +93,10 @@ namespace NQN.DB
         {
             get; set;
         }
+        public string ShortName
+        {
+            get; set;
+        }
         public int Sequence
         {
             get; set;

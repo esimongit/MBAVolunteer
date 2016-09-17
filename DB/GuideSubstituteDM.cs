@@ -201,9 +201,9 @@ namespace  NQN.DB
         public ObjectList<GuideSubstituteObject> FetchRequests(int SubstituteID)
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
-            string qry = ReadAllCommand() + @" where SubDate > getdate() and SubstituteID is null 
+            string qry = ReadAllCommand() + @" where SubDate > convert(date,getdate()) and SubstituteID is null 
 				and s.ShiftID in (select ShiftID from SubOffers o where o.GuideID = @GuideID)
-				and not Exists (select 1 from GuideSubstitute s2 join Guides g3 join (GuideShift gs on g3.GuideID = gs.GuideID) on s2.GuideID = g3.GuideID
+				and not Exists (select 1 from GuideSubstitute s2 join (Guides g3 join GuideShift gs on g3.GuideID = gs.GuideID) on s2.GuideID = g3.GuideID
 					 where s2.SubstituteID = @GuideID and s2.SubDate = s.SubDate and gs.ShiftID = s.ShiftID)
                 and not Exists (select 1 from GuideDropins where GuideID = @GuideID and DropinDate = s.SubDate and ShiftID = s.ShiftID)
 				order by SubDate, Sequence, g.FirstName";
@@ -358,6 +358,7 @@ namespace  NQN.DB
 			obj.SubstituteID = GetNullableInt32(reader, "SubstituteID",0);
 			obj.DateEntered = GetNullableDateTime(reader, "DateEntered",new DateTime());
             obj.ShiftName = GetNullableString(reader, "ShiftName", String.Empty);
+            obj.ShortName = GetNullableString(reader, "ShortName", String.Empty);
             obj.Sequence = GetNullableInt32(reader, "Sequence",0);
             obj.FirstName = GetNullableString(reader, "FirstName", String.Empty);
             obj.LastName = GetNullableString(reader, "LastName", String.Empty);
@@ -389,6 +390,7 @@ namespace  NQN.DB
 				,[DateEntered]
                 ,s.ShiftID
 				,h.ShiftName
+                ,h.ShortName
 				,h.Sequence
 				,FirstName =   g.FirstName  
 				,g.LastName

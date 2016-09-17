@@ -79,7 +79,7 @@
              Display="Dynamic">*</asp:RegularExpressionValidator>
          Home Phone:</div>
          <div class="col-md-4"> 
-         <asp:TextBox ID="PhoneTextBox" runat="server" TextMode="Phone"  Text='<%# Bind("Phone") %>' />
+         <asp:TextBox ID="PhoneTextBox" runat="server" TextMode="Phone"  Width="100" Text='<%# Bind("Phone") %>' />
         </div>
         </div>
           <div class="row" style="padding-bottom:4px">
@@ -89,7 +89,7 @@
              Display="Dynamic">*</asp:RegularExpressionValidator>
          Mobile Phone:</div>
          <div class="col-md-4"> 
-         <asp:TextBox ID="CellPhoneTextBox" runat="server" TextMode="Phone"  Text='<%# Bind("Cell") %>' />
+         <asp:TextBox ID="CellPhoneTextBox" runat="server" TextMode="Phone" Width="100"  Text='<%# Bind("Cell") %>' />
         </div>
          
          <div class="col-md-3">

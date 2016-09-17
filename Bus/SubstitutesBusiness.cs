@@ -308,13 +308,13 @@ namespace NQN.Bus
                 foreach (GuideSubstituteObject obj in dList)
                 {
                     if (obj.Email != String.Empty)
-                        eb.SendMail(mtobj.MailFrom, obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                        eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
                 }
                 mtobj = mtdm.FetchForSymbol("DropinReminder");
                 foreach (GuideDropinsObject obj in eList)
                 {
                     if (obj.Email != String.Empty)
-                        eb.SendMail(mtobj.MailFrom, obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                        eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
                 }
             }
         }
@@ -325,7 +325,7 @@ namespace NQN.Bus
             SubOffersDM dm = new SubOffersDM();
             GuidesDM gdm = new GuidesDM();
             GuidesObject guide = gdm.FetchGuide(GuideID);
-            ObjectList<SubOffersObject> dList = dm.FetchForShift(ShiftID);
+            ObjectList<SubOffersObject> dList = dm.FetchForShift(ShiftID, false);
             MailTextDM mtdm = new MailTextDM();
             MailTextObject mtobj = mtdm.FetchForSymbol("InterestNotify");
             foreach(SubOffersObject obj in dList)

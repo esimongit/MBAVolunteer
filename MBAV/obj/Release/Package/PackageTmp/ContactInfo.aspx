@@ -4,20 +4,21 @@
  <SelectParameters>
   
    <asp:QueryStringParameter QueryStringField="ID" Name="GuideID" Type="Int32" DefaultValue="0" />
+     <asp:SessionParameter SessionField="IsCaptain" Name="IsCaptain" Type="Boolean" DefaultValue="false" />
  </SelectParameters>
 </asp:ObjectDataSource>
  <div style="width:400px; margin-left:auto; margin-right:auto"> 
 <h3>Volunteer Guide Contact Info</h3>
 <asp:FormView ID="FormView1" runat="server" DefaultMode="ReadOnly" DataSourceID="ObjectDataSource1" >
 <ItemTemplate>
-<table cellpadding="5">
+<table border="1">
   <tbody>
     <tr>
-      <td><font size="-1">&nbsp;Name</font></td>
-      <td><font size="-1">&nbsp;ID</font></td>
+      <td><font size="-1">Name</font></td>
+      <td><font size="-1">ID</font></td>
       <td><font size="-1">Phone</font></td>
 
-<td><font size="-1">&nbsp;Email</font></td>
+<td><font size="-1">Email</font></td>
     </tr>
     <tr>
       <td><asp:Label ID="NameLabel" runat="server"  Font-Bold="true" Text='<%#Eval("GuideName") %>'></asp:Label></td>
@@ -32,6 +33,7 @@
 </table>
 </ItemTemplate>
 </asp:FormView>
+     <br />
  <input type="button" value="Close Window" onclick="self.close()" />
  
 </div>
