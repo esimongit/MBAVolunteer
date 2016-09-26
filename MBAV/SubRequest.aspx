@@ -55,13 +55,7 @@
      
  }
  </style>
-<div class="row">
- <div class="col-md-2"> 
- <img alt="Orca" src="/Images/orca.jpg"/></div>
-<div class="col-md-10" style=" text-align:center; "><h1 style="color:Black">Monterey Bay Aquarium<br />
-Volunteer Guide Substitute Request/Sign-up</h1>
-</div>
-</div>
+ 
 
  
  <div class="row">
@@ -260,15 +254,13 @@ Volunteer Substitute System</h1>
 </div>
 <div class="row">
 <div class="col-md-6">
-            <span style="color:black;font-size:larger">Please remember that you are <b>always responsible</b> for finding a substitute. </span>
-            <p> 
-             This on-line request system is just for your convenience. <b><i>If you do not get a substitute,
-              or five responses to your request within a week</i></b> of the date you will be absent,
-               it is recommended that you <b><i>get on the phone</i></b> and call volunteers to find a substitute the old way. 
-               </p>
-               <p>
-           While you are here, please
-            check the substitute requests for any that you can fill.</p>
+            
+            <asp:Label ID="InfoLabel" runat="server" Visible ="false"></asp:Label> 
+            
+           
+    <cc2:CalendarLink runat="server" ID="ConfirmLink"       
+             Title='Volunteer Substitute Commitment'
+             UseTimes='true' Notes =''  Location='Monterey Bay Aquarium'></cc2:CalendarLink>
 </div>
 <div class="col-md-6">  
       <asp:Label ID="PracticeLabel" runat="server" ForeColor="Red" Font-Bold="true" Font-Size="Large"></asp:Label><br />

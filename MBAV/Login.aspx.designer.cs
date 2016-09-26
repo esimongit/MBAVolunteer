@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace MBAV.Account {
+namespace MBAV {
     
     
     public partial class Login {

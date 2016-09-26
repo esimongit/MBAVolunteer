@@ -1,5 +1,4 @@
-﻿<%@ Page Title="Log In" Language="C#"  AutoEventWireup="true"
-    CodeBehind="Login.aspx.cs" Inherits="MBAV.Account.Login" %>
+﻿<%@ Page Title="Log In" Language="C#"  AutoEventWireup="true"  CodeBehind="Login.aspx.cs" Inherits="MBAV.Login" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head id="Head1" runat="server">
@@ -11,16 +10,21 @@
     
  
 </head>
-<body style="font-family:Arial">
+<body style="font-family:Arial;  ">
  
 <%--<asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">--%>
 <form runat="server">
 <div class="container">
 <div class="row">
-    <h2>
-       Monterey Bay Aquarium <br />
-       Volunteer Guide Substitute Log In
+    <div class="col-md-6 col-xs-10">
+    <img src="/Images/VolunteerLogoColor.jpg" alt="Monterey Bay Aquarium Volunteer" class="img-responsive" width="300"   /></div>
+   </div>
+ 
+    <div class="row">
+    <div class="col-md-2 col-xs-4"> <h2>
+       Log In
     </h2>
+       </div>
     </div>
 <div class="row">
 <div class="col-xs-12">
@@ -30,6 +34,8 @@
     </p>
     </div>
     </div>
+<div class="row">
+  <div class="col-md-5">
    <div class="row">
     <asp:Login ID="LoginUser" runat="server" EnableViewState="false" RenderOuterTable="false" OnLoggedIn="SaveUser"  >
         <LayoutTemplate>
@@ -37,8 +43,9 @@
                 <asp:Label ID="FailureText"  runat="server" ForeColor="Red"></asp:Label>
         
             <asp:ValidationSummary ID="LoginUserValidationSummary" runat="server" CssClass="failureNotification"  />
+
            <div class="row">
-            <div class="col-xs-12">
+             <div class="col-xs-12">
                 
                     <h2>Account Information</h2>
                           
@@ -73,14 +80,21 @@
           </div>
         </LayoutTemplate>
     </asp:Login>
+    </div>
+  
     <div class="row" style="padding-top:20px">
             <div class="col-xs-12">
-    <asp:Button ID="ResetButton" runat="server" Text="I give up! I will set a new Password" OnClick="ResetPW" />
+    <asp:Button ID="ResetButton" runat="server" Text="I give up! I will set a new Password" OnClick="ResetPW" CausesValidation="false" />
     </div>
     </div>
-<%--</asp:Content>--%>
-</div>
- </div>
+  </div>
+ 
+ 
+    <div class="col-md-6">
+        <img alt="Sea Turtle" src="/Images/GreenSeaTurtle.jpg" width="500" class="img-responsive" />
+        </div>
+  </div>
+  </div>
 </form>
 </body>
 </html>

@@ -80,6 +80,8 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="DropIns.aspx" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="Images\GreenSeaTurtle.jpg" />
+    <Content Include="Images\VolunteerLogoColor.jpg" />
     <Content Include="Opportunities.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -292,6 +294,7 @@
     <None Include="fonts\glyphicons-halflings-regular.ttf" />
     <None Include="fonts\glyphicons-halflings-regular.woff" />
     <None Include="fonts\glyphicons-halflings-regular.woff2" />
+    <Content Include="Images\Web.config" />
     <None Include="Properties\PublishProfiles\Profile1.pubxml" />
     <None Include="Scripts\jquery-1.9.1.min.map" />
     <Content Include="staff\Web.config" />

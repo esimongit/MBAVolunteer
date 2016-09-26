@@ -7,7 +7,7 @@ using System.Web.UI.WebControls;
 using NQN.DB;
 using NQN.Bus;
 
-namespace MBAV.Account
+namespace MBAV
 {
     public partial class Login : System.Web.UI.Page
     {
@@ -50,6 +50,10 @@ namespace MBAV.Account
         protected void ResetPW(object sender, EventArgs e)
         {
             string name = LoginUser.UserName;
+            if (string.IsNullOrEmpty(name))
+            {
+                AlertMsg.Show("You must enter a known Username to request a password reset.");
+            }
             MembershipBusiness mb = new MembershipBusiness();
             try
             {

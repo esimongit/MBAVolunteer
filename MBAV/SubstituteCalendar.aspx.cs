@@ -52,7 +52,7 @@ namespace MBAV
             if (dt < DateTime.Today)
                 return;
            
-            string clr = ShiftsDM.IsAWeek(dt) ? "#80ffff": "#aaffaa";
+            string clr = ShiftsDM.IsAWeek(dt) ? "#9aff9a" : "#CC9360";
             
             if (e.Day.IsOtherMonth)
                 return;

@@ -8,14 +8,7 @@
             <asp:SessionParameter Name="GuideID" SessionField="GuideID" Type="Int32" DefaultValue="0" />
         </SelectParameters>
     </asp:ObjectDataSource>
- <div class="row">
- <div class="col-md-2"> 
- <img alt="Orca" src="/Images/orca.jpg"/></div>
-<div class="col-md-10" style=" text-align:center; ">
-<div class="row" style="font-size:32pt;color:Black">Monterey Bay Aquarium</div>
-<div class="row" style="font-size:32pt;color:Black">Volunteer Guide Substitute Calendar</div>
-</div>
-</div>
+ 
  <div class="row">
  <div class="col-md-5" style="margin-left:20px"> 
   <asp:Label ID="NameLabel" runat="server" Font-Bold="true"></asp:Label>
@@ -57,8 +50,8 @@
       <div class="row"  >          
         <div class="col-md-9 col-xs-9" style="margin-left:20px;padding-top:10px; padding-bottom:10px"> 
            <div class="row" > 
-            <div class="col-md-6 " style=" max-width:120px;background-color:#80ffff; font-size:large" >A Weeks</div>
-          <div class="col-md-6 " style="max-width:120px;background-color:#AAFFAA; font-size:large" >B Weeks</div>
+            <div class="col-md-6 " style=" max-width:120px;background-color:#9aff9a; font-size:large" >A Weeks</div>
+          <div class="col-md-6 " style="max-width:120px;background-color:#CC9360 ; font-size:large" >B Weeks</div>
        </div>
       
       </div>
@@ -129,6 +122,5 @@
        runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"    
         ></asp:Calendar>
    </div>
- </div></div>
  
 </asp:Content>

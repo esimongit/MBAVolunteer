@@ -292,6 +292,24 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.View View2;
         
         /// <summary>
+        /// InfoLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label InfoLabel;
+        
+        /// <summary>
+        /// ConfirmLink control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::NQN.Controls.CalendarLink ConfirmLink;
+        
+        /// <summary>
         /// PracticeLabel control.
         /// </summary>
         /// <remarks>

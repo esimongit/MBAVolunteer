@@ -86,8 +86,12 @@ namespace MBAV
             ObjectList<GuidesObject> NotifyList = new ObjectList<GuidesObject>();
             DateTime dt = DateTime.Parse(Request.QueryString["dt"]);
             int NotifyInterestedSubs = 0;
+            bool NeedSub = false;
+            bool DoSub = false;
+            InfoLabel.Visible = false;
             bool RequestProcessed = false;
             int GuideID = 0;
+            int ShiftID = 0;
             try
             {
                 GuideID = Convert.ToInt32(Session["GuideID"]);
@@ -104,7 +108,8 @@ namespace MBAV
                 TextBox SubTextBox = (TextBox)itm.FindControl("SubTextBox");
                 if (NeedSubCheckBox.Checked)
                 {
-                    int ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
+                    NeedSub = true;
+                    ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
                     ShiftsObject shift = sdm.FetchShift(ShiftID);
                    
                     try
@@ -134,7 +139,7 @@ namespace MBAV
                 TextBox SubTextBox = (TextBox)itm.FindControl("SubTextBox");
                 if (SubTextBox.Text != String.Empty)
                 {
-                    int ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
+                    ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
                     ShiftsObject shift = sdm.FetchShift(ShiftID);
                     try
                     {                      
@@ -161,7 +166,7 @@ namespace MBAV
             foreach (RepeaterItem itm in AbsentShiftsRepeater.Items)
             {
                 CheckBox NoNeedCheckBox = (CheckBox)itm.FindControl("NoNeedCheckBox");
-                int ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
+                ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
                 ShiftsObject shift = sdm.FetchShift(ShiftID);
                 NotifyList.AddRange(gdm.FetchCaptains(ShiftID));
                 GuideSubstituteObject sub = dm.FetchForGuide(GuideID, ShiftID, dt);
@@ -228,6 +233,7 @@ namespace MBAV
             // Offer to sub for another shift.
             if (!RequestProcessed)
             {
+               
                 GridView gv = (e.CommandArgument.ToString() == "1") ? GridView1 : GridView2;
                 int Index = (e.CommandArgument.ToString() == "1") ? 4 : 3;
                 foreach (GridViewRow row in gv.Rows)
@@ -248,13 +254,14 @@ namespace MBAV
                             int indx = row.RowIndex;
                             int GuideSubstituteID = Convert.ToInt32(GridView1.DataKeys[indx].Value);
                             GuideSubstituteObject sub = dm.FetchRecord("GuideSubstituteID", GuideSubstituteID);
-                           
+                            ShiftID = sub.ShiftID;
                             sub.SubstituteID = GuideID;
                             try
                             {
                                 if (sb.AddSub(sub))
                                 {
                                     RequestProcessed = true;
+                                    DoSub = true;
                                     sub = dm.FetchRecord("GuideSubstituteID", GuideSubstituteID);
                                     NotifyList.AddRange(gdm.FetchCaptains(sub.ShiftID));
                                     NotifyList.Add(gdm.FetchGuide(sub.GuideID));
@@ -291,12 +298,13 @@ namespace MBAV
                 {
                     GuideDropinsObject dropin = new GuideDropinsObject();
                     dropin.DropinDate = dt;
-
+                    ShiftID = Convert.ToInt32(ShiftSelect.SelectedValue);
                     try
                     {
-                        dropin.ShiftID = Convert.ToInt32(ShiftSelect.SelectedValue);
+                        dropin.ShiftID = ShiftID;
                         dropin.GuideID = GuideID;
                         ddm.Save(dropin);
+                        DoSub = true;
                         RequestProcessed = true;
                         dropin = ddm.FetchForGuide(GuideID, dt, dropin.ShiftID);
                         NotifyList.AddRange(gdm.FetchCaptains(dropin.ShiftID));
@@ -323,9 +331,28 @@ namespace MBAV
                 }
 
                 MultiView1.SetActiveView(View2);
-
-                RecipientsRepeater.DataSource = NotifyList;
-                RecipientsRepeater.DataBind();
+                if (NeedSub)
+                {
+                    InfoLabel.Visible = true;
+                    InfoLabel.Text = @" Please remember that you are <b>always responsible</b> for finding a substitute.
+            This on-line request system is just for your convenience. <b> If you do not get a substitute,
+              or five responses to your request within a week  of the date you will be absent,
+                    it is recommended that you  get on the phone   and call volunteers to find a substitute directly.</b> ";
+                }
+                if (DoSub)
+                {
+                    InfoLabel.Visible = true;
+                   
+                    ConfirmLink.Visible = true;
+                    GuideSubstituteObject sub = sb.SelectSubstituteShift(GuideID, dt, ShiftID);
+                    ConfirmLink.CalendarType = sub.CalendarType;
+                    ConfirmLink.HostName = GetHostName();
+                    ConfirmLink.Description = String.Format("Shift {0}", sub.Sequence);
+                    ConfirmLink.Date = sub.SubDate;
+                    ConfirmLink.StartTime = sub.ShiftStart;
+                    ConfirmLink.EndTime = sub.ShiftEnd;
+                    InfoLabel.Text = String.Format("You have offered to substitute on {0:d} for shift {1}.", dt, sub.Sequence);
+                }
                 if (TestBox.Checked)
                 {
                     PracticeLabel.Text = "Practice: No messages have been sent ";

@@ -104,9 +104,39 @@ namespace NQN.Bus
                 subs[i].CalendarType = guide.CalendarType;
             }
             return subs;
-
              
         }
+
+        public  GuideSubstituteObject SelectSubstituteShift(int GuideID, DateTime dt, int ShiftID)
+        {
+
+            GuideSubstituteDM sdm = new GuideSubstituteDM();
+            GuideDropinsDM ddm = new GuideDropinsDM();
+            ShiftsDM dm = new ShiftsDM();
+            GuidesDM gdm = new GuidesDM();
+            GuidesObject guide = gdm.FetchGuide(GuideID);
+             GuideSubstituteObject sub = sdm.FetchBySub(GuideID, dt, ShiftID);
+            if (sub == null)
+            {
+                GuideDropinsObject drop = ddm.FetchForGuide(GuideID, dt, ShiftID);
+                if (drop != null)
+                {
+                    sub = new GuideSubstituteObject();
+                    sub.ShiftID = drop.ShiftID;
+                    sub.SubstituteID = drop.GuideID;
+                    sub.Sequence = drop.Sequence;
+                    sub.SubDate = drop.DropinDate;
+                }
+            }
+            if (sub == null)
+                return sub;
+            ShiftsObject shift = dm.FetchShift(ShiftID);
+            sub.ShiftStart = shift.ShiftStart;
+            sub.ShiftEnd = shift.ShiftEnd;
+            sub.CalendarType = guide.CalendarType;
+            return sub;
+        }
+
         public ObjectList<CalendarDateObject> CalendarList(int Year, int Month, int GuideID)
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
