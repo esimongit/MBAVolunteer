@@ -161,6 +161,7 @@ namespace NQN.Bus
                 GuidesObject obj = new GuidesObject();
                 obj.FirstName = drop.FirstName;
                 obj.LastName = drop.LastName;
+                obj.GuideName = drop.FirstName + " " + drop.LastName;
                 obj.Phone = drop.Phone;
                 obj.Email = drop.Email;
                 obj.VolID = drop.VolID;
@@ -170,7 +171,22 @@ namespace NQN.Bus
                 obj.RoleName = drop.Role;
                 Results.Add(obj);
             }
-             Results.Sort((x, y) => x.FirstName.CompareTo(y.FirstName));
+            foreach (GuideDropinsObject drop in rList)
+            {
+                GuidesObject obj = new GuidesObject();
+                obj.FirstName = drop.FirstName;
+                obj.LastName = drop.LastName;
+                obj.GuideName = drop.FirstName + " " + drop.LastName;
+                obj.Phone = drop.Phone;
+                obj.Email = drop.Email;
+                obj.VolID = drop.VolID;
+                obj.Sequence = drop.Sequence;
+                obj.GuideID = drop.GuideID;
+                obj.SubDescription = "Special";
+                obj.RoleName = drop.Role;
+                Results.Add(obj);
+            }
+            Results.Sort((x, y) => x.FirstName.CompareTo(y.FirstName));
             return Results;
         }
 

@@ -212,11 +212,11 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 </asp:GridView>
 </div>
 <hr />
-<p style="text-align:center;font-size:12pt">
+<p style="text-align:center;font-size:12pt; font-weight:bold">
     Click on "Submit" to record changes. </p>
-    <p style="text-align:center;font-size:12pt">
+    <p style="text-align:center;font-size:12pt; font-weight:bold">
     If you check multiple requests, only one will be processed. </p>
-    <p style="text-align:center; font-size:12pt">
+    <p style="text-align:center; font-size:12pt; font-weight:bold">
     Click on "Return to Calendar" to return you to the calendar without
     changing anything.</p>
 <div class="row">
@@ -237,13 +237,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
   <div class="col-md-2"></div>
   </div>  
  <div class="clear"></div>
- <div>
-    <asp:CheckBox ID="TestBox" runat="server" />
-    <span style="font-size:larger; color:#AA3333">Practice:</span>
-    If this box is checked no email messages will be sent, but changes <b>will</b>
-    be made to the database. Please undo any changes that you make in practice.
-    <hr  />
- </div>
+  
 </div>
 </asp:View>
  <asp:View ID="View2" runat="server">
@@ -263,7 +257,7 @@ Volunteer Substitute System</h1>
              UseTimes='true' Notes =''  Location='Monterey Bay Aquarium'></cc2:CalendarLink>
 </div>
 <div class="col-md-6">  
-      <asp:Label ID="PracticeLabel" runat="server" ForeColor="Red" Font-Bold="true" Font-Size="Large"></asp:Label><br />
+     
       <asp:Label ID="MsgLabel" runat="server" ></asp:Label>
  
           <p style="color:green">Recipients:</p>

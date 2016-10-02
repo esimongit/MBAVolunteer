@@ -18,30 +18,31 @@
      <atk:ToolkitScriptManager ID="ScriptManager1" runat="server">
     
     </atk:ToolkitScriptManager>
-    <div style="width:200px; margin-left:auto; margin-right:auto; padding-bottom: 10px">
-<h2 style="color:Black">Shift Roster</h2></div>
-    <div style="float:left; font-size:16pt">
-  <uc3:DateSelect ID="DateSelect1" runat="server" OnDateChanged="RefreshShifts"  AutoPostBack="true" />
-        
-    </div>
-     <div style="float:left; padding-left: 100px; font-size:16pt;">Select shift: 
-     <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataTextField="Sequence" DataValueField="ShiftID"
+    <div class="row">
+            <h2 style="color:Black; font-size:16pt;">Shift Roster</h2></div>
+    <div class="row">
+        <div class="col-md-4" style="font-size:16pt"> 
+  <uc3:DateSelect ID="DateSelect1" runat="server"  LabelText="Select Date"  OnDateChanged="RefreshShifts"  AutoPostBack="true" />
+       </div> 
+      <div class="col-md-5 col-xs-10" style="font-size:16pt;">Select shift: 
+     <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataTextField="Sequence" DataValueField="ShiftID" 
       AppendDataBoundItems="true">
       <asp:ListItem Value="0" Text="(Select a Shift)"></asp:ListItem>
      
      </asp:DropDownList></div>
-     <div class="clear"></div>
+    </div>
 <div class="row" style="padding-top:20px">
-    <div class="col-xs-5 col-xs-offset-3">
+    <div class="col-sm-5 col-sm-offset-1">
 <asp:Button ID="Button1" runat="server" CSSclass="btn btn-info" Text="Close Window"   OnClientClick='javascript:self.close()' />
-</div>  <div class="col-xs-3">
+     </div>  
+    <div class="col-sm-3">
      <asp:Button ID="SubmitButton" runat="server" Text="Show Report" OnClick="DoReport" CssClass="btn btn-success" /></div>
     </div>
       
      <div class="row" style="padding-top:10px"> 
-         <div class="col-xs-12">
-    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"  Width="100%"  Height="1000px" 
-        Font-Size="10pt" InteractiveDeviceInfos="(Collection)" 
+         <div class="col-md-8">
+    <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"   Width="100%"   Height="1000px" 
+        Font-Size="10pt" InteractiveDeviceInfos="(Collection)"  CssClass="table-responsive"
         WaitMessageFont-Names="Verdana" WaitMessageFont-Size="14pt">
         <LocalReport ReportPath="Roster.rdlc">
             <DataSources>

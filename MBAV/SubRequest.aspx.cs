@@ -196,7 +196,9 @@ namespace MBAV
                         foreach (GuideSubstituteObject sub in subs)
                         {
                             NotifyList.AddRange(gdm.FetchCaptains(sub.ShiftID));
-                            NotifyList.Add(gdm.FetchGuide(sub.GuideID));
+                            GuidesObject guide1 = gdm.FetchGuide(sub.GuideID);
+                            if (!NotifyList.Contains(guide1))
+                                NotifyList.Add(guide1);
 
                             seqs += sep + sub.Sequence.ToString();
                             sep = ", ";
@@ -264,7 +266,9 @@ namespace MBAV
                                     DoSub = true;
                                     sub = dm.FetchRecord("GuideSubstituteID", GuideSubstituteID);
                                     NotifyList.AddRange(gdm.FetchCaptains(sub.ShiftID));
-                                    NotifyList.Add(gdm.FetchGuide(sub.GuideID));
+                                    GuidesObject guide1 = gdm.FetchGuide(sub.GuideID);
+                                    if (!NotifyList.Contains(guide1))
+                                        NotifyList.Add(guide1);
                                     msg = String.Format("{0} ({1}) will substitute for {2} ({3}) for shift {4} on {5}.",
                                         sub.SubName, sub.Sub, sub.GuideName, sub.VolID, sub.Sequence, sub.SubDate.ToLongDateString());
                                 }
@@ -342,7 +346,7 @@ namespace MBAV
                 if (DoSub)
                 {
                     InfoLabel.Visible = true;
-                   
+
                     ConfirmLink.Visible = true;
                     GuideSubstituteObject sub = sb.SelectSubstituteShift(GuideID, dt, ShiftID);
                     ConfirmLink.CalendarType = sub.CalendarType;
@@ -353,20 +357,15 @@ namespace MBAV
                     ConfirmLink.EndTime = sub.ShiftEnd;
                     InfoLabel.Text = String.Format("You have offered to substitute on {0:d} for shift {1}.", dt, sub.Sequence);
                 }
-                if (TestBox.Checked)
-                {
-                    PracticeLabel.Text = "Practice: No messages have been sent ";
-                    msg = "The following  message would otherwise have been sent: <br />" + msg;
-                }
-                else
-                {
-                    msg = "The following message has been sent: <br /> " + msg;
-                    sb.Notify(NotifyList, msg);
-                    if (NotifyInterestedSubs > 0)
-                        sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
-                }
-                MsgLabel.Text = msg;
 
+                msg = "The following message has been sent: <br /> " + msg;
+                sb.Notify(NotifyList, msg);
+                if (NotifyInterestedSubs > 0)
+                    sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
+
+                MsgLabel.Text = msg;
+                RecipientsRepeater.DataSource = NotifyList;
+                RecipientsRepeater.DataBind();
             }
         }
     }

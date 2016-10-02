@@ -10,8 +10,8 @@
     </asp:ObjectDataSource>
  
  <div class="row">
- <div class="col-md-5" style="margin-left:20px"> 
-  <asp:Label ID="NameLabel" runat="server" Font-Bold="true"></asp:Label>
+ <div class="col-md-5" style="margin-left:20px; font-size:12pt"> 
+  <asp:Label ID="NameLabel" runat="server" Font-Bold="true" Font-Size="Large"></asp:Label>
    <p>Click on the date you need or can be a substitute.
    </p><p>We need substitutes on dates indicated in: <span style='color:red;font-weight:bold; font-style:italic'>red</span>.
    </p>

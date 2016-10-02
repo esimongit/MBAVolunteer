@@ -41,6 +41,13 @@
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
 </asp:ObjectDataSource>
+      <style type="text/css">
+ td, th
+ {
+     padding: 4px 4px 4px 4px
+     
+ }
+ </style>
 <asp:MultiView ID="MultiView1" runat="server">
     <asp:View runat="server" ID="View1">
 
@@ -79,7 +86,7 @@
              Display="Dynamic">*</asp:RegularExpressionValidator>
          Home Phone:</div>
          <div class="col-md-4"> 
-         <asp:TextBox ID="PhoneTextBox" runat="server" TextMode="Phone"  Width="100" Text='<%# Bind("Phone") %>' />
+         <asp:TextBox ID="PhoneTextBox" runat="server" TextMode="Phone"  Width="120" Text='<%# Bind("Phone") %>' />
         </div>
         </div>
           <div class="row" style="padding-bottom:4px">
@@ -89,11 +96,11 @@
              Display="Dynamic">*</asp:RegularExpressionValidator>
          Mobile Phone:</div>
          <div class="col-md-4"> 
-         <asp:TextBox ID="CellPhoneTextBox" runat="server" TextMode="Phone" Width="100"  Text='<%# Bind("Cell") %>' />
+         <asp:TextBox ID="CellPhoneTextBox" runat="server" TextMode="Phone" Width="120"  Text='<%# Bind("Cell") %>' />
         </div>
          
          <div class="col-md-3">
-             <asp:CheckBox ID="CellPreferredCheckBox" runat="server" Text="Preferred" Checked='<%#Bind("CellPreferred") %>' />
+             <asp:CheckBox ID="CellPreferredCheckBox" runat="server" Text="&nbsp;Preferred" Checked='<%#Bind("CellPreferred") %>' />
          </div>
         </div>
         <div class="row" style="padding-bottom:4px">
@@ -109,9 +116,9 @@
         <div class="col-md-4">
          Personal Info:</div>
               <div class="col-md-7"> 
-             <div style="float:left">My Information should be visible to Volunteers</div>
+             <div style="float:left">My contact information should be visible to guides</div>
                   <div style="float:left; padding-left:4px"> 
-              <asp:RadioButtonList ID="MaskRadio" RepeatDirection="Horizontal" runat="server"  RepeatColumns="2"  CellPadding="3" SelectedValue='<%#Bind("MaskPersonalInfo") %>'
+              <asp:RadioButtonList ID="MaskRadio" RepeatDirection="Horizontal" runat="server"  RepeatColumns="2"   SelectedValue='<%#Bind("MaskPersonalInfo") %>'
                >
              <asp:ListItem Value="True" Text="No" ></asp:ListItem>
               <asp:ListItem Value="False" Text="Yes" Selected="True"></asp:ListItem>

@@ -345,9 +345,11 @@ namespace NQN.DB
             }
             set
             {
-                IrregularShift = false;
+                _irregularshift = false;
                 _shifts = value;
-                if (_shifts.Count == 1)
+                if (_shifts.Count == 0)
+                    _irregularshift = true;
+                else if (_shifts.Count == 1)
                 {
                     ShiftsObject pshift = Shifts[0];
                     _shiftid = pshift.ShiftID;
@@ -356,7 +358,7 @@ namespace NQN.DB
                     Sequence = pshift.Sequence;
                     DOW = pshift.DOW;
                     if (DOW == 0)
-                        IrregularShift = true;
+                        _irregularshift = true;
                 }
                 else
                 {
@@ -370,9 +372,14 @@ namespace NQN.DB
                 }
             }
         }
+        private bool _irregularshift = false;
         public bool IrregularShift
         {
-            get; set;
+            get
+            {
+                return _irregularshift;
+            }
+            
         }
         public string EmailLink
         {

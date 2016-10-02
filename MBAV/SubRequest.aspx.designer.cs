@@ -274,15 +274,6 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.HyperLink HyperLink3;
         
         /// <summary>
-        /// TestBox control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.CheckBox TestBox;
-        
-        /// <summary>
         /// View2 control.
         /// </summary>
         /// <remarks>
@@ -308,15 +299,6 @@ namespace MBAV {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::NQN.Controls.CalendarLink ConfirmLink;
-        
-        /// <summary>
-        /// PracticeLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label PracticeLabel;
         
         /// <summary>
         /// MsgLabel control.

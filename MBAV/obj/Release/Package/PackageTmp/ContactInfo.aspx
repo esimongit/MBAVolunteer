@@ -7,18 +7,31 @@
      <asp:SessionParameter SessionField="IsCaptain" Name="IsCaptain" Type="Boolean" DefaultValue="false" />
  </SelectParameters>
 </asp:ObjectDataSource>
- <div style="width:400px; margin-left:auto; margin-right:auto"> 
-<h3>Volunteer Guide Contact Info</h3>
+   <style type="text/css">
+ td, th
+ {
+     padding: 4px 4px 4px 4px
+     
+ }
+ </style>
+ 
+     <div class="row">
+         <div class="col-xs-offset-1 col-xs-10" style="align-content:center">
+<h3 ">Volunteer Guide Contact Info</h3>
+         </div>
+         </div>
+     <div class="row"> 
+         </div>
 <asp:FormView ID="FormView1" runat="server" DefaultMode="ReadOnly" DataSourceID="ObjectDataSource1" >
 <ItemTemplate>
-<table border="1">
+<table border="1" class="table-responsive">
   <tbody>
-    <tr>
-      <td><font size="-1">Name</font></td>
-      <td><font size="-1">ID</font></td>
-      <td><font size="-1">Phone</font></td>
+    <tr style="background-color:aqua">
+      <th><font size="-1">Name</font></th>
+      <th><font size="-1">ID</font></th>
+      <th><font size="-1">Phone</font></th>
 
-<td><font size="-1">Email</font></td>
+<th><font size="-1">Email</font></th>
     </tr>
     <tr>
       <td><asp:Label ID="NameLabel" runat="server"  Font-Bold="true" Text='<%#Eval("GuideName") %>'></asp:Label></td>
@@ -33,10 +46,15 @@
 </table>
 </ItemTemplate>
 </asp:FormView>
-     <br />
- <input type="button" value="Close Window" onclick="self.close()" />
+     </div></div>
+     
+    <div class="row"> 
+        <div class="col-xs-offset-1 col-xs-10" >
+ <input style="align-self:center" type="button" value="Close Window" onclick="self.close()" />
+            </div></div>
+
  
-</div>
+ 
 
  
 </asp:Content>

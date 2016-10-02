@@ -14,7 +14,7 @@
    </div>
       </div>
  <div class="row"> 
- <div class="col-xs-3 col-xs-offset-9" style="font-size:large; font-weight:bold">
+ <div class="col-xs-3 col-xs-offset-6" style="font-size:large; font-weight:bold">
    Shift: <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataValueField="ShiftID" DataTextField="ShiftName"
      AutoPostBack="true" OnSelectedIndexChanged="DoList"></asp:DropDownList>
    </div></div>
