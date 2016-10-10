@@ -9,6 +9,7 @@
 <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectRequestsForDate">
 <SelectParameters>  
   <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
+     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectSubsForDate">
@@ -167,7 +168,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
  <ItemTemplate>
  
   <asp:Label ID="SubLabel" runat="server" Visible ='<%#Eval("IsSub") %>' Text="Already subbing"></asp:Label>
-   <asp:CheckBox ID="SubCheckBox" runat="server"  Enabled = '<%#Eval("NoSub") %>' Visible='<%#Eval("NoSub") %>' Checked = '<%#Bind("SubOffer") %>' />
+   <asp:CheckBox ID="SubCheckBox" runat="server"  Enabled = '<%#Eval("CanSub") %>' Visible='<%#Eval("NoSub") %>' Checked = '<%#Bind("SubOffer") %>' />
  </ItemTemplate>
 </asp:TemplateField>
 <asp:TemplateField HeaderText="Substitute">
@@ -191,7 +192,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
   HeaderText="Requestor (Click for Contact Info)" DataTextField="GuideName" /> 
 <asp:TemplateField HeaderText="I can sub">
  <ItemTemplate>
-  <asp:CheckBox ID="SubCheckBox" runat="server" Enabled = '<%#Eval("NoSub") %>' Visible='<%#Eval("NoSub") %>' Checked = '<%#Bind("SubOffer") %>' />
+  <asp:CheckBox ID="SubCheckBox" runat="server" Enabled = '<%#Eval("CanSub") %>' Visible='<%#Eval("CanSub") %>' Checked = '<%#Bind("SubOffer") %>' />
  </ItemTemplate>
 </asp:TemplateField>
 </Columns>
@@ -228,7 +229,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
     <asp:Button ID="Button1" runat="server" Text="Submit" OnCommand="DoSubmit" CssClass="btn btn-success" CommandArgument= "2"/>
   </div>
    <div class="col-md-3 col-xs-3" style="text-align:center; padding-top:2px; padding-bottom:2px ">
-    <input type="reset" class="btn btn-danger"/> 
+   <asp:Button ID="ResetButton" OnClick="DoReset"  Text="Reset" runat="server" CssClass="btn btn-danger"/> 
    </div>
     <div class="col-md-2 col-xs-3" style="text-align:center; padding-top:2px; padding-bottom:2px  ">
    <asp:HyperLink ID="HyperLink3" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11"

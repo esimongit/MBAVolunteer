@@ -190,7 +190,11 @@ namespace NQN.DB
         {
             get;
             set;
-
+        }
+        public bool CanSub
+        {
+            get;
+            set;
         }
         public bool IsSub
         {

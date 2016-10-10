@@ -70,7 +70,7 @@
                      </td></tr>
                      <tr><td class="formlabel">
                     Shift Date:</td><td>
-                      <asp:Label ID="DateLabel" runat="server" Text='<%#Bind("ShiftDate", "{0:d}") %>' />
+                      <asp:Label ID="DateLabel" runat="server" Text='<%#Bind("ShiftDate", "{0:d}") %>' Visible='<%#Eval("NonRecurring") %>' />
                     </td></tr>
                         <tr><td class="formlabel">
                     Shift Name:</td><td>

@@ -221,6 +221,7 @@ namespace NQN.Bus
                 {
                     throw new Exception(String.Format("{0} is already substituting on this Shift", sub.SubName));
                 }
+                // Otherwise this sub is already registered for you on this shift, just quit here.
                 return false;
             }
             sub = dm.FetchForGuide(obj.GuideID, obj.ShiftID, obj.SubDate);

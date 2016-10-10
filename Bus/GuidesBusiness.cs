@@ -70,6 +70,7 @@ namespace NQN.Bus
                     dList[i].IsSub = true;
                 }
                  
+                dList[i].CanSub = (dList[i].NoSub   && (dList[i].GuideID != GuideID));
             }
             GuideDropinsDM ddm = new GuideDropinsDM();
             foreach (GuideDropinsObject obj in ddm.FetchForDate( dt))
@@ -90,14 +91,17 @@ namespace NQN.Bus
             dList.Sort((x, y) => x.Sequence.CompareTo(y.Sequence));
             return dList;
         }
-        public ObjectList<GuideSubstituteObject> SelectRequestsForDate(DateTime dt)
+        public ObjectList<GuideSubstituteObject> SelectRequestsForDate(DateTime dt, int GuideID )
         {
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             GuideSubstituteDM dm = new GuideSubstituteDM();
             foreach (GuideSubstituteObject obj in dm.FetchForDate(dt))
             {
                 if (obj.SubstituteID == 0)
-                    dList.Add(obj);
+                {
+                    obj.CanSub = (GuideID != obj.GuideID);                   
+                }
+                dList.Add(obj);
             }
             return dList;
         }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using NQN.DB;
 
 namespace MBAV
 {
@@ -10,9 +11,28 @@ namespace MBAV
     {
         protected static string ErrorMessageText = "";
         protected static string InfoMessageText = "";
+        string GuideName = String.Empty;
         protected void Page_Load(object sender, EventArgs e)
         {
-             
+
+            Label HeadLoginName = (Label)HeadLoginView.FindControl("HeadLoginName");
+            if (GuideName == String.Empty)
+            {  
+                int GuideID = 0;
+                try
+                {
+                    GuideID = Convert.ToInt32(Session["GuideID"]);
+                }
+                catch { }
+                if (GuideID > 0)
+                {
+                    GuidesDM dm = new GuidesDM();
+                    GuidesObject guide = dm.FetchGuide(GuideID);
+                    GuideName = guide.GuideName;
+                }
+            }
+
+            HeadLoginName.Text = GuideName;
         }
         protected void Page_PreRender(object sender, EventArgs e)
         {

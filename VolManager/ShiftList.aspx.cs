@@ -31,16 +31,19 @@ namespace VolManager
         {
             Panel RecurringPanel = (Panel)FormView2.FindControl("RecurringPanel");
             Panel SpecialPanel = (Panel)FormView2.FindControl("SpecialPanel");
+            DropDownList DateSelect = (DropDownList)FormView2.FindControl("DateSelect");
             CheckBox RecurringCheckBox = (CheckBox)sender;
             if (RecurringCheckBox.Checked)
             {
                 RecurringPanel.Visible = true;
                 SpecialPanel.Visible = false;
+                DateSelect.Visible = false;
             }
             else
             {
                 RecurringPanel.Visible = false;
                 SpecialPanel.Visible = true;
+                DateSelect.Visible = true;
             }
                 
         }

@@ -29,7 +29,7 @@
             <Columns>
                 <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Images/delete.gif" 
                 ShowDeleteButton="True" CancelImageUrl="~/Images/cancel.gif" 
-                EditImageUrl="~/Images/iedit.gif" ShowEditButton="True" 
+                EditImageUrl="~/Images/iedit.gif"  
                 UpdateImageUrl="~/Images/save.gif"  />
                 <asp:CommandField ButtonType="Button"  HeaderText="Reset Password" 
                       ShowSelectButton="True" SelectText="Reset" />

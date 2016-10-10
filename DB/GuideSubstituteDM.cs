@@ -339,7 +339,7 @@ namespace  NQN.DB
         public void DeleteAllForGuide(int GuideID)
         {
             string qry = @"DELETE GuideSubstitute   WHERE GuideID = @GuideID; 
-                UpdateGuideSubstitute set SubstituteID = null where SubstituteID = @GuideID ";
+                Update GuideSubstitute set SubstituteID = null where SubstituteID = @GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -375,6 +375,7 @@ namespace  NQN.DB
              obj.SubRole = GetNullableString(reader, "SubRole", String.Empty);
             obj.NoSub = (obj.SubstituteID == 0);
             obj.HasSub = (obj.SubstituteID > 0);
+            obj.CanSub = obj.NoSub;
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
 			return obj;
 		}

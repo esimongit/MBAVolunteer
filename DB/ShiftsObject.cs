@@ -157,6 +157,13 @@ namespace NQN.DB
         {
             get;set;
         }
+        public bool NonRecurring
+        {
+            get
+            {
+                return !_recurring;
+            }
+        }
 		public ShiftsObject()
 		{
 			_tablename = "Shifts";

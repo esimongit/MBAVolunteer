@@ -75,6 +75,10 @@ namespace MBAV
         {
             return System.Net.Dns.GetHostName();
         }
+        protected void DoReset(object sender, EventArgs e)
+        {
+            Response.Redirect(Request.Url.PathAndQuery, true);
+        }
         protected void DoSubmit(object sender, CommandEventArgs e)
         {
             GuidesDM gdm = new GuidesDM();
@@ -166,6 +170,8 @@ namespace MBAV
             foreach (RepeaterItem itm in AbsentShiftsRepeater.Items)
             {
                 CheckBox NoNeedCheckBox = (CheckBox)itm.FindControl("NoNeedCheckBox");
+                if (!NoNeedCheckBox.Checked)
+                    continue;
                 ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
                 ShiftsObject shift = sdm.FetchShift(ShiftID);
                 NotifyList.AddRange(gdm.FetchCaptains(ShiftID));
@@ -282,6 +288,7 @@ namespace MBAV
                     }
                 }
             }
+             
             if (!RequestProcessed && NewDropCheckBox.Checked)
             {
                 if (ShiftSelect.SelectedIndex < 0)
@@ -295,6 +302,7 @@ namespace MBAV
                     if (sub.ShiftID == Convert.ToInt32(ShiftSelect.SelectedValue))
                     {
                         // Already subbing on this shift.. No Dropin
+                        ErrorMessage.Set("You may not drop in on  a shift for which you are substituting.");
                         DoDropin = false;
                     }
                 }
@@ -320,6 +328,11 @@ namespace MBAV
                         ErrorMessage.Set(ex.Message);
                     }
                 }
+            }
+            if (!NewDropCheckBox.Checked && ShiftSelect.SelectedValue != String.Empty)
+            {
+                ErrorMessage.Set("You have selected a Shift for Drop-in but not checked the Drop-in CheckBox.");
+                    return;
             }
             if (RequestProcessed)
             {
@@ -367,6 +380,11 @@ namespace MBAV
                 RecipientsRepeater.DataSource = NotifyList;
                 RecipientsRepeater.DataBind();
             }
+            else
+            {
+               ErrorMessage.Set( "No changes were requested.");
+            }
+ 
         }
     }
 }

@@ -28,10 +28,10 @@
     </div>
 <div class="row">
 <div class="col-xs-12">
-    <p>
+    <h3>
         Please enter your Guide ID and password.
     
-    </p>
+    </h3>
     </div>
     </div>
 <div class="row">
@@ -52,7 +52,7 @@
                </div></div>
                      <div class="row">     
                      <div class="col-xs-12">   
-                        <asp:Label ID="UserNameLabel" runat="server" Font AssociatedControlID="UserName">Username:</asp:Label>
+                        <asp:Label ID="UserNameLabel" runat="server" Font AssociatedControlID="UserName">Guide ID:</asp:Label>
                         <asp:TextBox ID="UserName" runat="server" CssClass="textEntry" Width="100"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="UserNameRequired" runat="server" ControlToValidate="UserName" 
                              CssClass="failureNotification" ErrorMessage="User Name is required." ToolTip="User Name is required." 

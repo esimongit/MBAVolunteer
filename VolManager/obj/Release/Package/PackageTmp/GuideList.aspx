@@ -40,12 +40,11 @@
    
     <cc2:NQNGridView ID="GridView1" runat="server" AutoGenerateColumns="False"  RowStyle-ForeColor="Black"  PageSize="100" 
         DataKeyNames="GuideID"   Selectable="true"  OnSorting="TaskGridView_Sorting"  OnSelectedIndexChanged="GuideSelected"
-        AlternatingRowStyle-BackColor="White" AllowSorting="True" DeleteMessage="Remove this guide and all commitments!">
+        AlternatingRowStyle-BackColor="White" AllowSorting="True"  >
         <Columns>
-            <asp:CommandField ShowDeleteButton="True" ShowEditButton="False" 
+            <asp:CommandField  ShowEditButton="False" 
                 ButtonType="Image" CancelImageUrl="~/Images/cancel.gif" 
-                DeleteImageUrl="~/Images/delete.gif" EditImageUrl="~/Images/iedit.gif" 
-                UpdateImageUrl="~/Images/save.gif" />
+                 EditImageUrl="~/Images/iedit.gif"   UpdateImageUrl="~/Images/save.gif" />
             <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolID" />
             <asp:BoundField DataField="FirstName" HeaderText="First Name" 
                 SortExpression="FirstName" />
@@ -76,21 +75,24 @@
      <uc3:GuideEdit id="GuideEdit1" runat="server"  ></uc3:GuideEdit>
     </asp:View>
      <asp:View ID="View3" runat="server">
+         <asp:ValidationSummary runat="server" ForeColor="Red" />
          <asp:FormView ID="FormView2" runat="server" DataSourceID="ObjectDataSource1" DefaultMode="Insert">
                <InsertItemTemplate>
                 <table>
                  <tr><td class="formlabel">
+                     <asp:RequiredFieldValidator ID="Required1" runat="server" ControlToValidate="VolIDTextBox"  Display="Dynamic" ErrorMessage="ID is required">*</asp:RequiredFieldValidator>
                  ID:</td><td>
                  <asp:TextBox ID="VolIDTextBox" runat="server" Text='<%# Bind("VolID") %>' />
                   </td></tr>
                   <tr><td class="formlabel">
-                 
-                 First Name:</td><td>
+                  <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ControlToValidate="FirstNameTextBox"  Display="Dynamic" ErrorMessage="First Name is required">*</asp:RequiredFieldValidator>
+          First Name:</td><td>
                  <asp:TextBox ID="FirstNameTextBox" runat="server" 
                      Text='<%# Bind("FirstName") %>' />
                </td></tr>
                  <tr><td class="formlabel">
-                 Last Name:</td><td>
+                     <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ControlToValidate="LastNameTextBox"  Display="Dynamic" ErrorMessage="Last Name is required">*</asp:RequiredFieldValidator>
+       Last Name:</td><td>
                  <asp:TextBox ID="LastNameTextBox" runat="server" 
                      Text='<%# Bind("LastName") %>' />
                   </td></tr>
@@ -99,8 +101,10 @@
                  <asp:TextBox ID="PhoneTextBox" runat="server" TextMode="Phone" Text='<%# Bind("Phone") %>' />
                    </td></tr>
                  <tr><td class="formlabel">
+             <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ControlToValidate="EmailTextBox"  Display="Dynamic" ErrorMessage="Email is required">*</asp:RequiredFieldValidator>
+     
                  Email:</td><td>
-                 <asp:TextBox ID="EmailTextBox" runat="server" Text='<%# Bind("Email") %>' Width="250" />
+                 <asp:TextBox ID="EmailTextBox" runat="server" Text='<%# Bind("Email") %>' Width="250"  TextMode="Email"/>
                  </td></tr>
                   <tr><td class="formlabel">
                  Shift:</td><td>
