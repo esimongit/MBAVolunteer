@@ -17,8 +17,8 @@
     <form runat="server">
          <div class="container">
     <div class="row">
-        <div class="col-md-12"> 
-        <div class="header">
+        <div class="col-md-12" style="background-color:#0099cc"> 
+        <div class="header"  style="background-color:#0099cc">
             <div class="title">
                 <h1>
                    MBA Substitute Calendar
@@ -44,39 +44,57 @@
   
  <div class="row">
  <div class="hidden-sm hidden-md hidden-lg   col-xs-12" style="font-size:18pt; font-weight:bold;  text-align:center">
-  Hotline (831) 648-4867 <br />
+  Volunteer Office (831) 648-4867 <br />
   <a href="SubstituteCalendar.aspx">Return to Calendar</a>
  </div>
  </div>
   <div class="row">
     
     <div class="col-md-4 hidden-xs" style="border:2px solid black;  display:block; margin-left:auto; height:128px; margin-right:auto"   >
+        <div class="row">
+            <div class="col-sm-6 hidden-xs">
         <a href="SubstituteCalendar.aspx">
-			<img  alt="Monterey Bay Aquarium Volunteer" src="/Images/VolunteerLogoColor.jpg"  width="300" height="100" class="img-responsive"  /></a>
-		</div>
-   
-     <div class="col-md-5 hidden-xs" style=" font-size:11pt;  min-height:126px; background-color:#0099cc; display:block;   color:White; font-weight:bold;border:2px solid black" >
+			<img  alt="Monterey Bay Aquarium Volunteer" src="/Images/VolunteerLogoColor.jpg"  width="200" height="60"  /></a>
+            </div> 
+        </div>
+        <div class="row">
+            <div class="col-sm-offset-7 col-sm-5 hidden-xs">
+            <img alt="Sea Turtle" src="/Images/GreenSeaTurtle.jpg" width="120" height="64" />
+            </div>
+            </div>
+ 	 
+    </div>
+     <div class="col-md-5 hidden-xs" style=" font-size:11pt;  min-height:127px; background-color:#0099cc; display:block;   color:White; font-weight:bold;border:2px solid black" >
 			 <div class="row" style="display:block; text-align:center">Update Begins:</div>
-             <div class="row">
-                <div class="col-md-6"  style="border: 2px solid red; min-height:52px">
-					 1st Shift: 8:30 AM </div>
-                  <div  class="col-md-6" style=" border: 2px solid red; min-height:52px">
-					 2nd Shift(WkDays): 11:30 AM
+            <div class="row">
+                 <div class="col-sm-6"  style="border: 1px solid black;">Weekdays</div>
+               <div class="col-sm-6"  style="border: 1px solid black;">Weekends</div>
+            </div>
+             <div class="row" >
+                <div class="col-sm-6"  style="border: 1px solid black; ">
+                    <div class="row" style="height:27px">
+					 1st Shift: 8:30 AM 
+                    </div>
+                    <div class="row" style="height:27px"> 2nd Shift: 11:30 AM </div>
+                     <div class="row" style="height:27px">
+                 3rd Shift: 2:00 PM  
                   </div>
                 </div>
-                <div class="row"> 
-                  <div class="col-md-6" style=" border: 2px solid red; min-height:52px">
-			 3rd Shift: 2:00 PM</div>
-             <div class="col-md-6"    style=" border: 2px solid red; min-height:52px">
-					 2nd Shift(WkEnds): 12:30 PM</div>
-               </div>
-		 
-             </div>
-       <div class="col-md-3 hidden-xs" style="background:#0099CC;   display:block;  text-align: center;  line-height:126px; height:128px; color:#ffff00;  
-           font-weight:bold;   border:2px solid black"   >
-         	 Hotline (831) 648-4867 
-    </div>
+               <div  class="col-sm-6" style=" border: 1px solid black;  ">
+                   <div class="row"  style="height:40px">
+					 1st Shift: 8:30 AM 
+                    </div>
+				 <div class="row" style="height:41px">
+			        2nd Shift: 12:30 PM</div>
+		            
+           </div>
          </div>
+         </div>
+       <div class="col-md-3 hidden-xs" style="background:#0099CC;   display:block;  text-align: center;  padding-top:30px; height:128px; color:#ffff00;  
+           font-weight:bold; font-size:large;  border:2px solid black"   >
+         	 Volunteer Office <br />(831) 648-4867 
+    </div>
+     
      
  
     

@@ -215,7 +215,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 <hr />
 <p style="text-align:center;font-size:12pt; font-weight:bold">
     Click on "Submit" to record changes. </p>
-    <p style="text-align:center;font-size:12pt; font-weight:bold">
+    <p style="text-align:center;font-size:14pt; font-weight:bold; color:red">
     If you check multiple requests, only one will be processed. </p>
     <p style="text-align:center; font-size:12pt; font-weight:bold">
     Click on "Return to Calendar" to return you to the calendar without
