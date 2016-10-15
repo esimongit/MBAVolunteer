@@ -46,7 +46,9 @@
     </asp:GridView>
 </div></div>
     <div class="row" style="padding-top:10px"><div class="col-md-6 col-md-offset-2">
-         <asp:HyperLink ID="ReturnButton" runat="server" CssClass="btn btn-info"
-              Text="Return to Profile"   NavigateUrl="~/SubstituteCalendar.aspx" />
+        <asp:Button ID="Button1" runat="server" CSSclass="btn btn-info" Text="Close Window"   OnClientClick='javascript:self.close()' />
+
+        <%-- <asp:HyperLink ID="ReturnButton" runat="server" CssClass="btn btn-info"
+              Text="Return to Profile"   NavigateUrl="~/SubstituteCalendar.aspx" />--%>
   </div></div>
 </asp:Content>

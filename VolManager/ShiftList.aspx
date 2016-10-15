@@ -3,15 +3,15 @@
  <%@ Register Src="~/UserControls/DateSelector.ascx" TagName="DateSelector" TagPrefix="uc3" %> 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
-        TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchByCategory" 
-        DataObjectTypeName="NQN.DB.ShiftsObject" > 
+        TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchByCategory" DeleteMethod="Delete" OnDeleted="OnDeleted" > 
+   
     <SelectParameters>
         <asp:ControlParameter  Name="Recurring" ControlID="RecurringSelect" Type="Boolean" DefaultValue="True" />
 
     </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" 
-        TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchShift"  InsertMethod="Save" OnInserted="OnInserted"
+        TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchShift"  InsertMethod="Save" OnInserted="OnInserted" OnUpdated="OnInserted"
         DataObjectTypeName="NQN.DB.ShiftsObject" UpdateMethod="Update">
     <SelectParameters>
         <asp:ControlParameter ControlID="GridView1" Type="Int32" DefaultValue="0" Name="ShiftID" />
@@ -40,21 +40,22 @@
             <asp:Button ID="AddButton" runat="server" Text="Define a Shift" OnClick="ToView4" /></div>
         <div style="clear:both"></div>
     <cc2:NQNGridView ID="GridView1" runat="server" AutoGenerateColumns="False"  OnSelectedIndexChanged="ToView2"
-        DataSourceID="ObjectDataSource1" DataKeyNames="ShiftID" Selectable="true" PageSize="100">
+        DataSourceID="ObjectDataSource1" DataKeyNames="ShiftID" Selectable="true" PageSize="100" AllowMultiColumnSorting="False" DeleteMessage="Are you sure you want to delete?" Privilege="">
         <Columns> 
-            <asp:BoundField DataField="ShiftName" HeaderText="Shift Name"  />
-           
-            <asp:CheckBoxField DataField="AWeek" HeaderText="A Week" 
-                 />
-            <asp:CheckBoxField DataField="BWeek" HeaderText="B Week" 
-                />
-            <asp:BoundField DataField="Sequence" HeaderText="Sequence"    ReadOnly="true"/>
-         
-            <asp:BoundField DataField="ShortName" HeaderText="Short Name"   />
-             <asp:BoundField DataField="ShiftStart" HeaderText="Shift Start"  DataFormatString="{0:h\:mm tt}" ItemStyle-HorizontalAlign="Right"  />
-              <asp:BoundField DataField="ShiftEnd" HeaderText="Shift End"  DataFormatString="{0:h\:mm tt}" ItemStyle-HorizontalAlign="Right" />
-         <asp:BoundField DataField="Captains" HeaderText="Captains" />
-         <asp:BoundField DataField="InfoDesk" HeaderText="Info Desk" />
+            <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Images/delete.gif" ShowDeleteButton="True" />
+            <asp:BoundField DataField="ShiftName" HeaderText="Shift Name" />
+            <asp:CheckBoxField DataField="AWeek" HeaderText="A Week" />
+            <asp:CheckBoxField DataField="BWeek" HeaderText="B Week" />
+            <asp:BoundField DataField="Sequence" HeaderText="Sequence" ReadOnly="true" />
+            <asp:BoundField DataField="ShortName" HeaderText="Short Name" />
+            <asp:BoundField DataField="ShiftStart" DataFormatString="{0:h\:mm tt}" HeaderText="Shift Start" ItemStyle-HorizontalAlign="Right">
+            <ItemStyle HorizontalAlign="Right" />
+            </asp:BoundField>
+            <asp:BoundField DataField="ShiftEnd" DataFormatString="{0:h\:mm tt}" HeaderText="Shift End" ItemStyle-HorizontalAlign="Right">
+            <ItemStyle HorizontalAlign="Right" />
+            </asp:BoundField>
+            <asp:BoundField DataField="Captains" HeaderText="Captains" />
+            <asp:BoundField DataField="InfoDesk" HeaderText="Info Desk" />
         </Columns>
     </cc2:NQNGridView>
             </asp:View>
@@ -140,6 +141,7 @@
             
         </asp:View>
          <asp:View ID="View4" runat="server">
+              <asp:ValidationSummary ID="ValidationSummary1" runat="server" />
               <asp:FormView ID="FormView2" runat="server" DataSourceID="ObjectDataSource2" DataKeyNames="ShiftID"
                  DefaultMode="Insert">
                 <InsertItemTemplate>
@@ -150,6 +152,7 @@
                          OnCheckedChanged="RecurringChanged" />  
                      </td></tr>
                     <tr><td class="formlabel">
+                        <asp:RequiredFieldValidator runat="server" ID="Required1" ControlToValidate="ShiftNameTextBox" ErrorMessage="Name is required." Display="Dynamic">*</asp:RequiredFieldValidator>
                     Shift Name:</td><td>
                     <asp:TextBox ID="ShiftNameTextBox" runat="server" Text='<%# Bind("ShiftName") %>' />
                     </td></tr>

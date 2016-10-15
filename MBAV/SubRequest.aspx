@@ -173,8 +173,9 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 </asp:TemplateField>
 <asp:TemplateField HeaderText="Substitute">
     <ItemTemplate>
-    <asp:Label ID="SubNameLabel" runat="server" Text='<%#Eval("SubName") %>' ForeColor='<%#Eval("SubColor") %>' ></asp:Label>
-    </ItemTemplate>
+        <asp:HyperLink  runat="server"   ForeColor='<%#Eval("SubColor") %>'  Text='<%#Eval("SubName") %>' Font-Underline="false"  Font-Bold="true" 
+              NavigateUrl='<%#Eval("SubstituteID", "ContactInfo.aspx?ID={0}")   %>'   Target="_blank"     /> 
+  </ItemTemplate>
 </asp:TemplateField>
  
 <asp:BoundField DataField="Sub" HeaderText="Sub ID" />
@@ -206,7 +207,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 <asp:BoundField DataField="Role" HeaderText="Role" /> 
 <asp:HyperLinkField DataNavigateUrlFields="GuideID" ControlStyle-ForeColor="#330088"  ControlStyle-Font-Bold="true" DataNavigateUrlFormatString="ContactInfo.aspx?ID={0}"     Target="_blank" 
   HeaderText="Requestor (Click for Contact Info)" DataTextField="GuideName" /> 
-<asp:BoundField DataField="SubName" HeaderText="Substitute" />
+<asp:HyperLinkField DataTextField="SubName" DataNavigateUrlFields="SubstituteID"  DataNavigateUrlFormatString="ContactInfo.aspx?ID={0}" Target="_blank"  HeaderText="Substitute" />
 <asp:BoundField DataField="Sub" HeaderText="Sub ID" />
 </Columns>
 <EmptyDataTemplate>No Subs</EmptyDataTemplate>  

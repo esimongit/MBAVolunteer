@@ -13,7 +13,9 @@
  <div class="col-md-5" style="margin-left:20px; font-size:12pt"> 
   <asp:Label ID="NameLabel" runat="server" Font-Bold="true" Font-Size="Large"></asp:Label>
    <p>Click on the date you need or can be a substitute.
-   </p><p>We need substitutes on dates indicated in: <span style='color:red;font-weight:bold; font-style:italic'>red</span>.
+   </p><p>We need substitutes on dates indicated in: <span style='color:blue;font-weight:bold; font-style:italic'>blue</span>.
+   </p>
+     <p>We have a critical need for substitutes on dates indicated in: <span style='color:red;font-weight:bold; font-style:italic'>red</span>.
    </p>
    <p>You are expected on a shift on dates that are  <span style="color:#222; font-weight:bold; text-decoration:underline">underlined</span>.
    </p>

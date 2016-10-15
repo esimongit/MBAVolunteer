@@ -413,8 +413,7 @@ namespace  NQN.DB
 				,BWeek=@BWeek
 				,Sequence=@Sequence
 				,ShortName=@ShortName
-                ,ShiftTimeID = @ShiftTimeID
-                ,Recurring = @Recurring
+                ,ShiftTimeID = @ShiftTimeID 
                 ,ShiftDate = nullif(@ShiftDate, @DefaultDate)
 				 WHERE ShiftID = @ShiftID"
                   ;
@@ -428,8 +427,7 @@ namespace  NQN.DB
                 myc.Parameters.Add(new SqlParameter("BWeek", obj.BWeek));
                 myc.Parameters.Add(new SqlParameter("Sequence", obj.Sequence));
                 myc.Parameters.Add(new SqlParameter("ShortName", obj.ShortName));
-                myc.Parameters.Add(new SqlParameter("ShiftTimeID", obj.ShiftTimeID));
-                myc.Parameters.Add(new SqlParameter("Recurring", obj.Recurring));
+                myc.Parameters.Add(new SqlParameter("ShiftTimeID", obj.ShiftTimeID)); 
                 myc.Parameters.Add(new SqlParameter("ShiftDate", obj.ShiftDate));
                 myc.Parameters.Add(new SqlParameter("DefaultDate", obj.SQLMinDate));
                 myc.ExecuteNonQuery();
@@ -477,13 +475,13 @@ namespace  NQN.DB
             }
         }
 
-        public void Delete(int pkey)
+        public void Delete(int ShiftID)
         {
             string qry = @"DELETE FROM Shifts WHERE [ShiftID] = @ShiftID";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
-                myc.Parameters.Add(new SqlParameter("ShiftID", pkey));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
                 myc.ExecuteNonQuery();
             }
         }

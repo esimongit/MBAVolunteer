@@ -31,7 +31,7 @@ namespace VolManager
         {
             Panel RecurringPanel = (Panel)FormView2.FindControl("RecurringPanel");
             Panel SpecialPanel = (Panel)FormView2.FindControl("SpecialPanel");
-            DropDownList DateSelect = (DropDownList)FormView2.FindControl("DateSelect");
+            DateSelector DateSelect = (DateSelector)FormView2.FindControl("DateSelect");
             CheckBox RecurringCheckBox = (CheckBox)sender;
             if (RecurringCheckBox.Checked)
             {
@@ -47,6 +47,21 @@ namespace VolManager
             }
                 
         }
+        protected void OnDeleted(object sender, ObjectDataSourceStatusEventArgs e)
+        {
+            if (e.Exception != null)
+            {
+                Exception ex = e.Exception.GetBaseException();
+                if (ex.Message.Contains("FK"))
+                    ErrorMessage.Set("This shift has guides who must first be removed.");
+                else
+                    ErrorMessage.Set(ex.Message);
+                e.ExceptionHandled = true;
+                return;
+            }
+          
+            InfoMessage.Set("ShiftDeleted"); 
+        }
         protected void OnInserted(object sender, ObjectDataSourceStatusEventArgs e)
         {
             if (e.Exception != null)
@@ -57,7 +72,7 @@ namespace VolManager
                 return;
             }
             GridView1.DataBind();
-            InfoMessage.Set("New Shift Added");
+            InfoMessage.Set("Shift Added or Changed");
             MultiView1.SetActiveView(View1);
         }
         protected void GuideSelected(object sender, EventArgs e)

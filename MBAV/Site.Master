@@ -54,17 +54,17 @@
         <div class="row">
             <div class="col-sm-6 hidden-xs">
         <a href="SubstituteCalendar.aspx">
-			<img  alt="Monterey Bay Aquarium Volunteer" src="/Images/VolunteerLogoColor.jpg"  width="200" height="60"  /></a>
+			<img  alt="Monterey Bay Aquarium Volunteer" src="/Images/VolunteerLogoColor.jpg"  width="200" height="44"  /></a>
             </div> 
         </div>
         <div class="row">
             <div class="col-sm-offset-7 col-sm-5 hidden-xs">
-            <img alt="Sea Turtle" src="/Images/GreenSeaTurtle.jpg" width="120" height="64" />
+            <img alt="Sea Turtle" src="/Images/GreenSeaTurtle.jpg" width="115" height="64" />
             </div>
             </div>
  	 
     </div>
-     <div class="col-md-5 hidden-xs" style=" font-size:11pt;  min-height:127px; background-color:#0099cc; display:block;   color:White; font-weight:bold;border:2px solid black" >
+     <div class="col-md-5 hidden-xs" style=" font-size:11pt;  min-height:125px; background-color:#0099cc; display:block;   color:White; font-weight:bold;border:2px solid black" >
 			 <div class="row" style="display:block; text-align:center">Update Begins:</div>
             <div class="row">
                  <div class="col-sm-6"  style="border: 1px solid black;">Weekdays</div>
@@ -73,19 +73,24 @@
              <div class="row" >
                 <div class="col-sm-6"  style="border: 1px solid black; ">
                     <div class="row" style="height:27px">
+                        <div class="col-sm-10">
 					 1st Shift: 8:30 AM 
+                            </div>
                     </div>
-                    <div class="row" style="height:27px"> 2nd Shift: 11:30 AM </div>
-                     <div class="row" style="height:27px">
+                    <div class="row" style="height:27px">
+                        <div class="col-sm-10"> 2nd Shift: 11:30 AM </div></div>
+                     <div class="row" style="height:26px">
+                         <div class="col-sm-10">
                  3rd Shift: 2:00 PM  
+                             </div>
                   </div>
                 </div>
                <div  class="col-sm-6" style=" border: 1px solid black;  ">
-                   <div class="row"  style="height:40px">
-					 1st Shift: 8:30 AM 
+                   <div class="row"  style="height:40px"><div class="col-sm-10">
+					 1st Shift: 8:30 AM </div>
                     </div>
-				 <div class="row" style="height:41px">
-			        2nd Shift: 12:30 PM</div>
+				 <div class="row" style="height:40px"><div class="col-sm-10">
+			        2nd Shift: 12:30 PM</div></div>
 		            
            </div>
          </div>

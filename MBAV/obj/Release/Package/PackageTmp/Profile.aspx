@@ -196,10 +196,16 @@
 <div class="row"><div class="col-md-12">
 <h3>In the table below,  check all the boxes for shifts on which 
 you can substitute. </h3><hr/>
-  <div class="row"><div class="col-md-6 col-md-offset-3">
+    </div></div>
+  <div class="row">
+      <div class="col-md-3">
+          <asp:HyperLink runat="server" ID="OpportunitiesLink" Text="View All Requests for these Shifts" CssClass="btn btn-info"
+               NavigateUrl="~/Opportunities.aspx"  Target="_blank"></asp:HyperLink>
+      </div><div class="col-md-6">
          <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-info"
              CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
   </div></div>
+    <div class="row" style="padding-top:10px"><div class="col-md-5">
 <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ShiftsDataSource" >
 <HeaderTemplate><table cellpadding="5"></HeaderTemplate>
 <ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#efefef":"background-color:#ffffff" %>'> <td><asp:Label runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></td><td>
@@ -209,7 +215,8 @@ you can substitute. </h3><hr/>
 </ItemTemplate>
 <FooterTemplate></table></FooterTemplate>
 </asp:Repeater>
-    </div></div>
+     </div></div>
+ 
 <div class="row"><div class="col-md-6 col-md-offset-3">
          <asp:LinkButton ID="LinkButton1" runat="server" CssClass="btn btn-info"
              CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />

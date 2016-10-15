@@ -70,7 +70,7 @@ namespace MBAV
           
             if (obj.NeedSubstitutes)
             {
-                color = "red";
+                color = "blue";
                 style = "italic";
             }
              
