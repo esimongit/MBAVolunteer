@@ -9,6 +9,13 @@ namespace NQN.Bus
 {
     public class GuidesBusiness
     {
+        public DataTable Search(string Pattern)
+        {
+            if (String.IsNullOrEmpty(Pattern) || Pattern.Length < 3)
+                return null;
+            GuidesDM dm = new GuidesDM();
+            return dm.Search(Pattern, 0, 0, false);
+        }
         public ObjectList<GuideSubstituteObject> SelectForShift(int ShiftID, DateTime dt)
         {
             GuideSubstituteDM dm= new GuideSubstituteDM();

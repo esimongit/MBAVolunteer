@@ -90,6 +90,7 @@
     <Content Include="Scripts\jquery-1.9.1.min.js" />
     <Content Include="Scripts\jquery.responsivetable.js" />
     <Content Include="Scripts\jquery.responsivetable.min.js" />
+    <Content Include="Search.aspx" />
     <Content Include="SumReport.aspx" />
     <Content Include="DateSelector.ascx" />
     <Content Include="Images\calendar.gif" />
@@ -151,6 +152,13 @@
     </Compile>
     <Compile Include="Opportunities.aspx.designer.cs">
       <DependentUpon>Opportunities.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Search.aspx.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Search.aspx.designer.cs">
+      <DependentUpon>Search.aspx</DependentUpon>
     </Compile>
     <Compile Include="SumReport.aspx.cs">
       <DependentUpon>SumReport.aspx</DependentUpon>
