@@ -13,6 +13,8 @@ namespace VolManager
     public partial class ShiftCalendar : System.Web.UI.Page
     {
         protected ObjectList<ShiftsObject> CurrentShifts = null;
+        int WeekdayCritical = 0;
+        int WeekendCritical = 0;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -28,6 +30,7 @@ namespace VolManager
         protected void DayRenderHandler(object source, DayRenderEventArgs e)
         { 
             DateTime dt = e.Day.Date;
+            bool Weekend = dt.DayOfWeek == DayOfWeek.Saturday || dt.DayOfWeek == DayOfWeek.Sunday;
             if (dt < DateTime.Today)
                 return;
            
@@ -61,6 +64,8 @@ namespace VolManager
                 e.Cell.Controls.Add(txt);
                 HyperLink lc = new HyperLink();
                 lc.Text = shift.ShiftName;
+                if ((Weekend && shift.Attendance < WeekendCritical) || (!Weekend && shift.Attendance < WeekdayCritical))
+                    lc.ForeColor = System.Drawing.Color.Red;
                 lc.NavigateUrl = shift.Url(dt);
                 e.Cell.Controls.Add(lc);
             }
@@ -74,7 +79,8 @@ namespace VolManager
             ShiftsBusiness sb = new ShiftsBusiness();
             DateTime curdate = DateTime.Parse(Session["VolCalDate"].ToString());
             CurrentShifts = sb.SelectShiftsForMonth(curdate.Year, curdate.Month);
-             
+            WeekdayCritical = Convert.ToInt32(StaticFieldsObject.StaticValue("WeekdayCritical"));
+            WeekendCritical = Convert.ToInt32(StaticFieldsObject.StaticValue("WeekendCritical"));
         }
         protected void MonthChanged(Object sender, MonthChangedEventArgs e)
         {

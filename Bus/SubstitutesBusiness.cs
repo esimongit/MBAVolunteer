@@ -148,6 +148,8 @@ namespace NQN.Bus
             ObjectList<GuideDropinsObject> dList = ddm.FetchForMonth(Year, Month, GuideID);
              GuidesObject guide = gdm.FetchGuide(GuideID);
             DateTime CurDay = new DateTime(Year, Month, 1);
+            int WeekdayCritical = Convert.ToInt32(StaticFieldsObject.StaticValue("WeekdayCritical"));
+            int WeekendCritical = Convert.ToInt32(StaticFieldsObject.StaticValue("WeekendCritical"));
             while (CurDay.Month == Month)
             {
                 CalendarDateObject obj = new CalendarDateObject();
@@ -164,6 +166,16 @@ namespace NQN.Bus
                         obj.IsSubstitute = true;
                     if (sub.GuideID == GuideID)
                         obj.IsSubstitute = false;
+                    if (sub.SubDate.DayOfWeek == DayOfWeek.Saturday || sub.SubDate.DayOfWeek == DayOfWeek.Sunday)
+                    {
+                        if (sub.Attendance < WeekendCritical)
+                            obj.Critical = true;
+                    }
+                    else
+                    {
+                        if (sub.Attendance < WeekdayCritical)
+                            obj.Critical = true;
+                    }
                 }
                 GuideDropinsObject drop = dList.Find(x => x.DropinDate == CurDay);
                 if (drop != null)

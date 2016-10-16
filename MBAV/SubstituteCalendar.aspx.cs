@@ -73,7 +73,9 @@ namespace MBAV
                 color = "blue";
                 style = "italic";
             }
-             
+            if (obj.Critical)
+                color = "red";
+
             if (obj.IsSubstitute)
             {
                 decoration = "underline";

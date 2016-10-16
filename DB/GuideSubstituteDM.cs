@@ -173,6 +173,24 @@ namespace  NQN.DB
             }
             return Results;
         }
+        public int Attendance(DateTime dt, int ShiftID)
+        {
+            int ret = 0;
+            string qry = "select Attendance = dbo.ShiftAttendance(@dt, @ShiftID)";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                try
+                {
+                    ret = Convert.ToInt32(myc.ExecuteScalar());
+                }
+                catch { }
+            }
+            return ret;
+        }
 
         public  ObjectList<GuideSubstituteObject> FetchForMonth(int Year, int Month)
         {
@@ -193,6 +211,10 @@ namespace  NQN.DB
                     }
                 }
              }
+             for (int i = 0; i < Results.Count; i++)
+            {
+                Results[i].Attendance = Attendance(Results[i].SubDate, Results[i].ShiftID);
+            }
             return Results;
         }
 

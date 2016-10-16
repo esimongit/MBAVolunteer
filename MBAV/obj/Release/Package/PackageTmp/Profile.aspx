@@ -57,8 +57,9 @@
  <asp:FormView ID="FormView1" runat="server" DefaultMode="Edit" DataSourceID="ObjectDataSource1"  DataKeyNames="GuideID">
      <EditItemTemplate>
         <div class="row">  
+            <div class="col-xs-12">
         <h3>Please correct this information</h3>
-        </div>
+        </div></div>
         <div class="row" style="padding-bottom:4px">
         <div class="col-md-4">
         <asp:RequiredFieldValidator ID="FirstRequired" ControlToValidate="FirstNameTextBox" runat="server" ErrorMessage="First Name is required"
@@ -177,23 +178,27 @@
  </div>
  <div class="col-md-6">
     <div class="row" style="padding-top:50px">
+        <div class="col-xs-12">
 <asp:Button ID="View2Button" runat="server" Text="Select shifts for which you can substitute" CssClass="btn btn-info"  CausesValidation="false" BackColor="#5bc0fe" OnClick="ToView2" />
-        </div>
+        </div></div>
  <div class="row" style="padding-top:20px">
+     <div class="col-xs-12">
 <asp:Button ID="IrregularButton" runat="server" Text="Select dates you plan to be on a shift" CssClass="btn btn-info" OnClick="ToView3"   CausesValidation="false"  BackColor="#6e8ade"/>
-        </div>
+        </div></div>
  <div class="row" style="padding-top:20px">
+     <div class="col-xs-12">
 <asp:Button ID="Button2" runat="server" Text="Review your substitute commitments" CssClass="btn btn-info" OnClick="ToView4"    CausesValidation="false" BackColor="#6e8aa0"/>
-        </div>
+        </div></div>
 <div class="row" style="padding-top:20px">
+    <div class="col-xs-12">
 <asp:Button ID="Button3" runat="server" Text="Select Special Shifts" CssClass="btn btn-info" OnClick="ToView5"   CausesValidation="false" BackColor="#9e8aa0"/>
-        </div>
+        </div></div>
  </div>
     </div>
   
 </asp:View>
      <asp:View runat="server" ID="View2">
-<div class="row"><div class="col-md-12">
+<div class="row"><div class="col-xs-12">
 <h3>In the table below,  check all the boxes for shifts on which 
 you can substitute. </h3><hr/>
     </div></div>

@@ -89,12 +89,26 @@ namespace  NQN.DB
             if (dt == DateTime.MinValue)
                 return null;
             ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
-
-
-            string qry = ReadAllCommand() + @" where(recurring = 1 and dow = datepart(dw, @dt)  and ((dbo.AB(@dt) = 'AWeek' and AWeek = 1)
-                    or (dbo.AB(@dt) = 'BWeek' and BWeek = 1)))
-		            or (recurring = 0 and ShiftDate = @dt)
-                order by Sequence ";
+            string qry = @"SELECT
+                [ShiftID]
+                ,[ShiftName]
+                ,[DOW]
+                ,[AWeek]
+                ,[BWeek]
+                ,[Sequence]
+                ,[ShortName]
+                ,[Recurring]
+                ,[ShiftDate]
+                , s.ShiftTimeID
+                ,ShiftStart = cast(t.ShiftStart as DateTime)
+                ,ShiftEnd = cast(t.ShiftEnd as DateTime)
+                ,[Captains] = ''
+                ,[Info] = ''
+             ,Attendance = dbo.ShiftAttendance(@dt, s.ShiftID)
+		     FROM Shifts s left join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID
+		    WHERE (s.recurring = 1 and dow = datepart(dw, @dt)  and ((s.AWeek = 1 and dbo.AB(@dt)  = 'AWeek') or (s.BWeek = 1 and   dbo.AB(@dt) = 'BWeek')))
+		    or (s.recurring = 0 and s.ShiftDate = @dt)
+                order by Sequence  ";
            
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -105,6 +119,7 @@ namespace  NQN.DB
                     ShiftsObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
+                        obj.Attendance = GetNullableInt32(reader, "Attendance", 0);
                         Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
@@ -382,6 +397,7 @@ namespace  NQN.DB
                 ,[ShiftTimeID] 
                 ,[Recurring]
                 ,[ShiftDate] = isnull(ShiftDate, dt)
+                ,[Attendance]
                 ,[ShiftStart] = null
                 ,[ShiftEnd] = null
 			   FROM dbo.ShiftsForMonth(@Yr, @Mo) order by dt, Sequence ";
@@ -395,7 +411,7 @@ namespace  NQN.DB
                     ShiftsObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
-
+                        obj.Attendance = GetNullableInt32(reader, "Attendance", 0);
                         Results.Add(obj);
                         obj = LoadFrom(reader);
                     }

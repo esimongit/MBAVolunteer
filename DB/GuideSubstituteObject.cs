@@ -233,6 +233,10 @@ namespace NQN.DB
                 return !MaskContactInfo;
             }
         }
+        public int Attendance
+        {
+            get; set;
+        }
         public GuideSubstituteObject()
 		{
 			_tablename = "GuideSubstitute";
@@ -281,6 +285,10 @@ namespace NQN.DB
             {
                 _issubstitute = value;
             }
-        }    
+        }
+        public bool Critical
+        {
+            get; set;
+        }
     }
 }
