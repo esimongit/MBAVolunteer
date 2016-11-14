@@ -31,14 +31,14 @@
 </style>
 <div style="float:left; padding-left:10px">
       
-         <asp:FormView ID="FormView1" runat="server" DataSourceID="ObjectDataSource2" DataKeyNames="GuideID"
+         <asp:FormView ID="FormView1" runat="server" DataSourceID="ObjectDataSource2" DataKeyNames="GuideID" OnDataBound ="SetLink"
            DefaultMode="Edit"   >
              <EditItemTemplate>
                   
                 <table><tr><td class="formlabel">
                  ID:</td><td>
                  <asp:TextBox ID="VolIDTextBox" runat="server" Width="60" Text='<%# Bind("VolID") %>' />&nbsp;&nbsp;
-                  <asp:HyperLink ID="MBAVLink" runat="server" Text="Open MBAV site"  Visible='<%#Eval("HasLogin") %>' Target="_blank"  NavigateUrl='<%#Eval("UserId", "http://mbav.netqnet.com/Login.aspx?ID={0}") %>' ></asp:HyperLink>
+                  <asp:HyperLink ID="MBAVLink" runat="server" Text="Open MBAV site"  Visible='<%#Eval("HasLogin") %>' Target="_blank"   ></asp:HyperLink>
                   </td></tr>
                  <tr><td class="formlabel">
                First Name:</td><td>

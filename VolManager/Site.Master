@@ -27,7 +27,7 @@ div.menu ul li ul
    <table cellspacing="0" border="1" cellpadding="0" width="100%" class="header">
         <tr ><td colspan="2">
             <table border="0" cellpadding="0" cellspacing="0" width="100%"  >
-                <tr><td><div style="float:left"> <a  href="/default.aspx"> <asp:Image ID="ImageLogo" runat="server"  Width="300" Height="80"  ImageUrl="/Images/mbaLogo2.png" /> </a>
+                <tr><td><div style="float:left"> <a  href="/default.aspx"> <asp:Image ID="ImageLogo" runat="server"  Width="300" Height="80"  ImageUrl="/Images/volunteerLogo.jpg" /> </a>
                </div>
                <div style="float:left; margin-top:20px; margin-left: 30px"> <asp:Label ID="ProgramLabel"  Font-Size="X-Large" Font-Bold="true" ForeColor="White" runat="server"></asp:Label></div>
                     </td> 

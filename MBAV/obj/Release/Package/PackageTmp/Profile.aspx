@@ -52,7 +52,7 @@
     <asp:View runat="server" ID="View1">
 
     <div class="row">
-        <div class="col-md-6">
+        <div class="col-md-7">
 <asp:ValidationSummary ID="ValidationSummary1" runat="server" ForeColor="Red" />
  <asp:FormView ID="FormView1" runat="server" DefaultMode="Edit" DataSourceID="ObjectDataSource1"  DataKeyNames="GuideID">
      <EditItemTemplate>
@@ -61,7 +61,7 @@
         <h3>Please correct this information</h3>
         </div></div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-4">
+        <div class="col-md-4" style="color:blue; font-weight:bold">
         <asp:RequiredFieldValidator ID="FirstRequired" ControlToValidate="FirstNameTextBox" runat="server" ErrorMessage="First Name is required"
           Display="Dynamic">*</asp:RequiredFieldValidator>
          First Name: </div>
@@ -71,7 +71,7 @@
            </div>
          </div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-4">
+        <div class="col-md-4" style="color:blue; font-weight:bold">
          <asp:RequiredFieldValidator ID="RequiredFieldValidator1" ControlToValidate="LastNameTextBox" runat="server" ErrorMessage="Last Name is required"
           Display="Dynamic">*</asp:RequiredFieldValidator>
          Last Name:</div>
@@ -81,7 +81,7 @@
        </div>
        </div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-4"> 
+        <div class="col-md-4" style="color:blue; font-weight:bold">
           <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="PhoneTextBox"
                     ValidationExpression='<%# NQN.DB.GuidesObject.ValidPhone %>' ErrorMessage="Phone must have 10 digits"
              Display="Dynamic">*</asp:RegularExpressionValidator>
@@ -91,7 +91,7 @@
         </div>
         </div>
           <div class="row" style="padding-bottom:4px">
-        <div class="col-md-4"> 
+        <div class="col-md-4" style="color:blue; font-weight:bold">
           <asp:RegularExpressionValidator ID="RegularExpressionValidator3" runat="server" ControlToValidate="CellPhoneTextBox"
                     ValidationExpression='<%# NQN.DB.GuidesObject.ValidPhone %>' ErrorMessage="Phone must have 10 digits"
              Display="Dynamic">*</asp:RegularExpressionValidator>
@@ -105,7 +105,7 @@
          </div>
         </div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-4">
+       <div class="col-md-4" style="color:blue; font-weight:bold">
          <asp:RegularExpressionValidator ID="RegularExpressionValidator2" runat="server" ControlToValidate="EmailTextBox"
                     ValidationExpression='<%# NQN.DB.GuidesObject.ValidEmail %>' ErrorMessage="Email is not Valid"
              Display="Dynamic">*</asp:RegularExpressionValidator>
@@ -114,21 +114,28 @@
          <asp:TextBox ID="EmailTextBox"  TextMode="Email" Width="200" runat="server" Text='<%# Bind("Email") %>' />
         </div></div>
           <div class="row" style="padding-bottom:4px">
-        <div class="col-md-4">
+         <div class="col-md-4" style="color:blue; font-weight:bold">
          Personal Info:</div>
               <div class="col-md-7"> 
              <div style="float:left">My contact information should be visible to guides</div>
                   <div style="float:left; padding-left:4px"> 
               <asp:RadioButtonList ID="MaskRadio" RepeatDirection="Horizontal" runat="server"  RepeatColumns="2"   SelectedValue='<%#Bind("MaskPersonalInfo") %>'
                >
-             <asp:ListItem Value="True" Text="No" ></asp:ListItem>
-              <asp:ListItem Value="False" Text="Yes" Selected="True"></asp:ListItem>
+             <asp:ListItem Value="True" Text="&nbsp;No" ></asp:ListItem>
+              <asp:ListItem Value="False" Text="&nbsp;Yes" Selected="True"></asp:ListItem>
            </asp:RadioButtonList></div>
           <div class="clear"></div>
          
         </div></div>
+           <div class="row" style="padding-bottom:4px">
+          <div class="col-md-4" style="color:blue; font-weight:bold">
+         Email Notices:</div>
+              <div class="col-md-7"> 
+                  <asp:CheckBox ID="NotifyCheckBox" runat="server" Checked='<%#Bind("NotifySubRequests") %>' Text="&nbsp;&nbsp;Mail me Sub requests." />
+            </div>
+        </div>
          <div class="row" style="padding-bottom:4px">
-        <div class="col-md-5">
+        <div class="col-md-4" style="color:blue; font-weight:bold">
          Personal Calendar:</div>
          <div class="col-md-4"> 
          <asp:DropDownList ID="CalendarSelect" runat="server" SelectedValue='<%#Bind("CalendarType") %>'>
@@ -138,28 +145,32 @@
          </asp:DropDownList>
         </div></div>
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-8">      
-         ID: 
+        <div class="col-md-4" style="color:blue; font-weight:bold">      
+         ID: </div>
+        <div class="col-md-4"> 
          <asp:Label ID="VolIDTextBox" runat="server"   Font-Bold="true" Text='<%# Eval("VolID") %>' />
        </div>
         </div> 
         <div class="row" style="padding-bottom:4px">
-        <div class="col-md-8">
-         Shift: 
+        <div class="col-md-4" style="color:blue; font-weight:bold">    
+         Shift:  </div>
+        <div class="col-md-4"> 
        
          <asp:Label ID="Label1" runat="server"  Font-Bold="true" Text='<%# Eval("ShiftName") %>' />
        </div>
        </div>
           <div class="row" style="padding-bottom:4px">
-        <div class="col-md-8">
-         Role: 
+        <div class="col-md-4" style="color:blue; font-weight:bold"> 
+         Role:  </div>
+        <div class="col-md-4"> 
        
          <asp:Label ID="Label2" runat="server"  Font-Bold="true" Text='<%# Eval("RoleName") %>' />
        </div>
        </div>
           <div class="row" style="padding-bottom:4px">
-        <div class="col-md-8">
-         Alternate Role: 
+        <div class="col-md-4" style="color:blue; font-weight:bold">     
+         Alternate Role:  </div>
+        <div class="col-md-4"> 
        
          <asp:Label ID="Label3" runat="server"  Font-Bold="true" Text='<%# Eval("AltRoleName") %>' />
        </div>
@@ -176,7 +187,7 @@
     
  </asp:FormView>
  </div>
- <div class="col-md-6">
+ <div class="col-md-5">
     <div class="row" style="padding-top:50px">
         <div class="col-xs-12">
 <asp:Button ID="View2Button" runat="server" Text="Select shifts for which you can substitute" CssClass="btn btn-info"  CausesValidation="false" BackColor="#5bc0fe" OnClick="ToView2" />

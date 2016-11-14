@@ -266,7 +266,8 @@ namespace  NQN.DB
             return Results;
         } 
 
-        public void Update(string FirstName, string LastName, string Phone, string Email, string CalendarType,  string Cell, bool CellPreferred, int GuideID, bool MaskPersonalInfo)
+        public void Update(string FirstName, string LastName, string Phone, string Email, string CalendarType,  string Cell, bool CellPreferred,
+            int GuideID, bool MaskPersonalInfo, bool NotifySubRequests)
         {
             GuidesObject obj = FetchGuide(GuideID);
             if (obj == null)
@@ -280,6 +281,7 @@ namespace  NQN.DB
                 obj.CellPreferred = true;
             obj.Email = Email;
             obj.MaskPersonalInfo = MaskPersonalInfo;
+            obj.NotifySubRequests = NotifySubRequests;
             obj.CalendarType = CalendarType;
             obj.UpdateBy = "self";
             obj.LastUpdate = DateTime.Now;
@@ -308,6 +310,7 @@ namespace  NQN.DB
 				,RoleID=@RoleID
                 ,AltRoleID=nullif(@AltRoleID,0)
                 ,MaskPersonalInfo = isnull(@MaskPersonalInfo,0)
+                ,NotifySubRequests = isnull(@NotifySubRequests,0)
 				,UpdateBy=@UpdateBy
 				,LastUpdate=@LastUpdate 
                 ,CalendarType = nullif(@CalendarType, '')
@@ -324,6 +327,7 @@ namespace  NQN.DB
                 myc.Parameters.Add(new SqlParameter("Email",obj.Email)); 
 				myc.Parameters.Add(new SqlParameter("Inactive",obj.Inactive));
                 myc.Parameters.Add(new SqlParameter("MaskPersonalInfo", obj.MaskPersonalInfo));
+                myc.Parameters.Add(new SqlParameter("NotifySubRequests", obj.NotifySubRequests));
                 myc.Parameters.Add(new SqlParameter("PhoneDigits", obj.PhoneDigits));
 				myc.Parameters.Add(new SqlParameter("Notes",obj.Notes));
 				myc.Parameters.Add(new SqlParameter("VolID",obj.VolID));
@@ -361,6 +365,7 @@ namespace  NQN.DB
 				,[UpdateBy]
 				,[LastUpdate] 
                 ,[CalendarType]
+                ,[NotifySubRequests]
 				)
 			VALUES(
 				@FirstName
@@ -378,6 +383,7 @@ namespace  NQN.DB
 				,@UpdateBy
 				,getdate() 
                 ,nullif(@CalendarType, '')
+                ,1
 				)";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{
@@ -502,6 +508,7 @@ namespace  NQN.DB
             obj.DOW = GetNullableInt32(reader, "DOW", 0);
             obj.HasLogin = GetNullableBoolean(reader, "HasLogin", false);
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
+            obj.NotifySubRequests = GetNullableBoolean(reader, "NotifySubRequests", false);
             obj.MaskPersonalInfo = GetNullableBoolean(reader, "MaskPersonalInfo", false);
             obj.GuideName =  obj.FirstName + " " + obj.LastName ;
             obj.CalendarType = GetNullableString(reader, "CalendarType", String.Empty);
@@ -539,6 +546,7 @@ namespace  NQN.DB
                 ,ShortName = ''
                 ,Sequence = 0
                 ,DOW = 0
+                ,NotifySubRequests 
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
 				FROM Guides g join Roles r on g.RoleID = r.RoleID
                 left join Roles r2 on g.AltRoleID = r2.RoleID ";
@@ -573,6 +581,7 @@ namespace  NQN.DB
                 ,s.ShortName
                 ,s.Sequence
                 ,s.DOW
+                ,NotifySubRequests
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
 				FROM Guides g join Roles r on g.RoleID = r.RoleID
                 join GuideShift gs on g.GuideID = gs.GuideID  join Shifts s on s.ShiftID = gs.ShiftID 

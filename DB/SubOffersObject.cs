@@ -93,7 +93,7 @@ namespace NQN.DB
         {
             get
             {
-                return String.Format("http://mbav.netqnet.com/SubRequest.aspx?dt={0}", dt.ToShortDateString());
+                return String.Format("{0}/SubRequest.aspx?dt={0}", StaticFieldsObject.StaticValue("GuideURL"), dt.ToShortDateString());
             }
         }
         public int Sequence
@@ -102,6 +102,10 @@ namespace NQN.DB
             set;
         }
         public bool MaskContactInfo
+        {
+            get; set;
+        }
+        public bool NotifySubRequests
         {
             get; set;
         }

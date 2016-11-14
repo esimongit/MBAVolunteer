@@ -37,7 +37,7 @@ namespace  NQN.DB
         public List<int> GuidesWithOffers()
         {
             List<int> Results = new List<int>();
-            string qry = @"SELECT distinct GuideID from SubOffers";
+            string qry = @"SELECT distinct GuideID from SubOffers where g.NotifySubRequests = 1";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -125,7 +125,8 @@ namespace  NQN.DB
             obj.Sequence = GetNullableInt32(reader, "Sequence", 0);
             obj.HomeShift = GetNullableString(reader, "HomeShift", String.Empty);
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
-			return obj;
+            obj.NotifySubRequests = GetNullableBoolean(reader, "NotifySubRequests", false);
+            return obj;
 		}
 
 		protected override string ReadAllCommand()
@@ -138,6 +139,7 @@ namespace  NQN.DB
                 ,g.Email
                 ,g.Phone
                 ,g.VolID
+                ,g.NotifySubRequests
                 ,HomeShift=dbo.FlattenShortShifts(o.GuideID)
                 ,s.Sequence
                ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)

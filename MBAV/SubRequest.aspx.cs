@@ -129,7 +129,7 @@ namespace MBAV
                             NotifyList.Add(gdm.FetchGuide(sub.SubstituteID));
                             msg += String.Format(" {0} ({1}) will be substituting for this Guide.", sub.SubName, sub.Sub);
                         }
-                        NotifyInterestedSubs = (sub.SubstituteID == 0 && dt == DateTime.Today) ? ShiftID : 0;
+                        NotifyInterestedSubs = (sub.SubstituteID == 0 && dt < DateTime.Today.AddDays(2)) ? ShiftID : 0;
                     }
                     catch (Exception ex)
                     {

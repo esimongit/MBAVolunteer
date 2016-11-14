@@ -44,6 +44,24 @@ namespace VolManager
             TextBox PWText = (TextBox) LoginUser.FindControl("Password");
             PWText.Text = pw;
         }
+        protected void ResetPW(object sender, EventArgs e)
+        {
+            string name = LoginUser.UserName;
+            if (string.IsNullOrEmpty(name))
+            {
+                AlertMsg.Show("You must enter a known Username to request a password reset.");
+            }
+            MembershipBusiness mb = new MembershipBusiness();
+            try
+            {
+                mb.ResetPassword(name, "VolManager");
+                AlertMsg.Show("Check your Email for instructions on resetting your password.");
+            }
+            catch
+            {
+                AlertMsg.Show("A problem occurred in this operation, please contact Volunteer Engagement.");
+            }
+        }
         protected void SaveUser()
         {
             string name = LoginUser.UserName;

@@ -89,6 +89,13 @@ namespace NQN.DB
                 return _subdate.ToShortDateString();
             }
         }
+        public string ShiftLink
+        {
+            get
+            {
+                return String.Format("{0}/SubRequest.aspx?dt={1}", StaticFieldsObject.StaticValue("GuideURL"),dtString);
+            }
+        }
         public string ShiftName
         {
             get; set;
@@ -286,6 +293,7 @@ namespace NQN.DB
                 _issubstitute = value;
             }
         }
+      
         public bool Critical
         {
             get; set;

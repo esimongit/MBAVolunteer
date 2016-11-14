@@ -58,6 +58,12 @@
         </Columns>
 
 <RowStyle ForeColor="Black"></RowStyle>
+        <EmptyDataTemplate>  
+           
+         <div class="col-md-10 col-md-offset-2"><h3 style="color:red">No matches found</h3>
+             </div> 
+
+        </EmptyDataTemplate>
          </cc2:NQNGridView>
      </div></div>
      <div class="row" style="padding-top:10px">
@@ -66,4 +72,5 @@
          <div class="col-xs-3 col-xs-offset-2"><asp:Button ID="UpdateCancelButton" runat="server" CssClass="btn btn-info"
               Text="Return to Calendar"  OnClick="ClosePage" />
         </div>
+         </div>
 </asp:Content>

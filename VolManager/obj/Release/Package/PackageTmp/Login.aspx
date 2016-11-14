@@ -63,13 +63,20 @@
                         <asp:Label ID="RememberMeLabel" runat="server" AssociatedControlID="RememberMe" CssClass="inline">Keep me logged in</asp:Label>
                     </p>
                 </fieldset>
-                <p class="submitButton">
+                 
+                <div style="clear:both"></div>
+                <div >
+                    <div style="float:left; padding-left: 20px">
                     <asp:Button ID="LoginButton" runat="server"  OnClick="Login_OnClick" Text="Log In" ValidationGroup="LoginUserValidationGroup"/>
-                    <asp:Button ID="Button1" runat="server"  Text="Reset" OnClick="SetPW"/>
-                </p>
+                        </div>
+                    
+              </div>
             </div>
-        </LayoutTemplate>
+     </LayoutTemplate>
     </asp:Login>
+      <div style="padding-top:40px" >
+                    <asp:Button ID="Button1" runat="server"  Text="Forgot my Password" OnClick="ResetPW"/>
+                         </div>
  </form>
  </body>
  </html>

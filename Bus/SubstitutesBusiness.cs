@@ -347,17 +347,25 @@ namespace NQN.Bus
                 EmailBusiness eb = new EmailBusiness();
                 MailTextDM mtdm = new MailTextDM();
                 MailTextObject mtobj = mtdm.FetchForSymbol("SubReminder");
-
+                MailTextObject mzobj = mtdm.FetchForSymbol("NeedSubReminder");
                 foreach (GuideSubstituteObject obj in dList)
                 {
-                    if (obj.Email != String.Empty)
-                        eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                    if (obj.Sub != String.Empty)
+                    {
+                        if (obj.Email != String.Empty)
+                            eb.SendMail(mtobj.MailFrom, obj.SubEmail, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                    }
+                    else
+                    {
+                        // Reminders to unfulfilled Sub requests.
+                        eb.SendMail(mzobj.MailFrom, obj.SubEmail, mzobj.Subject, mzobj.CompletedText(obj), mzobj.IsHtml);
+                    }
                 }
                 mtobj = mtdm.FetchForSymbol("DropinReminder");
                 foreach (GuideDropinsObject obj in eList)
                 {
                     if (obj.Email != String.Empty)
-                        eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                        eb.SendMail(mtobj.MailFrom, obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
                 }
             }
         }
@@ -373,13 +381,15 @@ namespace NQN.Bus
             MailTextObject mtobj = mtdm.FetchForSymbol("InterestNotify");
             foreach(SubOffersObject obj in dList)
             {
+                if (!obj.NotifySubRequests)
+                    continue;
                 obj.dt = dt;
                 obj.RequestorID = guide.VolID;
                 obj.RequestorName = guide.GuideName;
                 obj.RequestorEmail = guide.Email;
                 obj.RequestorPhone = guide.Phone;
                 obj.Sequence = guide.Sequence;
-                eb.SendMail(mtobj.MailFrom,  obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+               // eb.SendMail(mtobj.MailFrom,  obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
                 eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
             }
         }
@@ -392,8 +402,23 @@ namespace NQN.Bus
             string msg = mtobj.CompletedText(obj);
             Notify(captains, msg);
         }
+        public void NotifyVO(string msg)
+        {
+            MailTextDM mtdm = new MailTextDM();
+            EmailBusiness eb = new EmailBusiness(); 
+            MailTextObject mtobj = mtdm.FetchForSymbol("NotifyVO");
+            string Email = StaticFieldsObject.StaticValue("GuideNotificationEmail");
+            string Subject = "Guide Substitute or Drop-in Notice.";
+            if (mtobj != null & mtobj.Enabled)
+            {
+                        // eb.SendMail(mtobj.MailFrom, Email,  Subject, msg, true);
+                        eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com",  Subject, msg, true);
+            }
+        }
         public void Notify (ObjectList<GuidesObject> recipients, string msg)
         {
+            if (recipients.Count == 0)
+                return;
             MailTextDM mtdm = new MailTextDM();
             EmailBusiness eb = new EmailBusiness();
             GuidesDM dm = new GuidesDM();
@@ -406,10 +431,11 @@ namespace NQN.Bus
                     if (recipient.Email != String.Empty)
                     {
                         // eb.SendMail(mtobj.MailFrom, recipient.Email, mtobj.Subject, msg, mtobj.IsHtml);
-                        //eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, msg, mtobj.IsHtml);
+                        eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, msg, mtobj.IsHtml);
                     }
                 }
             }
+            NotifyVO(msg);
         }
 
         protected int SubSort(GuideSubstituteObject x, GuideSubstituteObject y)

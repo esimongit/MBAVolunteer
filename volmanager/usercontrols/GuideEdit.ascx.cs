@@ -11,6 +11,21 @@ namespace VolManager.UserControls
 {
     public partial class GuideEdit : System.Web.UI.UserControl
     {
+        
+        public void SetupEdit()
+        {
+            HyperLink MBAVLink = (HyperLink)FormView1.FindControl("MBAVLink");
+            GuidesBusiness gb = new GuidesBusiness();
+            GuidesObject guide = gb.SelectGuide(Convert.ToInt32(Session["GuideID"]));
+            if (guide == null)
+                return;
+            MBAVLink.NavigateUrl = String.Format("{0}/Login.aspx?ID={1}", StaticFieldsObject.StaticValue("GuideURL"), guide.UserId);
+ 
+        }
+        protected void SetLink(object sender, EventArgs e)
+        {
+            SetupEdit();
+        }
         protected void OnUpdated(object sender, ObjectDataSourceStatusEventArgs e)
         {
             if (e.Exception != null)
@@ -22,6 +37,7 @@ namespace VolManager.UserControls
             else
             {
                 InfoMessage.Set("Changes accepted.");
+                
             }
         }
         protected void AddLogin(object sender, EventArgs e)
@@ -33,7 +49,7 @@ namespace VolManager.UserControls
             try
             {
                 mb.InsertVols(obj.VolID, obj.Email);
-                FormView1.DataBind();
+                FormView1.DataBind(); 
             }
             catch (Exception ex)
             {
@@ -56,7 +72,7 @@ namespace VolManager.UserControls
                 return;
             }
             InfoMessage.Set(String.Format("New Password: {0}", pw));
-            FormView1.DataBind();
+            FormView1.DataBind(); 
         }
         protected void DeleteShift(object sender, GridViewDeleteEventArgs e)
         {
@@ -64,7 +80,7 @@ namespace VolManager.UserControls
             try
             {
                 dm.DeleteGuideShift(Convert.ToInt32(Session["GuideID"]), Convert.ToInt32(e.Keys[0]));
-                FormView1.DataBind();
+                FormView1.DataBind(); 
             }
             catch(Exception ex)
             {

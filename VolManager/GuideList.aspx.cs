@@ -118,6 +118,7 @@ namespace VolManager
         {
             MultiView1.SetActiveView(View2);
             Session["GuideID"] = GridView1.SelectedValue;
+            GuideEdit1.SetupEdit();
         }
          protected void ToView1(object sender, EventArgs e)
         {

@@ -51,12 +51,22 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Bus\Bus.csproj">
       <Project>{1AA58A4E-E8A5-4EA9-B71E-087E8C7CBFB7}</Project>
       <Name>Bus</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{d85a0057-fb4e-4720-8174-fa2996fb4f66}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DB\DB.csproj">
+      <Project>{dca21afe-5283-431a-bfb9-20961caff052}</Project>
+      <Name>DB</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

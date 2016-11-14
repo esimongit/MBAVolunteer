@@ -72,6 +72,7 @@
   <ItemGroup>
     <Content Include="About.aspx" />
     <Content Include="App_Themes\VMTheme\StyleSheet.css" />
+    <Content Include="Images\volunteerLogo.jpg" />
     <Content Include="Reports\InfoDeskReport.aspx" />
     <Content Include="ChangePassword.aspx" />
     <Content Include="ChangePasswordSuccess.aspx" />

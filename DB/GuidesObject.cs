@@ -239,6 +239,18 @@ namespace NQN.DB
                 _calendartype = value;
             }
         }
+        private bool _notifysubrequests = false;
+        public bool NotifySubRequests
+        {
+            get
+            {
+                return _notifysubrequests;
+            }
+            set
+            {
+                _notifysubrequests = value;
+            }
+        }
 #endregion
 
         public string GuideName
