@@ -107,6 +107,7 @@ namespace NQN.Controls
                 ddl2.AutoPostBack = true;
                 // assign an Event Handler when its Selected Index Changed
                 ddl2.SelectedIndexChanged += new EventHandler(ddl2_SelectedIndexChanged);
+         
                 // synchronize its selected index to GridView's current PageIndex
                 ddl2.SelectedValue = PageSize.ToString();
 
@@ -193,8 +194,8 @@ namespace NQN.Controls
         protected virtual void ddl2_SelectedIndexChanged(object sender, EventArgs e)
         {
             // on our DropDownList SelectedIndexChanged event
-
             PageSize = Int32.Parse(((DropDownList)sender).SelectedValue);
+          
         }
         protected virtual Label PageOf()
         {

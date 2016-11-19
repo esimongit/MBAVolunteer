@@ -42,9 +42,7 @@
         DataKeyNames="GuideID"   Selectable="true"  OnSorting="TaskGridView_Sorting"  OnSelectedIndexChanged="GuideSelected"
         AlternatingRowStyle-BackColor="White" AllowSorting="True"  >
         <Columns>
-            <asp:CommandField  ShowEditButton="False" 
-                ButtonType="Image" CancelImageUrl="~/Images/cancel.gif" 
-                 EditImageUrl="~/Images/iedit.gif"   UpdateImageUrl="~/Images/save.gif" />
+         
             <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolID" />
             <asp:BoundField DataField="FirstName" HeaderText="First Name" 
                 SortExpression="FirstName" />

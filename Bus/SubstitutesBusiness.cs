@@ -148,8 +148,7 @@ namespace NQN.Bus
             ObjectList<GuideDropinsObject> dList = ddm.FetchForMonth(Year, Month, GuideID);
              GuidesObject guide = gdm.FetchGuide(GuideID);
             DateTime CurDay = new DateTime(Year, Month, 1);
-            int WeekdayCritical = Convert.ToInt32(StaticFieldsObject.StaticValue("WeekdayCritical"));
-            int WeekendCritical = Convert.ToInt32(StaticFieldsObject.StaticValue("WeekendCritical"));
+           
             while (CurDay.Month == Month)
             {
                 CalendarDateObject obj = new CalendarDateObject();
@@ -166,16 +165,7 @@ namespace NQN.Bus
                         obj.IsSubstitute = true;
                     if (sub.GuideID == GuideID)
                         obj.IsSubstitute = false;
-                    if (sub.SubDate.DayOfWeek == DayOfWeek.Saturday || sub.SubDate.DayOfWeek == DayOfWeek.Sunday)
-                    {
-                        if (sub.Attendance < WeekendCritical)
-                            obj.Critical = true;
-                    }
-                    else
-                    {
-                        if (sub.Attendance < WeekdayCritical)
-                            obj.Critical = true;
-                    }
+                   obj.Critical = sub.Critical;
                 }
                 GuideDropinsObject drop = dList.Find(x => x.DropinDate == CurDay);
                 if (drop != null)
@@ -406,13 +396,12 @@ namespace NQN.Bus
         {
             MailTextDM mtdm = new MailTextDM();
             EmailBusiness eb = new EmailBusiness(); 
-            MailTextObject mtobj = mtdm.FetchForSymbol("NotifyVO");
+            MailTextObject mtobj = mtdm.FetchForSymbol("NotifyCaptains");
             string Email = StaticFieldsObject.StaticValue("GuideNotificationEmail");
             string Subject = "Guide Substitute or Drop-in Notice.";
             if (mtobj != null & mtobj.Enabled)
             {
-                        // eb.SendMail(mtobj.MailFrom, Email,  Subject, msg, true);
-                        eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com",  Subject, msg, true);
+                eb.SendMail(mtobj.MailFrom, Email, Subject, msg, true);
             }
         }
         public void Notify (ObjectList<GuidesObject> recipients, string msg)
@@ -431,7 +420,7 @@ namespace NQN.Bus
                     if (recipient.Email != String.Empty)
                     {
                         // eb.SendMail(mtobj.MailFrom, recipient.Email, mtobj.Subject, msg, mtobj.IsHtml);
-                        eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, msg, mtobj.IsHtml);
+                        eb.SendMail(mtobj.MailFrom, "Substitute@mbayaq.org", mtobj.Subject, msg, mtobj.IsHtml);
                     }
                 }
             }

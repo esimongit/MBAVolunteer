@@ -192,14 +192,14 @@ namespace  NQN.DB
             return ret;
         }
 
-        public  ObjectList<GuideSubstituteObject> FetchForMonth(int Year, int Month)
+        public ObjectList<GuideSubstituteObject> FetchForMonth(int Year, int Month)
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
-             string qry = ReadAllCommand() +  @" where month(SubDate) = @Month and Year(SubDate) = @Year order by SubDate";
-             using (SqlConnection conn = ConnectionFactory.getNew())
+            string qry = ReadAllCommand() + @" where month(SubDate) = @Month and Year(SubDate) = @Year order by SubDate";
+            using (SqlConnection conn = ConnectionFactory.getNew())
             {
-                SqlCommand myc = new SqlCommand(qry, conn); 
-                  myc.Parameters.Add(new SqlParameter("Year", Year));
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("Year", Year));
                 myc.Parameters.Add(new SqlParameter("Month", Month));
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
@@ -210,10 +210,23 @@ namespace  NQN.DB
                         obj = LoadFrom(reader);
                     }
                 }
-             }
-             for (int i = 0; i < Results.Count; i++)
+            }
+            int WeekendCritical = Convert.ToInt32(StaticFieldsObject.StaticValue("WeekendCritical"));
+            int WeekdayCritical = Convert.ToInt32(StaticFieldsObject.StaticValue("WeekdayCritical"));
+            for (int i = 0; i < Results.Count; i++)
             {
                 Results[i].Attendance = Attendance(Results[i].SubDate, Results[i].ShiftID);
+                Results[i].Critical = false;
+                if (Results[i].SubDate.DayOfWeek == DayOfWeek.Saturday || Results[i].SubDate.DayOfWeek == DayOfWeek.Sunday)
+                {
+                    if (Results[i].Attendance < WeekendCritical)
+                        Results[i].Critical = true;
+                }
+                else
+                {
+                    if (Results[i].Attendance < WeekdayCritical)
+                        Results[i].Critical = true;
+                }
             }
             return Results;
         }

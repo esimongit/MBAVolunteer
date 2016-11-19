@@ -8,7 +8,9 @@
             <asp:SessionParameter Name="GuideID" SessionField="GuideID" Type="Int32" DefaultValue="0" />
         </SelectParameters>
     </asp:ObjectDataSource>
- 
+ <style>
+     th { text-align:center}
+ </style>
  <div class="row">
  <div class="col-md-5" style="margin-left:20px; font-size:12pt"> 
   <asp:Label ID="NameLabel" runat="server" Font-Bold="true" Font-Size="Large"></asp:Label>
@@ -20,6 +22,9 @@
    <p>You are expected on a shift on dates that are  <span style="color:#222; font-weight:bold; text-decoration:underline">underlined</span>.
    </p>
  </div>
+ <style>
+     th { text-align:center}
+ </style>
 <div class="col-md-6"> 
     
         <div class="row" > 
@@ -71,11 +76,14 @@
        <asp:Calendar ID="Calendar1"  SelectionMode="None"  Width="100%"  TitleStyle-BackColor="#0099cc"   TitleStyle-HorizontalAlign="Center" 
       DayStyle-HorizontalAlign="Center" DayStyle-VerticalAlign="Top"   NextPrevStyle-ForeColor="White" NextMonthText=">>" TitleStyle-Font-Bold="false"  TitleStyle-ForeColor="White"
        TitleStyle-Font-Size="18pt"   DayHeaderStyle-Font-Bold="true"   DayStyle-ForeColor="#666666"
-       PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"
+       PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large" TitleStyle-BorderWidth="3"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   OnVisibleMonthChanged="MonthChanged" 
-        ></asp:Calendar>
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   OnVisibleMonthChanged="MonthChanged"
+             DayHeaderStyle-BorderColor="White"
+           DayHeaderStyle-BorderStyle="Groove" DayHeaderStyle-BorderWidth="4"  DayHeaderStyle-HorizontalAlign="Center" >
+           
+       </asp:Calendar>
    </div>
  </div></div>
  <div class="row">
@@ -83,12 +91,15 @@
       <div style="display:block;   margin-top:10px;margin-left:auto; margin-right: auto">
        <asp:Calendar ID="Calendar2"  SelectionMode="None"  Width="90%"  TitleStyle-BackColor="#0099cc"   TitleStyle-HorizontalAlign="Center" 
       DayStyle-HorizontalAlign="Center" DayStyle-VerticalAlign="Top"   TitleStyle-Font-Bold="false" TitleStyle-ForeColor="White"
-       TitleStyle-Font-Size="18pt"   DayHeaderStyle-Font-Bold="true"   DayStyle-ForeColor="#666666"
+       TitleStyle-Font-Size="18pt"   DayHeaderStyle-Font-Bold="true"   DayStyle-ForeColor="#666666" TitleStyle-BorderWidth="3"
        PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"  ShowNextPrevMonth="false"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
-            CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"     
-        ></asp:Calendar>
+            CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true" 
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"  DayHeaderStyle-BorderColor="White"
+           DayHeaderStyle-BorderStyle="Groove" DayHeaderStyle-BorderWidth="4"  DayHeaderStyle-HorizontalAlign="Center" >
+      
+
+       </asp:Calendar>
    </div>
  </div> 
       <div class="col-md-6 hidden-xs">
@@ -96,11 +107,14 @@
        <asp:Calendar ID="Calendar3"  SelectionMode="None"  Width="90%"  TitleStyle-BackColor="#0099cc"   TitleStyle-HorizontalAlign="Center" 
       DayStyle-HorizontalAlign="Center" DayStyle-VerticalAlign="Top"   TitleStyle-Font-Bold="false" TitleStyle-ForeColor="White"
        TitleStyle-Font-Size="18pt"   DayHeaderStyle-Font-Bold="true"   DayStyle-ForeColor="#666666"  ShowNextPrevMonth="false"
-       NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"
+       NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large" TitleStyle-BorderWidth="3"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   
-        ></asp:Calendar>
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   DayHeaderStyle-BorderColor="White"
+           DayHeaderStyle-BorderStyle="Groove" DayHeaderStyle-BorderWidth="4"  DayHeaderStyle-HorizontalAlign="Center"   >
+          <DayHeaderStyle HorizontalAlign="Center" />
+
+       </asp:Calendar>
    </div>
  </div></div>
  <div class="row">
@@ -109,11 +123,14 @@
        <asp:Calendar ID="Calendar4"  SelectionMode="None"  Width="90%"  TitleStyle-BackColor="#0099cc"   TitleStyle-HorizontalAlign="Center" 
       DayStyle-HorizontalAlign="Center" DayStyle-VerticalAlign="Top"    TitleStyle-Font-Bold="false"  ShowNextPrevMonth="false"
        TitleStyle-Font-Size="18pt"   DayHeaderStyle-Font-Bold="true"   DayStyle-ForeColor="#666666" TitleStyle-ForeColor="White"
-       PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"
+       PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large" TitleStyle-BorderWidth="3"
       ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   
-        ></asp:Calendar>
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"   DayHeaderStyle-BorderColor="White"
+           DayHeaderStyle-BorderStyle="Groove" DayHeaderStyle-BorderWidth="4"  DayHeaderStyle-HorizontalAlign="Center"   >
+         <DayHeaderStyle HorizontalAlign="Center" />
+
+       </asp:Calendar>
    </div>
  </div> 
  
@@ -122,11 +139,16 @@
        <asp:Calendar ID="Calendar5"  SelectionMode="None"  Width="90%"  TitleStyle-BackColor="#0099cc"   TitleStyle-HorizontalAlign="Center" 
       DayStyle-HorizontalAlign="Center" DayStyle-VerticalAlign="Top"  TitleStyle-Font-Bold="false" ShowNextPrevMonth="false"
        TitleStyle-Font-Size="18pt"   DayHeaderStyle-Font-Bold="true"   DayStyle-ForeColor="#666666" TitleStyle-ForeColor="White"
-       PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large"
-      ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White"
+       PrevMonthText="<<" NextPrevStyle-HorizontalAlign="Center"  NextPrevStyle-Font-Size="Large" DayHeaderStyle-HorizontalAlign="Center"
+      ShowGridLines="true"   DayStyle-BorderStyle="Groove"  DayStyle-BorderWidth="4" DayStyle-BorderColor="White" ShowDayHeader="true"
             CellSpacing="2" OtherMonthDayStyle-ForeColor="Transparent" DayStyle-Font-Size="14" DayStyle-Font-Bold="true"
-       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"    
-        ></asp:Calendar>
+             DayHeaderStyle-BorderColor="White" TitleStyle-BorderWidth="3"
+           DayHeaderStyle-BorderStyle="Groove" DayHeaderStyle-BorderWidth="4"  
+       runat="server"   OnDayRender="DayRenderHandler"   FirstDayOfWeek="Sunday"    >
+            
+
+       </asp:Calendar>
    </div>
- 
+   </div>
+</div>
 </asp:Content>

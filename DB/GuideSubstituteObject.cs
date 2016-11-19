@@ -249,7 +249,11 @@ namespace NQN.DB
 			_tablename = "GuideSubstitute";
 			_primarykey = "GuideSubstituteID";
 		}
-	}
+        public bool Critical
+        {
+            get; set;
+        }
+    }
     public class CalendarDateObject : RootObject
     {
         public DateTime Dt

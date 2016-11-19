@@ -28,16 +28,14 @@
     </div>
 <div class="row">
 <div class="col-xs-12">
-    <h3>
-        Please enter your Guide ID and password.
     
-    </h3>
     </div>
     </div>
 <div class="row">
   <div class="col-md-5">
    <div class="row">
-    <asp:Login ID="LoginUser" runat="server" EnableViewState="false" RenderOuterTable="false" OnLoggedIn="SaveUser"  >
+    <asp:Login ID="LoginUser" runat="server" EnableViewState="false"    RenderOuterTable="false" OnLoggedIn="SaveUser" OnLoggingIn="OnLoggingIn"  >
+    
         <LayoutTemplate>
             
                 <asp:Label ID="FailureText"  runat="server" ForeColor="Red"></asp:Label>
@@ -50,9 +48,14 @@
                     <h2>Account Information</h2>
                           
                </div></div>
+            <div class="row">
+             <div class="col-xs-12">
+                 <asp:Label ID="InstructionText" runat="server" Font-Bold="true" ForeColor="Gray" Text="Please enter your Guide ID and password."></asp:Label>
+                          
+               </div></div>
                      <div class="row">     
                      <div class="col-xs-12">   
-                        <asp:Label ID="UserNameLabel" runat="server" Font AssociatedControlID="UserName">Guide ID:</asp:Label>
+                        <asp:Label ID="UserNameLabel" runat="server"   AssociatedControlID="UserName">Guide ID:</asp:Label>
                         <asp:TextBox ID="UserName" runat="server" CssClass="textEntry" Width="100"></asp:TextBox>
                         <asp:RequiredFieldValidator ID="UserNameRequired" runat="server" ControlToValidate="UserName" 
                              CssClass="failureNotification" ErrorMessage="User Name is required." ToolTip="User Name is required." 

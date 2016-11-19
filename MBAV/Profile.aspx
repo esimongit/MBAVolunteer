@@ -200,10 +200,10 @@
      <div class="col-xs-12">
 <asp:Button ID="Button2" runat="server" Text="Review your substitute commitments" CssClass="btn btn-info" OnClick="ToView4"    CausesValidation="false" BackColor="#6e8aa0"/>
         </div></div>
-<div class="row" style="padding-top:20px">
+<%--<div class="row" style="padding-top:20px">
     <div class="col-xs-12">
 <asp:Button ID="Button3" runat="server" Text="Select Special Shifts" CssClass="btn btn-info" OnClick="ToView5"   CausesValidation="false" BackColor="#9e8aa0"/>
-        </div></div>
+        </div></div>--%>
  </div>
     </div>
   

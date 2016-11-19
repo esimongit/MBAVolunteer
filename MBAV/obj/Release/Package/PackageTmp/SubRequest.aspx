@@ -72,14 +72,14 @@
      <ItemTemplate>
          <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />
          <div class="row td1"   runat="server">
-             <div class="col-md-6 ">
+             <div class="col-md-5 ">
                  If you need a substitute for shift <asp:Label ID="SequenceLabel1" runat="server" Text='<%#Eval("Sequence") %>'></asp:Label>, 
                  check here:
                 <asp:CheckBox ID="NeedSubCheckBox" runat="server" />
              </div>
 
-             <div class="col-md-5  ">
-                  Enter Substitute ID: <asp:TextBox ID="SubTextBox" runat="server" Width="80"></asp:TextBox>
+             <div class="col-md-7  ">
+                  If you arranged for a substitute, enter the Substitute ID: <asp:TextBox ID="SubTextBox" runat="server" Width="80"></asp:TextBox>
              </div>
          </div>
      </ItemTemplate>

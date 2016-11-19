@@ -21,7 +21,7 @@ div.menu ul li ul
        <script type="text/javascript" src="Scripts/jquery-1.9.1.min.js">       
     </script>
 </head>
-<body>
+<body style="margin:0px 5px 0px 5px">
     <form id="form1" runat="server">
       
    <table cellspacing="0" border="1" cellpadding="0" width="100%" class="header">
@@ -58,7 +58,7 @@ div.menu ul li ul
        
        
     </td>  
-       <td  align="right"> 
+       <td  align="right" style="padding-right:5px"> 
         <asp:LoginStatus ID="LoginStatus1" runat="server"  Font-Size="Medium" OnLoggingOut="ClearSession" ForeColor="White"  LogoutAction="Redirect"  />
  
     

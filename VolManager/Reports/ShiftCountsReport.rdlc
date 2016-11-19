@@ -15,7 +15,7 @@
               <Width>1in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.35417in</Width>
+              <Width>0.40625in</Width>
             </TablixColumn>
             <TablixColumn>
               <Width>0.52083in</Width>
@@ -43,13 +43,15 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Sequence</Value>
+                              <Value>Shift</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox3</rd:DefaultName>
@@ -113,7 +115,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox7</rd:DefaultName>
@@ -145,7 +149,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox13</rd:DefaultName>
@@ -177,7 +183,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox15</rd:DefaultName>
@@ -209,7 +217,9 @@
                               </Style>
                             </TextRun>
                           </TextRuns>
-                          <Style />
+                          <Style>
+                            <TextAlign>Right</TextAlign>
+                          </Style>
                         </Paragraph>
                       </Paragraphs>
                       <rd:DefaultName>Textbox11</rd:DefaultName>
@@ -897,7 +907,7 @@
         <Top>0.47792in</Top>
         <Left>0.10292in</Left>
         <Height>0.75in</Height>
-        <Width>6.73958in</Width>
+        <Width>6.79166in</Width>
         <Style>
           <Border>
             <Style>None</Style>

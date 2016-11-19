@@ -28,11 +28,30 @@ namespace MBAV
                 FormsAuthentication.SetAuthCookie(guide.VolID, false);
             }
         }
+
+        protected void OnLoggingIn(object sender, System.Web.UI.WebControls.LoginCancelEventArgs e)
+        {
+            string VolID = LoginUser.UserName;
+            Label InstructionText = (Label)LoginUser.FindControl("InstructionText");
+            GuidesDM dm = new GuidesDM();
+            GuidesObject guide = dm.FetchGuide(VolID);
+            if (guide.Inactive)
+            {
+                 InstructionText.Text = "Your login has been disabled.";
+                e.Cancel = true;
+            }
+            else
+                 InstructionText.Text = "Please enter your Guide ID and password.";
+
+
+
+        }
         protected void SaveUser(object sender, EventArgs e)
         {
             string VolID = LoginUser.UserName;
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(VolID);
+            
             RolesDM rdm = new RolesDM();
             if (guide.RoleID > 0)
             {
