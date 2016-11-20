@@ -1,12 +1,13 @@
 ﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GuideImport.aspx.cs" Inherits="VolManager.GuideImport" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" TypeName="NQN.DB.BatchImportDM" SelectMethod="FetchAll"></asp:ObjectDataSource>
- <h3>Excel CSV File Import Instructions</h3><p>The imported file must have the following fields in order.  Some may be empty.  Records are identified by: <ul>
+ <h3>Excel CSV File Import Instructions</h3><p>The first row should contain the field names and is NOT imported</p>
+    <p>The imported file must have the following fields in order.  Some may be empty.  Records are identified by: <ul>
 
-<li>ID or</li><li>First + Last + Email or</li>   
+<li>ID or</li><li>First + Last + Email</li>   
 </ul></p>
 <p>Fields:  ID, First, Last, Email, Phone, Cell,Shift,Role </p>
-<p>Shift is the form "Mon2" or "Sat1A".</p>
+<p>Shift must match one of the Shift "Short Names", otherwise no shift is applied.</p>
 <p>Role is one of: Aquarium Guide, Seasonal Guide, Shift Captain, TCL, Info Desk</p>
     <asp:FileUpload ID="FileUpload1" runat="server"  /> <asp:Button runat="server" ID="ImportButton" Text="Import" OnClick="ImportButton_Click" />
     <br />

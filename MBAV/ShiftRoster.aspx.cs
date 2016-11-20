@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using Microsoft.Reporting.WebForms;
 using System.Web.UI.WebControls;
+using NQN.DB;
 
 namespace MBAV
 {
@@ -16,9 +17,14 @@ namespace MBAV
                 ErrorMessage.Set("Please select a shift");
                 return;
             }
-            ReportParameter[] parameters = new ReportParameter[1];
+            ReportParameter[] parameters = new ReportParameter[2];
             parameters[0] = new ReportParameter("dt", DateSelect1.bDate);
-
+            ShiftsDM dm = new ShiftsDM();
+            string shiftname = String.Empty;
+            ShiftsObject shift = dm.FetchShift(Convert.ToInt32(ShiftSelect.SelectedValue));
+            if (shift != null)
+                shiftname = shift.ShiftName;
+            parameters[1] = new ReportParameter("ShiftName", shiftname );
             ReportViewer1.LocalReport.SetParameters(parameters);
             ReportViewer1.LocalReport.Refresh();
             ReportViewer1.ShowPrintButton = true;

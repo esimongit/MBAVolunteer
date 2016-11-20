@@ -19,15 +19,7 @@ namespace NQN.Bus
             ObjectList<GuideDropinsObject> drops = ddm.FetchAllForGuide(GuideID, false);
             foreach (GuideDropinsObject drop in drops)
             {
-                GuideSubstituteObject obj = new GuideSubstituteObject();
-                obj.FirstName = "Drop";
-                obj.LastName = "In";
-                obj.VolID = drop.VolID;
-                obj.ShiftName = drop.ShiftName;
-                obj.Sequence = drop.Sequence;
-                obj.GuideID = drop.GuideID;
-                obj.SubDate = drop.DropinDate;
-                obj.GuideSubstituteID = -drop.GuideDropinID;
+                GuideSubstituteObject obj = new GuideSubstituteObject(drop);
                 subs.Add(obj);
             }
             subs.Sort(SubSort);
@@ -88,11 +80,8 @@ namespace NQN.Bus
             ObjectList<GuideDropinsObject> drops = ddm.FetchForGuide(GuideID, dt);
             foreach (GuideDropinsObject drop in drops)
             {
-                GuideSubstituteObject obj = new GuideSubstituteObject();
-                obj.ShiftID = drop.ShiftID;
-                obj.SubstituteID = drop.GuideID;
-                obj.Sequence = drop.Sequence;
-                obj.SubDate = drop.DropinDate;
+                GuideSubstituteObject obj = new GuideSubstituteObject(drop);
+                
                 subs.Add(obj);
             }
             ObjectList<ShiftsObject> shifts = dm.FetchAll();
@@ -121,11 +110,8 @@ namespace NQN.Bus
                 GuideDropinsObject drop = ddm.FetchForGuide(GuideID, dt, ShiftID);
                 if (drop != null)
                 {
-                    sub = new GuideSubstituteObject();
-                    sub.ShiftID = drop.ShiftID;
-                    sub.SubstituteID = drop.GuideID;
-                    sub.Sequence = drop.Sequence;
-                    sub.SubDate = drop.DropinDate;
+                    sub = new GuideSubstituteObject(drop);
+                   
                 }
             }
             if (sub == null)
@@ -170,9 +156,25 @@ namespace NQN.Bus
                 GuideDropinsObject drop = dList.Find(x => x.DropinDate == CurDay);
                 if (drop != null)
                     obj.IsSubstitute = true;
+                
+                // No volunteers on Christmas day
+                if (!(CurDay.Month == 12 && CurDay.Day == 25))
+                    Results.Add(obj);
                 CurDay = CurDay.AddDays(1);
-                Results.Add(obj);
             }
+            return Results;
+        }
+        public ObjectList<GuideSubstituteObject> SubReport()
+        {
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            GuideSubstituteDM dm = new GuideSubstituteDM();
+            Results = dm.SubReport();
+            GuideDropinsDM ddm = new GuideDropinsDM();
+            foreach (GuideDropinsObject drop in ddm.FetchFuture())
+            {
+                Results.Add(new GuideSubstituteObject(drop));
+            }
+            Results.Sort(SubSort);
             return Results;
         }
         public ObjectList<GuideSubstituteObject> SelectOpen()

@@ -4,7 +4,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceholder1" runat="server">
   
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
-        SelectMethod="SubReport" TypeName="NQN.DB.GuideSubstituteDM">
+        SelectMethod="SubReport" TypeName="NQN.Bus.SubstitutesBusiness">
         
     </asp:ObjectDataSource>
     

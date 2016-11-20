@@ -137,7 +137,8 @@ namespace NQN.Bus
                     guide.RoleID = import.RoleID;
                     if (guide.ShiftID != import.ShiftID)
                     {
-                        // Do what here?
+                        // Delete the old one and replace.
+                        gdm.DeleteGuideShift(guide.GuideID, guide.ShiftID);
                     }
                     guide.Phone = import.Phone;
                     guide.Email = import.Email;

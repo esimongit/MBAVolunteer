@@ -122,7 +122,7 @@ namespace MBAV
                         NotifyList.AddRange(gdm.FetchCaptains(ShiftID));
                         NotifyList.Add(guide);
                         RequestProcessed = true;
-                        msg += String.Format("{0} (1) will be absent from Shift {2} on {3}.", guide.GuideName, guide.VolID, shift.Sequence, dt.ToLongDateString());
+                        msg += String.Format("{0} ({1}) will be absent from Shift {2} on {3}.", guide.GuideName, guide.VolID, shift.Sequence, dt.ToLongDateString());
                         GuideSubstituteObject sub = dm.FetchForGuide(GuideID, ShiftID, dt);
                         if (sub.SubstituteID > 0)
                         {
@@ -354,7 +354,7 @@ namespace MBAV
                     InfoLabel.Text = @" Please remember that you are <b>always responsible</b> for finding a substitute.
             This on-line request system is just for your convenience. <b> If you do not get a substitute,
               or five responses to your request within a week  of the date you will be absent,
-                    it is recommended that you  get on the phone   and call volunteers to find a substitute directly.</b> ";
+                    it is recommended that you get on the phone and call volunteers to find a substitute directly.</b> ";
                 }
                 if (DoSub)
                 {
@@ -371,11 +371,11 @@ namespace MBAV
                     InfoLabel.Text = String.Format("You have offered to substitute on {0:d} for shift {1}.", dt, sub.Sequence);
                 }
 
-                msg = "The following message has been sent: <br /> " + msg;
+                
                 sb.Notify(NotifyList, msg);
                 if (NotifyInterestedSubs > 0)
                     sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
-
+                msg = "The following message has been sent: <br /> " + msg;
                 MsgLabel.Text = msg;
                 RecipientsRepeater.DataSource = NotifyList;
                 RecipientsRepeater.DataBind();

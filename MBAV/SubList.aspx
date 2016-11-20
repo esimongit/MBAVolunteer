@@ -8,6 +8,11 @@
     <asp:SessionParameter SessionField="IsCaptain" Name="IsCaptain" Type="Boolean" DefaultValue="false" />
 </SelectParameters>
 </asp:ObjectDataSource>
+<style>
+    th {
+       text-align:center;
+    }
+</style>
     <div class="row"> 
  <div class="col-md-10 col-md-offset-2">
 <asp:Label ID="TitleLabel" runat="server" Font-Bold="true" ForeColor="Black" Font-Size="X-Large"></asp:Label>

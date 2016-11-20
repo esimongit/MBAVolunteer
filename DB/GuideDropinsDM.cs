@@ -74,6 +74,27 @@ namespace  NQN.DB
             }
             return Results;
         }
+        public ObjectList<GuideDropinsObject> FetchFuture()
+        {
+
+            ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
+           
+            string qry = ReadAllCommand() + " WHERE  DropinDate  > getdate()  order by DropinDate, s.Sequence, g.FirstName ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn); 
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideDropinsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         public ObjectList<GuideDropinsObject> FetchForGuide(int GuideID, DateTime dt)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();

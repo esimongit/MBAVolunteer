@@ -249,6 +249,26 @@ namespace NQN.DB
 			_tablename = "GuideSubstitute";
 			_primarykey = "GuideSubstituteID";
 		}
+        public GuideSubstituteObject(GuideDropinsObject obj)
+        {
+            _tablename = "GuideSubstitute";
+            _primarykey = "GuideSubstituteID";
+            _shiftid = obj.ShiftID;
+            _substituteid = obj.GuideID;
+            Sequence = obj.Sequence;
+            _subdate = obj.DropinDate;
+            SubFirst = obj.FirstName;
+            SubLast = obj.LastName;
+            Role = obj.Role;
+            SubRole = Role;
+            Sub = obj.VolID;
+            VolID = obj.VolID;
+            _guideid = obj.GuideID;
+            FirstName = "Drop";
+            LastName = "In";
+            GuideSubstituteID = -obj.GuideDropinID;
+        }
+     
         public bool Critical
         {
             get; set;
