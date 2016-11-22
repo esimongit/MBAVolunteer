@@ -10,6 +10,9 @@ namespace VolManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
+            int ShiftID = Convert.ToInt32(Request.QueryString["ShiftID"]);
+            DateTime ShiftDate = DateTime.Parse(Request.QueryString["ShiftDate"]);
+            ReportLink.NavigateUrl = String.Format("~/Reports/Roster.aspx?ShiftID={0}&ShiftDate={1:d}", ShiftID, ShiftDate);
 
         }
         protected void ShowDropin(object sender, EventArgs e)

@@ -36,8 +36,15 @@
     </ItemTemplate>
 
 </asp:FormView>
+    <div style="float:left">
 <cc2:NQNHyperLink ID="ReturnButton" runat="server" Text="Return to Calendar"  NavigateUrl="ShiftCalendar.aspx"></cc2:NQNHyperLink>
-<cc2:NQNButton ID="AddButton" runat="server" Text="Add Drop-in" OnClick="ShowDropin" />
+ </div> <div style="float:left; padding-left:100px">
+<cc2:NQNButton ID="AddButton" runat="server" Text="Add Drop-in" OnClick="ShowDropin" />    
+      </div> <div style="float:left; padding-left:100px">
+   <asp:HyperLink runat="server" ID="ReportLink" Target="_blank" NavigateUrl="~/Reports/Roster.aspx" Text="Report" Font-Bold="true"></asp:HyperLink>
+          </div>
+    <div style="clear:both"></div>
+    <br />
     <cc2:NQNGridView ID="GridView1" runat="server" AutoGenerateColumns="False"  PageSize="50"
         DataSourceID="ObjectDataSource1" DataKeyNames="GuideID" 
         AllowMultiColumnSorting="False" 
@@ -74,7 +81,7 @@
       <br />
        <asp:LinkButton ID="InsertButton" runat="server" CausesValidation="True" 
                      CommandName="Insert" Text="Save" />
-                 &nbsp;<asp:LinkButton ID="InsertCancelButton" runat="server"  OnClick="HideDropin"
+                 &nbsp;<asp:LinkButton ID="InsertCancelButton" runat="server"  OnClick="HideDropin" 
                      CausesValidation="False" CommandName="Cancel" Text="Cancel" />
     </InsertItemTemplate>
     </asp:FormView>

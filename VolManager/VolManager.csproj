@@ -73,6 +73,7 @@
     <Content Include="About.aspx" />
     <Content Include="App_Themes\VMTheme\StyleSheet.css" />
     <Content Include="Images\volunteerLogo.jpg" />
+    <Content Include="Reports\Roster.aspx" />
     <Content Include="Reports\InfoDeskReport.aspx" />
     <Content Include="ChangePassword.aspx" />
     <Content Include="ChangePasswordSuccess.aspx" />
@@ -128,6 +129,13 @@
     </Compile>
     <Compile Include="About.aspx.designer.cs">
       <DependentUpon>About.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\Roster.aspx.cs">
+      <DependentUpon>Roster.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\Roster.aspx.designer.cs">
+      <DependentUpon>Roster.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\InfoDeskReport.aspx.cs">
       <DependentUpon>InfoDeskReport.aspx</DependentUpon>
@@ -379,6 +387,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Reports\ShiftCountsReport.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Reports\Roster.rdlc">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
