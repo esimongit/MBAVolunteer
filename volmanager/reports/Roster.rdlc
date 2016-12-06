@@ -6,31 +6,31 @@
         <TablixBody>
           <TablixColumns>
             <TablixColumn>
-              <Width>0.4375in</Width>
+              <Width>0.45718in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>1.01968in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>1.01968in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.30208in</Width>
+              <Width>1.32176in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.67708in</Width>
+              <Width>1.69676in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1in</Width>
+              <Width>1.01968in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.5625in</Width>
+              <Width>0.44445in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>0.51042in</Width>
+              <Width>0.5301in</Width>
             </TablixColumn>
             <TablixColumn>
-              <Width>1.8125in</Width>
+              <Width>1.83218in</Width>
             </TablixColumn>
           </TablixColumns>
           <TablixRows>
@@ -238,7 +238,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>Need Sub</Value>
+                              <Value>Need</Value>
                               <Style>
                                 <FontWeight>Bold</FontWeight>
                               </Style>
@@ -632,9 +632,8 @@
         <RepeatRowHeaders>true</RepeatRowHeaders>
         <DataSetName>GuidesObject</DataSetName>
         <Top>0.82167in</Top>
-        <Left>0.14458in</Left>
         <Height>0.5in</Height>
-        <Width>9.30208in</Width>
+        <Width>9.34143in</Width>
         <Style>
           <Border>
             <Style>None</Style>
@@ -648,7 +647,7 @@
           <Paragraph>
             <TextRuns>
               <TextRun>
-                <Value>="Roster for Shift: " &amp; Parameters!ShiftName.Value &amp; " " &amp; FormatDateTime(Parameters!dt.Value, DateFormat.ShortDate)</Value>
+                <Value>="     Roster for Shift: " &amp; Parameters!ShiftName.Value &amp; " " &amp; FormatDateTime(Parameters!dt.Value, DateFormat.ShortDate)</Value>
                 <Style>
                   <FontSize>12pt</FontSize>
                   <FontWeight>Bold</FontWeight>
@@ -660,9 +659,8 @@
         </Paragraphs>
         <rd:DefaultName>Textbox7</rd:DefaultName>
         <Top>0.19667in</Top>
-        <Left>0.25917in</Left>
         <Height>0.36458in</Height>
-        <Width>6.73958in</Width>
+        <Width>6.97916in</Width>
         <ZIndex>1</ZIndex>
         <Style>
           <Border>
@@ -678,7 +676,7 @@
     <Height>2in</Height>
     <Style />
   </Body>
-  <Width>9.49875in</Width>
+  <Width>9.66666in</Width>
   <Page>
     <PageHeight>8in</PageHeight>
     <PageWidth>11in</PageWidth>
@@ -765,10 +763,7 @@
           <DataField>RoleID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="AltRoleID">
-          <DataField>AltRoleID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
+       
         <Field Name="UpdateBy">
           <DataField>UpdateBy</DataField>
           <rd:TypeName>System.String</rd:TypeName>

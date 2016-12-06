@@ -17,6 +17,7 @@ namespace NQN.Controls
         string PAGE_PREV = @"~/Images/previous.gif";
         string PAGE_NEXT = @"~/Images/next.gif";
         string m_Privilege = "";
+        public event EventHandler PageSizeChanged;
         bool _selectable = false;
         bool _useprivs = true;
         string _deletemessage = "Are you sure you want to delete?";
@@ -105,11 +106,12 @@ namespace NQN.Controls
                 ddl2.Items.Add(new ListItem("50"));
                 ddl2.Items.Add(new ListItem("100"));
                 ddl2.AutoPostBack = true;
-                // assign an Event Handler when its Selected Index Changed
-                ddl2.SelectedIndexChanged += new EventHandler(ddl2_SelectedIndexChanged);
-         
-                // synchronize its selected index to GridView's current PageIndex
-                ddl2.SelectedValue = PageSize.ToString();
+            // assign an Event Handler when its Selected Index Changed
+            ddl2.SelectedIndexChanged += new EventHandler(ddl2_changed);
+            if (PageSizeChanged != null)
+                ddl2.SelectedIndexChanged += new EventHandler(PageSizeChanged);
+            // synchronize its selected index to GridView's current PageIndex
+            ddl2.SelectedValue = PageSize.ToString();
 
                 // create a Table that will replace entirely our GridView's Pager section            
                 Table tbl = new Table();
@@ -191,7 +193,7 @@ namespace NQN.Controls
            
             PageIndex = ((DropDownList)sender).SelectedIndex;
         }
-        protected virtual void ddl2_SelectedIndexChanged(object sender, EventArgs e)
+        protected virtual void ddl2_changed(object sender, EventArgs e)
         {
             // on our DropDownList SelectedIndexChanged event
             PageSize = Int32.Parse(((DropDownList)sender).SelectedValue);

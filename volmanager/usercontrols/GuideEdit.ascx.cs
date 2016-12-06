@@ -88,6 +88,20 @@ namespace VolManager.UserControls
             } 
             
         }
+        protected void DeleteRole(object sender, GridViewDeleteEventArgs e)
+        {
+            GuidesDM dm = new GuidesDM();
+            try
+            {
+                dm.RemoveRole(Convert.ToInt32(Session["GuideID"]), Convert.ToInt32(e.Keys[0]));
+                FormView1.DataBind();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage.Set(ex.Message);
+            }
+
+        }
         protected void CheckChanged(object sender, EventArgs e)
         {
             SubOffersDM dm = new SubOffersDM();

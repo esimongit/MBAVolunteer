@@ -79,7 +79,7 @@ namespace  NQN.DB
 
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
            
-            string qry = ReadAllCommand() + " WHERE  DropinDate  > getdate()  order by DropinDate, s.Sequence, g.FirstName ";
+            string qry = ReadAllCommand() + " WHERE  DropinDate >= cast(getdate() as date)  order by DropinDate, s.Sequence, g.FirstName ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn); 

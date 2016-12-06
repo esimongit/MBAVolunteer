@@ -154,7 +154,7 @@
         <div class="row" style="padding-bottom:4px">
         <div class="col-md-4" style="color:blue; font-weight:bold">    
          Shift:  </div>
-        <div class="col-md-4"> 
+        <div class="col-md-8"> 
        
          <asp:Label ID="Label1" runat="server"  Font-Bold="true" Text='<%# Eval("ShiftName") %>' />
        </div>
@@ -162,7 +162,7 @@
           <div class="row" style="padding-bottom:4px">
         <div class="col-md-4" style="color:blue; font-weight:bold"> 
          Role:  </div>
-        <div class="col-md-4"> 
+        <div class="col-md-8"> 
        
          <asp:Label ID="Label2" runat="server"  Font-Bold="true" Text='<%# Eval("RoleName") %>' />
        </div>
@@ -170,7 +170,7 @@
           <div class="row" style="padding-bottom:4px">
         <div class="col-md-4" style="color:blue; font-weight:bold">     
          Alternate Role:  </div>
-        <div class="col-md-4"> 
+        <div class="col-md-8"> 
        
          <asp:Label ID="Label3" runat="server"  Font-Bold="true" Text='<%# Eval("AltRoleName") %>' />
        </div>

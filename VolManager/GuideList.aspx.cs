@@ -31,17 +31,14 @@ namespace VolManager
         }
         protected void DoSearch(object sender, EventArgs e)
         {
-             
-             
-                GuidesDM dm = new GuidesDM();
-                DataTable taskTable = dm.Search(PatternTextBox.Text, Convert.ToInt32(ShiftSelect.SelectedValue), Convert.ToInt32(RoleSelect.SelectedValue), SearchInactiveCheckBox.Checked);
-                Session["TaskTable"] = taskTable;
-
-                //Bind the GridView control to the data source.
-                GridView1.DataSource = Session["TaskTable"];
-                GridView1.DataBind();
- 
+            GuidesDM dm = new GuidesDM();
+            DataTable taskTable = dm.Search(PatternTextBox.Text, Convert.ToInt32(ShiftSelect.SelectedValue), Convert.ToInt32(RoleSelect.SelectedValue), SearchInactiveCheckBox.Checked);
+            Session["TaskTable"] = taskTable;
+            //Bind the GridView control to the data source.
+            GridView1.DataSource = Session["TaskTable"];
+            GridView1.DataBind();
         }
+
         protected void TaskGridView_Sorting(object sender, GridViewSortEventArgs e)
         {
 

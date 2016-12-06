@@ -721,10 +721,7 @@
           <DataField>RoleID</DataField>
           <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
-        <Field Name="AltRoleID">
-          <DataField>AltRoleID</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
-        </Field>
+       
         <Field Name="UpdateBy">
           <DataField>UpdateBy</DataField>
           <rd:TypeName>System.String</rd:TypeName>

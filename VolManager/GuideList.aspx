@@ -40,7 +40,7 @@
    
     <cc2:NQNGridView ID="GridView1" runat="server" AutoGenerateColumns="False"  RowStyle-ForeColor="Black"  PageSize="100" 
         DataKeyNames="GuideID"   Selectable="true"  OnSorting="TaskGridView_Sorting"  OnSelectedIndexChanged="GuideSelected"
-        AlternatingRowStyle-BackColor="White" AllowSorting="True"  >
+        AlternatingRowStyle-BackColor="White" AllowSorting="True"   OnPageSizeChanged="DoSearch" >
         <Columns>
          
             <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolID" />
@@ -113,8 +113,20 @@
                   <cc2:RoleSelector ID="RoleSelect1" runat="server" SelectedValue='<%#Bind("RoleID") %>'></cc2:RoleSelector>
                    </td></tr>
                   <tr><td class="formlabel">
-                 Alternate Role:</td><td>
-                  <cc2:RoleSelector ID="RoleSelect2" runat="server" SelectedValue='<%#Bind("AltRoleID") %>'></cc2:RoleSelector>
+                 Alternate Roles:</td><td>
+                Alternate Roles:</td><td>
+               <div style="float:left"><asp:Label ID="Label2" runat="server" Text='<%#Eval("AltRoleName") %>'></asp:Label></div>
+                     <div style="float:left; padding-left:10px">
+                     
+                 Add Role: <cc2:RoleSelector ID="RoleSelector2" runat="server" SelectedValue='<%#Bind("AddRole") %>'></cc2:RoleSelector><br />
+                         <asp:GridView ID="GridView1" runat="server" DataSource='<%#Eval("Roles") %>' AutoGenerateColumns="false" DataKeyNames="RoleID" >
+                             <Columns>
+                                  <asp:CommandField ShowDeleteButton="True"  
+                                    ButtonType="Image"   DeleteImageUrl="~/Images/delete.gif"  />
+                                 <asp:BoundField DataField="RoleName" />
+                             </Columns>
+                         </asp:GridView>
+                         </div>
                    </td></tr>
                  
                  <tr><td class="formlabel">

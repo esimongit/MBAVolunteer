@@ -136,7 +136,7 @@ namespace  NQN.DB
             if (role == null)
                 return null;
              ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
-             string qry = ReadAllShiftsCommand() + " where  isnull(Inactive,0) = 0 and (r.RoleName = @Role or r2.RoleName = @Role )";
+             string qry = ReadAllShiftsCommand() + " where  isnull(Inactive,0) = 0 and r.RoleName = @Role ";
              if (ShiftID > 0)
                  qry += " and g.ShiftID = @ShiftID ";
              qry += " order by DOW,Sequence,FirstName  ";
@@ -307,8 +307,7 @@ namespace  NQN.DB
 				,PhoneDigits=@PhoneDigits 
 				,Notes=@Notes
 				,VolID=@VolID
-				,RoleID=@RoleID
-                ,AltRoleID=nullif(@AltRoleID,0)
+				,RoleID=@RoleID 
                 ,MaskPersonalInfo = isnull(@MaskPersonalInfo,0)
                 ,NotifySubRequests = isnull(@NotifySubRequests,0)
 				,UpdateBy=@UpdateBy
@@ -331,8 +330,7 @@ namespace  NQN.DB
                 myc.Parameters.Add(new SqlParameter("PhoneDigits", obj.PhoneDigits));
 				myc.Parameters.Add(new SqlParameter("Notes",obj.Notes));
 				myc.Parameters.Add(new SqlParameter("VolID",obj.VolID));
-				myc.Parameters.Add(new SqlParameter("RoleID",obj.RoleID));
-                myc.Parameters.Add(new SqlParameter("AltRoleID", obj.AltRoleID));
+				myc.Parameters.Add(new SqlParameter("RoleID",obj.RoleID)); 
 				myc.Parameters.Add(new SqlParameter("UpdateBy",obj.UpdateBy));
 				myc.Parameters.Add(new SqlParameter("LastUpdate",obj.LastUpdate)); 
                 myc.Parameters.Add(new SqlParameter("CalendarType", obj.CalendarType));
@@ -340,6 +338,8 @@ namespace  NQN.DB
 			}
             if (obj.AddShift > 0 && obj.AddShift != obj.ShiftID)
                 SaveGuideShift(obj.GuideID, obj.AddShift);
+            if (obj.AddRole > 0)
+                AddRole(obj.GuideID, obj.AddRole);
         }
 
 		public void Save(GuidesObject obj)
@@ -360,8 +360,7 @@ namespace  NQN.DB
 				,[PhoneDigits]
 				,[Notes]
 				,[VolID]
-				,[RoleID]
-                ,[AltRoleID]
+				,[RoleID] 
 				,[UpdateBy]
 				,[LastUpdate] 
                 ,[CalendarType]
@@ -378,8 +377,7 @@ namespace  NQN.DB
 				,@PhoneDigits 
 				,@Notes
 				,@VolID
-				,@RoleID
-                ,nullif(@AltRoleID, 0)
+				,@RoleID 
 				,@UpdateBy
 				,getdate() 
                 ,nullif(@CalendarType, '')
@@ -398,8 +396,7 @@ namespace  NQN.DB
                 myc.Parameters.Add(new SqlParameter("PhoneDigits", obj.PhoneDigits)); 
 				myc.Parameters.Add(new SqlParameter("Notes",obj.Notes));
 				myc.Parameters.Add(new SqlParameter("VolID",obj.VolID));
-				myc.Parameters.Add(new SqlParameter("RoleID",obj.RoleID));
-                myc.Parameters.Add(new SqlParameter("AltRoleID", obj.AltRoleID));
+				myc.Parameters.Add(new SqlParameter("RoleID",obj.RoleID)); 
 				myc.Parameters.Add(new SqlParameter("UpdateBy",obj.UpdateBy));  
                 myc.Parameters.Add(new SqlParameter("CalendarType", obj.CalendarType));
 				myc.ExecuteNonQuery();
@@ -407,6 +404,8 @@ namespace  NQN.DB
             int GuideID = GetLast();
             if (obj.ShiftID > 0)
                 SaveGuideShift(GuideID, obj.ShiftID);
+            if (obj.AddRole > 0)
+                AddRole(GuideID, obj.AddRole);
 		}
 
         public void Delete(GuidesObject obj)
@@ -500,7 +499,6 @@ namespace  NQN.DB
 			obj.UpdateBy = GetNullableString(reader, "UpdateBy",String.Empty);
 			obj.LastUpdate = GetNullableDateTime(reader, "LastUpdate",new DateTime()); 
             obj.RoleName = GetNullableString(reader, "RoleName", String.Empty);
-            obj.AltRoleID = GetNullableInt32(reader, "AltRoleID", 0);
             obj.AltRoleName = GetNullableString(reader, "AltRoleName", String.Empty);
             obj.ShiftName = GetNullableString(reader, "ShiftName", String.Empty);
             obj.ShortName = GetNullableString(reader, "ShortName", String.Empty);
@@ -512,7 +510,8 @@ namespace  NQN.DB
             obj.MaskPersonalInfo = GetNullableBoolean(reader, "MaskPersonalInfo", false);
             obj.GuideName =  obj.FirstName + " " + obj.LastName ;
             obj.CalendarType = GetNullableString(reader, "CalendarType", String.Empty);
-          
+            GuideRoleDM dm = new GuideRoleDM();
+            obj.Roles = dm.FetchForGuide(obj.GuideID);
 			return obj;
 		}
 
@@ -535,21 +534,19 @@ namespace  NQN.DB
 				,[VolID]
                 ,[CalendarType]
 				,g.[RoleID]
-                ,g.[AltRoleID]
                 ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
                 ,MaskPersonalInfo
 				,[UpdateBy]
 				,[LastUpdate] 
                 ,r.RoleName
-                ,AltRoleName = r2.RoleName
+                ,AltRoleName = dbo.FlattenRoles(g.GuideID) 
                 ,ShiftName = ''
                 ,ShortName = ''
                 ,Sequence = 0
                 ,DOW = 0
                 ,NotifySubRequests 
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
-				FROM Guides g join Roles r on g.RoleID = r.RoleID
-                left join Roles r2 on g.AltRoleID = r2.RoleID ";
+				FROM Guides g join Roles r on g.RoleID = r.RoleID ";
         }
         protected  string ReadAllShiftsCommand()
 		{
@@ -569,14 +566,13 @@ namespace  NQN.DB
 				,[Notes]
 				,[VolID]
                 ,[CalendarType]
-				,g.[RoleID]
-                ,g.[AltRoleID]
+				,g.[RoleID] 
                 ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
                 ,MaskPersonalInfo
 				,[UpdateBy]
 				,[LastUpdate] 
                 ,r.RoleName
-                ,AltRoleName = r2.RoleName
+                ,AltRoleName = dbo.FlattenRoles(g.GuideID) 
                 ,s.ShiftName
                 ,s.ShortName
                 ,s.Sequence
@@ -584,8 +580,7 @@ namespace  NQN.DB
                 ,NotifySubRequests
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
 				FROM Guides g join Roles r on g.RoleID = r.RoleID
-                join GuideShift gs on g.GuideID = gs.GuideID  join Shifts s on s.ShiftID = gs.ShiftID 
-                left join Roles r2 on g.AltRoleID = r2.RoleID ";
+                join GuideShift gs on g.GuideID = gs.GuideID  join Shifts s on s.ShiftID = gs.ShiftID  ";
 		}
 		public int GetLast()
 		{
@@ -597,5 +592,20 @@ namespace  NQN.DB
 			}
 		}
 
+    
+        public void AddRole(int GuideID, int RoleID)
+        {
+            GuideRoleDM dm = new GuideRoleDM();
+            GuideRoleObject obj = new GuideRoleObject();
+            obj.GuideID = GuideID;
+            obj.RoleID = RoleID;
+            obj.Condition = 0;
+            dm.Save(obj);
+        }
+        public void RemoveRole(int GuideID, int RoleID)
+        {
+            GuideRoleDM dm = new GuideRoleDM();
+            dm.DeleteRole(GuideID, RoleID);
+        }
 	}
 }

@@ -66,7 +66,7 @@
                   </td></tr>
                  <tr><td class="formlabel">
                  Shift:</td><td>
-                     <div style="float:left"><asp:Label ID="ShiftLabel" runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></div>
+                     <div  ><asp:Label ID="ShiftLabel" runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></div>
                      <div style="float:left; padding-left:10px">
                      
                  Add Shift: <cc2:ShiftSelector ID="ShiftSelector1" runat="server" SelectedValue='<%#Bind("AddShift") %>'></cc2:ShiftSelector><br />
@@ -86,8 +86,20 @@
                  <cc2:RoleSelector ID="RoleSelect1" runat="server" SelectedValue='<%#Bind("RoleID") %>'></cc2:RoleSelector>
                   </td></tr>
                    <tr><td class="formlabel">
-                 Alternate Role:</td><td>
-                  <cc2:RoleSelector ID="RoleSelect2" runat="server" SelectedValue='<%#Bind("AltRoleID") %>'></cc2:RoleSelector>
+                 Alternate Roles:</td><td>
+               <div  ><asp:Label ID="Label2" runat="server" Text='<%#Eval("AltRoleName") %>'></asp:Label></div>
+                     <div style="float:left; padding-left:10px">
+                     
+                 Add Role: <cc2:RoleSelector ID="RoleSelector2" runat="server" SelectedValue='<%#Bind("AddRole") %>'></cc2:RoleSelector><br />
+                         <asp:GridView ID="RoleView" runat="server" DataSource='<%#Eval("Roles") %>' AutoGenerateColumns="false" DataKeyNames="RoleID"
+                              OnRowDeleting="DeleteRole">
+                             <Columns>
+                                  <asp:CommandField ShowDeleteButton="True"  
+                                    ButtonType="Image"   DeleteImageUrl="~/Images/delete.gif"  />
+                                 <asp:BoundField DataField="RoleName" />
+                             </Columns>
+                         </asp:GridView>
+                         </div>
                    </td></tr>
                  <tr><td class="formlabel">
                  Inactive:</td><td>

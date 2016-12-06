@@ -93,7 +93,7 @@ namespace NQN.DB
         {
             get
             {
-                return String.Format("{0}/SubRequest.aspx?dt={0}", StaticFieldsObject.StaticValue("GuideURL"), dt.ToShortDateString());
+                return String.Format("{0}/SubRequest.aspx?dt={1}", StaticFieldsObject.StaticValue("GuideURL"), dt.ToShortDateString());
             }
         }
         public int Sequence

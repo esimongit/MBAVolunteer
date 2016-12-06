@@ -191,18 +191,8 @@ namespace NQN.DB
 				 _roleid = value;
 			}
 		}
-        private int _altroleid = 0;
-        public int AltRoleID
-        {
-            get
-            {
-                return _altroleid;
-            }
-            set
-            {
-                _altroleid = value;
-            }
-        }
+        
+ 
 		private string _updateby = String.Empty;
 		public string UpdateBy 
 		{
@@ -269,6 +259,10 @@ namespace NQN.DB
             get;
             set;
         }
+        public ObjectList<GuideRoleObject> Roles
+        {
+            get; set;
+        }
         public string ShiftName
         {
             get;
@@ -290,6 +284,10 @@ namespace NQN.DB
             set;
         }
         public int AddShift
+        {
+            get; set;
+        }
+        public int AddRole
         {
             get; set;
         }
@@ -424,6 +422,20 @@ namespace NQN.DB
             foreach (ShiftsObject shift in Shifts)
             {
                 if (dm.IsShiftOnDate(shift.ShiftID, dt))
+                    ret = true;
+            }
+            return ret;
+        }
+
+        public bool HasRole(string Role)
+        {
+
+            bool ret = false;
+            if (RoleName == Role)
+                return true;
+            foreach (GuideRoleObject obj in Roles)
+            {
+                if (obj.RoleName == Role)
                     ret = true;
             }
             return ret;

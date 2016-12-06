@@ -155,6 +155,7 @@ namespace NQN.Bus
             ObjectList<GuideSubstituteObject> sList = sdm.FetchForShift(ShiftID, dt);
             ObjectList<GuideDropinsObject> pList = ddm.FetchForShift(ShiftID, dt);
             ObjectList<GuideDropinsObject> rList = ddm.FetchOnShift(ShiftID, dt);
+            ObjectList<GuidesObject> iList = new ObjectList<GuidesObject>();
             foreach (GuidesObject obj in dList)
             {
                 GuideSubstituteObject sub = sList.Find(x => x.GuideID == obj.GuideID);
@@ -165,7 +166,10 @@ namespace NQN.Bus
                     obj.SubDescription = sub.Sub == String.Empty ? "No substitute" : "Substitute: " + sub.SubName + ", " + sub.SubRole;
                     
                 }
-                Results.Add(obj);
+                if (obj.RoleName.Contains("Info"))
+                    iList.Add(obj);
+                else
+                    Results.Add(obj);
             }
             foreach (GuideDropinsObject drop in pList)
             {
@@ -180,7 +184,10 @@ namespace NQN.Bus
                 obj.GuideID = drop.GuideID;
                 obj.SubDescription = "Drop In";
                 obj.RoleName = drop.Role;
-                Results.Add(obj);
+                if (obj.RoleName.Contains("Info"))
+                    iList.Add(obj);
+                else
+                    Results.Add(obj); 
             }
             foreach (GuideDropinsObject drop in rList)
             {
@@ -195,14 +202,18 @@ namespace NQN.Bus
                 obj.GuideID = drop.GuideID;
                 obj.SubDescription = "Special";
                 obj.RoleName = drop.Role;
-                Results.Add(obj);
+                if (obj.RoleName.Contains("Info"))
+                    iList.Add(obj);
+                else
+                    Results.Add(obj);
             }
             Results.Sort((x, y) => x.FirstName.CompareTo(y.FirstName));
+            Results.AddRange(iList);
             return Results;
         }
 
         // Staff Update
-        public void UpdateRoster( string Notes, DateTime dt, bool SubRequested, string Sub,  int ShiftID, int GuideID)
+        public void UpdateRoster( DateTime dt, bool SubRequested, string Sub,  int ShiftID, int GuideID)
         {
             SubstitutesBusiness sb = new SubstitutesBusiness();
             GuideSubstituteDM dm = new GuideSubstituteDM();
@@ -297,7 +308,7 @@ namespace NQN.Bus
             return obj;
         } 
         public void UpdateGuide(int GuideID, string VolID, string FirstName, string LastName, string Phone, string Cell, bool CellPreferred, string Email, 
-            int AddShift, int RoleID, int AltRoleID, bool Inactive, string Notes, bool MaskPersonalInfo)
+            int AddShift, int RoleID,  bool Inactive, string Notes, bool MaskPersonalInfo, int AddRole)
         {
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(GuideID);
@@ -312,8 +323,8 @@ namespace NQN.Bus
             guide.Email = Email;
             // If AddShift is set, Update will try to add that shift for this guide
             guide.AddShift = AddShift;
+            guide.AddRole = AddRole;
             guide.RoleID = RoleID;
-            guide.AltRoleID = AltRoleID;
             guide.Inactive = Inactive;
             guide.Notes = Notes;
             guide.MaskPersonalInfo = MaskPersonalInfo;

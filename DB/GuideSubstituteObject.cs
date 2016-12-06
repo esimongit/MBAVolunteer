@@ -249,6 +249,17 @@ namespace NQN.DB
 			_tablename = "GuideSubstitute";
 			_primarykey = "GuideSubstituteID";
 		}
+
+        public bool HasRole(string RoleName)
+        {
+
+            bool ret = false;
+            if (Role == RoleName)
+                return true;
+            GuideRoleDM dm = new GuideRoleDM();
+            ret = dm.HasRole(GuideID, RoleName);
+            return ret;
+        }
         public GuideSubstituteObject(GuideDropinsObject obj)
         {
             _tablename = "GuideSubstitute";

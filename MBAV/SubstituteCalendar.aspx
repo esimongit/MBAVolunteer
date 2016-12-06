@@ -62,7 +62,7 @@
         <div class="col-md-9 col-xs-9" style="margin-left:20px;padding-top:10px; padding-bottom:10px"> 
            <div class="row" > 
             <div class="col-md-6 " style=" max-width:120px;background-color:#9aff9a; font-size:large" >A Weeks</div>
-          <div class="col-md-6 " style="max-width:120px;background-color:#CC9360 ; font-size:large" >B Weeks</div>
+          <div class="col-md-6 " style="max-width:120px;background-color:#FFFFFF ; font-size:large" >B Weeks</div>
        </div>
       
       </div>

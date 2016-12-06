@@ -104,7 +104,9 @@
     <Content Include="Recovery\Default.aspx" />
     <Content Include="Scripts\common.js" />
     <Content Include="ShiftRoster.aspx" />
-    <Content Include="Styles\Site.css" />
+    <Content Include="Styles\Site.css">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="SubList.aspx" />
     <Content Include="SubRequest.aspx" />
     <Content Include="SubstituteCalendar.aspx" />

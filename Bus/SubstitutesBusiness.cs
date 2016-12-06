@@ -297,13 +297,13 @@ namespace NQN.Bus
                 if (dList.Count == 0)
                     continue;
                 GuidesObject guide = gdm.FetchGuide(GuideID);
-                bool HasInfo = guide.RoleName == "Info Desk" || guide.AltRoleName == "InfoDesk";
+                bool HasInfo = guide.HasRole("Info Desk");
                 string msg = String.Format("Dear {0}<br/><br/> <p>Here is a list of Guides who have outstanding requests for substitutes on shifts in which you have expressed an interest</p><ul>",
                     guide.FirstName);
                 DateTime odate = DateTime.Today;
                 foreach (GuideSubstituteObject obj in dList)
                 {
-                    if (obj.Role == "Info Desk" && !HasInfo)
+                    if (obj.HasRole("Info Desk") && !HasInfo)
                         continue;
                     string flag = (obj.DateEntered > DateTime.Today.AddDays(-1)) ? " *NEW*" : String.Empty;
                     if (odate != obj.SubDate)

@@ -51,19 +51,9 @@ namespace MBAV
             string VolID = LoginUser.UserName;
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(VolID);
+
+            Session["IsCaptain"] = guide.HasRole("Shift Captain");
             
-            RolesDM rdm = new RolesDM();
-            if (guide.RoleID > 0)
-            {
-                RolesObject obj = rdm.FetchRecord("RoleID", guide.RoleID);
-                Session["IsCaptain"] = obj.IsCaptain;
-            }
-            if (guide.AltRoleID > 0)
-            {
-                RolesObject obj2 = rdm.FetchRecord("RoleID", guide.AltRoleID);
-                if (obj2.IsCaptain)
-                    Session["IsCaptain"] = true;
-            }
             Session["GuideID"] = guide.GuideID;
         }
         protected void ResetPW(object sender, EventArgs e)
