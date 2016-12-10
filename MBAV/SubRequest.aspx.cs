@@ -33,6 +33,7 @@ namespace MBAV
             if (GuideID == 0)
                 Response.Redirect("Login.aspx");
             GuidesDM dm = new GuidesDM();
+            ShiftsDM tdm = new ShiftsDM();
             GuideSubstituteDM sdm = new GuideSubstituteDM();
            // GuideSubstituteObject sub = sdm.FetchForGuide(GuideID, DateTime.Parse(Request.QueryString["dt"]));
             GuidesObject guide = dm.FetchGuide( GuideID);
@@ -47,13 +48,10 @@ namespace MBAV
                 return;
             }
             DateLabel.Text = DateTime.Parse(Request.QueryString["dt"]).ToLongDateString();
-            NameLabel.Text = guide.GuideName;
-
-            
+            NameLabel.Text = guide.GuideName;           
             RoleLabel.Text = guide.RoleName;
-            
-         
 
+            DropinCell.Visible = tdm.ShiftsForDateAndGuide(dt, GuideID).Count > 0;
             SubstitutesBusiness sb = new SubstitutesBusiness();
             string SubShifts = sb.SubShiftsForGuideAndDate(GuideID, dt);
             CurrentSubCell.Visible = false;

@@ -131,7 +131,7 @@
           <div class="col-md-4" style="color:blue; font-weight:bold">
          Email Notices:</div>
               <div class="col-md-7"> 
-                  <asp:CheckBox ID="NotifyCheckBox" runat="server" Checked='<%#Bind("NotifySubRequests") %>' Text="&nbsp;&nbsp;Mail me Sub requests." />
+                  <asp:CheckBox ID="NotifyCheckBox" runat="server" Checked='<%#Bind("NotifySubRequests") %>' Text="&nbsp;&nbsp;Email me Sub requests." />
             </div>
         </div>
          <div class="row" style="padding-bottom:4px">

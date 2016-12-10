@@ -228,11 +228,8 @@ namespace NQN.Bus
                 // Otherwise this sub is already registered for you on this shift, just quit here.
                 return false;
             }
-            sub = dm.FetchForGuide(obj.GuideID, obj.ShiftID, obj.SubDate);
-            if (sub != null && sub.SubstituteID > 0)
-           {
-                throw new Exception(String.Format("{0} is already substituting for {1}.", sub.SubName, sub.GuideName));
-            }
+            //sub = dm.FetchForGuide(obj.GuideID, obj.ShiftID, obj.SubDate);
+            
             // Remove a redundant dropin offer.
             GuideDropinsObject dropin = ddm.FetchForGuide(obj.SubstituteID, obj.SubDate, obj.ShiftID);
             if (dropin != null)
@@ -240,6 +237,8 @@ namespace NQN.Bus
                 ddm.Delete(dropin.GuideDropinID);
             }
            
+            // if obj.SubstituteID == 0,remove the current sub, otherwise add a new sub or replace one.
+            // In either case, notify folks
             dm.Update(obj);
             return true;
         }

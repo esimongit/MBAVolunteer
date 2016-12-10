@@ -220,7 +220,7 @@ namespace NQN.Bus
             GuidesDM gdm = new GuidesDM();
             GuidesObject guide = gdm.FetchGuide(GuideID);
             int SubstituteID = 0;
-            if (Sub != null && Sub.Trim() != String.Empty)
+            if (!String.IsNullOrEmpty(Sub))
             {
                 SubstituteID = gdm.GuideForVol(Sub);
                 if (SubstituteID == 0)
@@ -244,17 +244,15 @@ namespace NQN.Bus
                     obj = dm.FetchRecord("GuideSubstituteID", dm.GetLast());
                     sb.NotifyCaptains(obj);
                     // Immediate notification if the request is for today
-                    if (obj.SubDate == DateTime.Today)
+                    if (obj.SubDate == DateTime.Today && SubstituteID == 0)
                         sb.NotifyOffers(GuideID, ShiftID, dt);
                 }
                 else
                 {
-                    if (Sub != null && Sub.Trim() != String.Empty)
-                    {
-                        obj.SubstituteID = gdm.GuideForVol(Sub);
-                        sb.AddSub(obj);
+                    // Previously entered sub
+                    obj.SubstituteID = SubstituteID;
+                    if (sb.AddSub(obj))
                         sb.NotifyCaptains(obj);
-                    }
                 }
             }
             else

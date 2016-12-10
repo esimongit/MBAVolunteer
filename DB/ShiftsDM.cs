@@ -311,16 +311,19 @@ namespace  NQN.DB
             }
             return Results;
         }
+        // Used to display available shifts for a drop-in request. Exclude shifts with open sub requests
         public ObjectList<ShiftsObject> ShiftsForDateAndGuide(DateTime dt, int GuideID)
         {
-            if (dt == DateTime.MinValue)
-                return null;
+
             ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
+            if (dt == DateTime.MinValue)
+                return Results;
 
-
-            string qry = ReadAllCommand() + @" WHERE dow = datepart(dw, @dt)  and ((dbo.AB(@dt) = 'AWeek' and AWeek = 1)
+                string qry = ReadAllCommand() + @" WHERE dow = datepart(dw, @dt)  and ((dbo.AB(@dt) = 'AWeek' and AWeek = 1)
                     or (dbo.AB(@dt) = 'BWeek' and BWeek = 1))
-                and ShiftID not in (select ShiftID from GuideShift where GuideID = @GuideID) order by Sequence ";
+                and ShiftID not in (select ShiftID from GuideShift where GuideID = @GuideID) 
+                 and ShiftID not in (select ShiftID from GuideSubstitute where SubDate = @dt
+					 and SubStituteID is null) order by Sequence ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
