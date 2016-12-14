@@ -27,6 +27,8 @@ namespace MBAV
                 FormsAuthentication.RedirectFromLoginPage(guide.VolID, LoginUser.RememberMeSet);
                 FormsAuthentication.SetAuthCookie(guide.VolID, false);
             }
+            AnnouncementsDM adm = new AnnouncementsDM();
+            AnnouncementLabel.Text = adm.FetchMain().AnnouncementText;
         }
 
         protected void OnLoggingIn(object sender, System.Web.UI.WebControls.LoginCancelEventArgs e)

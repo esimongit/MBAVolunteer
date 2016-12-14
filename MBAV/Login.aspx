@@ -1,55 +1,45 @@
 ﻿<%@ Page Title="Log In" Language="C#"  AutoEventWireup="true"  CodeBehind="Login.aspx.cs" Inherits="MBAV.Login" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html >
 <html>
 <head id="Head1" runat="server">
   <title>MBA Volunteer Substitute Calendar</title>
      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link href="~/Styles/Site.css" rel="stylesheet" type="text/css" />
-    <link href="/Content/bootstrap.css" rel="Stylesheet" />
+    <link href="Styles/Site.css" rel="stylesheet" type="text/css" >
+    <link href="Content/bootstrap.css" rel="Stylesheet" type="text/css" > 
     <script src="/Scripts/common.js" type="text/javascript" ></script>
-    
+     <script type="text/javascript" src="Scripts/jquery-1.9.1.min.js">    </script>   
+     <script src="/Scripts/bootstrap.js" type="text/javascript" ></script>
  
 </head>
-<body style="font-family:Arial;  ">
+<body style="font-family:Arial; background-image:url(/Images/GreenSeaTurtleX.jpg)  ">
  
-<%--<asp:Content ID="BodyContent" runat="server" ContentPlaceHolderID="MainContent">--%>
 <form runat="server">
 <div class="container">
 <div class="row">
-    <div class="col-md-6 col-xs-10">
+    <div class="col-md-6 col-xs-10"  >
     <img src="/Images/VolunteerLogoColor.jpg" alt="Monterey Bay Aquarium Volunteer" class="img-responsive" width="300"   /></div>
    </div>
  
-    <div class="row">
-    <div class="col-md-2 col-xs-4"> <h2>
+ 
+   
+
+<div class="row">
+  <div class="col-md-5 col-xs-10" style="border:2px solid red">
+       <div class="row">
+    <div class="col-md-5 col-xs-8"> <h2>
        Log In
     </h2>
-       </div>
-    </div>
-<div class="row">
-<div class="col-xs-12">
-    
-    </div>
-    </div>
-<div class="row">
-  <div class="col-md-5">
+       </div> </div> 
    <div class="row">
-    <asp:Login ID="LoginUser" runat="server" EnableViewState="false"    RenderOuterTable="false" OnLoggedIn="SaveUser" OnLoggingIn="OnLoggingIn"  >
-    
-        <LayoutTemplate>
-            
-                <asp:Label ID="FailureText"  runat="server" ForeColor="Red"></asp:Label>
-        
-            <asp:ValidationSummary ID="LoginUserValidationSummary" runat="server" CssClass="failureNotification"  />
-
-           <div class="row">
-             <div class="col-xs-12">
-                
-                    <h2>Account Information</h2>
-                          
-               </div></div>
+       <div class="col-xs-12">
+    <asp:Login ID="LoginUser" runat="server" EnableViewState="false"    RenderOuterTable="false" OnLoggedIn="SaveUser" OnLoggingIn="OnLoggingIn"  >    
+        <LayoutTemplate>       
             <div class="row">
-             <div class="col-xs-12">
+             <div class="col-xs-12">     
+                <asp:Label ID="FailureText"  runat="server" ForeColor="Red"></asp:Label>       
+            <asp:ValidationSummary ID="LoginUserValidationSummary" runat="server" CssClass="failureNotification"  />
+ 
+            
                  <asp:Label ID="InstructionText" runat="server" Font-Bold="true" ForeColor="Gray" Text="Please enter your Guide ID and password."></asp:Label>
                           
                </div></div>
@@ -84,7 +74,7 @@
         </LayoutTemplate>
     </asp:Login>
     </div>
-  
+    </div>
     <div class="row" style="padding-top:20px">
             <div class="col-xs-12">
     <asp:Button ID="ResetButton" runat="server" Text="I give up! I will set a new Password" OnClick="ResetPW" CausesValidation="false" />
@@ -93,8 +83,9 @@
   </div>
  
  
-    <div class="col-md-6">
-        <img alt="Sea Turtle" src="/Images/GreenSeaTurtle.jpg" width="500" class="img-responsive" />
+    <div class="col-md-6 col-xs-10" style="background-color:White;  border:2px solid red"> 
+       <asp:Label ID="AnnouncementLabel" runat="server"></asp:Label>
+
         </div>
   </div>
   </div>

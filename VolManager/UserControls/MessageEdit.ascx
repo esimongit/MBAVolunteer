@@ -11,7 +11,7 @@
       <asp:SessionParameter SessionField="MailTextID" Name="MailTextID" Type="Int32" DefaultValue="0" />
       </SelectParameters>
      </asp:ObjectDataSource>
-     <asp:FormView ID="FormView1" runat="server" Width="1000px" DefaultMode="Edit" OnPreRender="Form_PreRender"
+     <asp:FormView ID="FormView1" runat="server" Width="1000px" DefaultMode="Edit" 
        DataSourceID ="ObjectDataSource2" DataKeyNames="MailTextID">
         <EditItemTemplate>
         <asp:Literal ID="tinymceLiteral"  runat="server" Text='

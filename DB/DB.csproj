@@ -50,6 +50,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnnouncementsDM.cs" />
+    <Compile Include="AnnouncementsObject.cs" />
     <Compile Include="BatchImportDM.cs" />
     <Compile Include="BatchImportObject.cs" />
     <Compile Include="GuideDropinsDM.cs" />

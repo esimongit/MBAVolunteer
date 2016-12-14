@@ -134,7 +134,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
      </div>
 </div>
  <div class="row td3" id="DropinCell" runat="server">
-  <div class="col-md-6  " style="padding-top:5px"> 
+  <div class="col-md-6" style="padding-top:5px"> 
      If you will be dropping in, check here:  &nbsp;
     <asp:CheckBox ID="NewDropCheckBox" runat="server" />   and select the correct shift.
     </div>

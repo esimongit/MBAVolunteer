@@ -270,6 +270,7 @@ namespace NQN.DB
             _subdate = obj.DropinDate;
             SubFirst = obj.FirstName;
             SubLast = obj.LastName;
+            ShiftName = obj.ShiftName;
             Role = obj.Role;
             SubRole = Role;
             Sub = obj.VolID;
