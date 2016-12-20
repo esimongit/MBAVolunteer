@@ -282,7 +282,7 @@ namespace NQN.Bus
         }
 
         //Nightly notifications of who needs a sub
-        public void SubNotices(string VolunteerUrl)
+        public int SubNotices(string VolunteerUrl)
         {
             GuidesDM gdm = new GuidesDM();
             SubOffersDM dm = new SubOffersDM();
@@ -290,6 +290,7 @@ namespace NQN.Bus
             List<int> Guides = dm.GuidesWithOffers();
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             EmailBusiness eb = new EmailBusiness();
+            int cnt = 0;
             foreach (int GuideID in Guides)
             {
                 dList = sdm.FetchRequests(GuideID);
@@ -317,17 +318,19 @@ namespace NQN.Bus
                    
                 }
                 msg += "</ul>. <p>Click on any record in the list to open the Substitute Website for the date listed.</p>";
-                eb.SendMail("substitute@mbayaq.org", "ed_simon@yahoo.com", "Pending Substitute Requests", msg, true);
-                break;
+                eb.SendMail("substitute@mbayaq.org", guide.Email, "Pending Substitute Requests", msg, true);
+                cnt++;
             }
+            return cnt;
         }
 
  
-        public void SendReminders()
+        public int SendReminders()
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
             GuideDropinsDM ddm = new GuideDropinsDM();
             StaticFieldsDM sdm = new StaticFieldsDM();
+            int cnt = 0;
             foreach (StaticFieldsObject stat in sdm.FetchValue("ReminderDays"))
             {
                 int ndays = Convert.ToInt32(stat.FieldValue);
@@ -344,21 +347,30 @@ namespace NQN.Bus
                     if (obj.Sub != String.Empty)
                     {
                         if (obj.Email != String.Empty)
+                        {
                             eb.SendMail(mtobj.MailFrom, obj.SubEmail, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                            cnt++;
+                        }
                     }
                     else
                     {
                         // Reminders to unfulfilled Sub requests.
                         eb.SendMail(mzobj.MailFrom, obj.SubEmail, mzobj.Subject, mzobj.CompletedText(obj), mzobj.IsHtml);
+                        cnt++;
                     }
                 }
                 mtobj = mtdm.FetchForSymbol("DropinReminder");
                 foreach (GuideDropinsObject obj in eList)
                 {
                     if (obj.Email != String.Empty)
+                    {
+
+                        cnt++;
                         eb.SendMail(mtobj.MailFrom, obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                    }
                 }
             }
+            return cnt;
         }
 
         public void NotifyOffers(int GuideID, int ShiftID, DateTime dt)
@@ -380,8 +392,8 @@ namespace NQN.Bus
                 obj.RequestorEmail = guide.Email;
                 obj.RequestorPhone = guide.Phone;
                 obj.Sequence = guide.Sequence;
-               // eb.SendMail(mtobj.MailFrom,  obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
-                eb.SendMail(mtobj.MailFrom, "ed_simon@yahoo.com", mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                eb.SendMail(mtobj.MailFrom,  obj.Email, mtobj.Subject, mtobj.CompletedText(obj), mtobj.IsHtml);
+                
             }
         }
         public void NotifyCaptains(GuideSubstituteObject obj)
@@ -420,8 +432,8 @@ namespace NQN.Bus
                 {
                     if (recipient.Email != String.Empty)
                     {
-                        // eb.SendMail(mtobj.MailFrom, recipient.Email, mtobj.Subject, msg, mtobj.IsHtml);
-                        eb.SendMail(mtobj.MailFrom, "Substitute@mbayaq.org", mtobj.Subject, msg, mtobj.IsHtml);
+                        eb.SendMail(mtobj.MailFrom, recipient.Email, mtobj.Subject, msg, mtobj.IsHtml);
+                         
                     }
                 }
             }
