@@ -221,6 +221,10 @@ namespace  NQN.DB
             return Results;
         }
 
+        public DataTable FetchTableForShift(int ShiftID)
+        {
+            return FetchForShift(ShiftID).RenderAsTable();
+        }
         public ObjectList<GuidesObject> FetchForShift(int ShiftID)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
@@ -241,7 +245,26 @@ namespace  NQN.DB
             }
             return Results;
         }
-
+        public ObjectList<GuidesObject> FetchGuidesForShift(int ShiftID)
+        {
+            ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
+            string qry = ReadAllShiftsCommand() + " WHERE gs.ShiftID = @ShiftID and isnull(Inactive,0) = 0 and r.RoleName != 'Info Desk'  order by FirstName  ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuidesObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         public ObjectList<GuidesObject> FetchCaptains(int ShiftID)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();

@@ -228,8 +228,13 @@ namespace NQN.Bus
                 // Otherwise this sub is already registered for you on this shift, just quit here.
                 return false;
             }
-            //sub = dm.FetchForGuide(obj.GuideID, obj.ShiftID, obj.SubDate);
-            
+             
+            if (obj.SubstituteID == 0)
+            {
+                // Remove an existing sub.
+                dm.Update(obj);
+                return true;
+            }
             // Remove a redundant dropin offer.
             GuideDropinsObject dropin = ddm.FetchForGuide(obj.SubstituteID, obj.SubDate, obj.ShiftID);
             if (dropin != null)
@@ -312,7 +317,7 @@ namespace NQN.Bus
                         msg += "<br />";
                     }
                         string link = String.Format("{0}/SubRequest.aspx?dt={1}",VolunteerUrl, obj.SubDate);
-                    msg += String.Format("<li><a href='{0}'>{1}: {2} (3) needs a substitute for shift {4} {5}.</a></li>",
+                    msg += String.Format("<li><a href='{0}'>{1}: {2} ({3}) needs a substitute for shift {4} {5}.</a></li>",
                         link, obj.SubDate.ToLongDateString(),
                         obj.GuideName, obj.Role, obj.Sequence, flag);
                    
@@ -335,7 +340,7 @@ namespace NQN.Bus
             {
                 int ndays = Convert.ToInt32(stat.FieldValue);
                 DateTime dt = DateTime.Today;
-                dt.AddDays(ndays);
+                dt = dt.AddDays(ndays);
                 ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(dt);
                 ObjectList<GuideDropinsObject> eList = ddm.FetchForDate(dt);
                 EmailBusiness eb = new EmailBusiness();

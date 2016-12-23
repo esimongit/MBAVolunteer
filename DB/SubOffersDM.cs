@@ -37,7 +37,7 @@ namespace  NQN.DB
         public List<int> GuidesWithOffers()
         {
             List<int> Results = new List<int>();
-            string qry = @"SELECT distinct GuideID from SubOffers where g.NotifySubRequests = 1";
+            string qry = @"SELECT distinct o.GuideID from SubOffers o join Guides g on g.GuideID = o.GuideID where g.NotifySubRequests = 1";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);

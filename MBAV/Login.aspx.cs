@@ -37,6 +37,8 @@ namespace MBAV
             Label InstructionText = (Label)LoginUser.FindControl("InstructionText");
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(VolID);
+            if (guide == null)
+                return;
             if (guide.Inactive)
             {
                  InstructionText.Text = "Your login has been disabled.";

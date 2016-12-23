@@ -32,7 +32,7 @@ namespace  NQN.DB
         public bool HasRole(int GuideID, string Role)
         {
             bool ret = false;
-            string qry = @"select cast (1 as bit) from GuideRole gr join Roles r on gr.RoleID = r.RoleID where GuideID = GuideID and r.RoleName = @Role";
+            string qry = @"select cast (1 as bit) from GuideRole gr join Roles r on gr.RoleID = r.RoleID where GuideID = @GuideID and r.RoleName = @Role";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);

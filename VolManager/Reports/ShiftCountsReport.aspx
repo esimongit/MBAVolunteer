@@ -13,7 +13,7 @@
     
     </atk:ToolkitScriptManager>
     <div style="float:left">
-    <uc3:DateRangeSelector ID="DateRangeSelect" runat="server" /></div>
+    <uc3:DateRangeSelector ID="DateRangeSelect" runat="server"     /></div>
     <div style="float:right"><asp:Button runat="server" ID="RunButton" OnClick="DoReport" Text="Run Report" /></div>
     <div style="clear:both"></div>
     <rsweb:ReportViewer ID="ReportViewer1" runat="server" Font-Names="Verdana"  Width="1200" Height="800"    

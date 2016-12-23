@@ -78,7 +78,7 @@ namespace NQN.Bus
         }
         public void SendMail(string From, string MailTo, string Subject, string msg, bool IsHtml)
          {
-             if (MailTo == null) return;
+             if (String.IsNullOrEmpty(MailTo)) return;
              string ServerPrefix = IsInternal(MailTo) ? "Internal" : "External";
             if (From == null || From == String.Empty)
                 From = ConfigurationManager.AppSettings.Get(ServerPrefix + "MailUser");

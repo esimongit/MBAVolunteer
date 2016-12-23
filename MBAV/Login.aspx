@@ -24,7 +24,7 @@
    
 
 <div class="row">
-  <div class="col-md-5 col-xs-10" style="border:2px solid red">
+  <div class="col-md-5 col-xs-10"  >
        <div class="row">
     <div class="col-md-5 col-xs-8"> <h2>
        Log In
@@ -83,7 +83,7 @@
   </div>
  
  
-    <div class="col-md-6 col-xs-10" style="background-color:White;  border:2px solid red"> 
+    <div class="col-md-6 col-xs-10" style="background-color:White;"> 
        <asp:Label ID="AnnouncementLabel" runat="server"></asp:Label>
 
         </div>

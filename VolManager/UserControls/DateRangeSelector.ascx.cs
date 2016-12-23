@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.UI;
+using System.ComponentModel;
 using System.Web.UI.WebControls;
 using NQN.Bus;
 
@@ -12,6 +13,32 @@ namespace VolManager.UserControls
         private bool _autopostback = false;
         private bool _autofill = true;
 
+        private string _startdate = DateRange.DateUtilities.GetStartOfCurrentYear().ToShortDateString();
+        [Bindable (true)]
+        public string StartDate
+        {
+            get
+            {
+                return _startdate;
+            }
+            set
+            {
+                _startdate = value;
+            }
+        }
+        private string _enddate = DateTime.Today.ToShortDateString();
+        [Bindable(true)]
+        public string EndDate
+        {
+            get
+            {
+                return _enddate;
+            }
+            set
+            {
+                _enddate = value;
+            }
+        }
         public bool AutoFill
         {
             get { return _autofill; }
@@ -49,8 +76,8 @@ namespace VolManager.UserControls
         {
             if (!Page.IsPostBack && _autofill)
             {
-                bDateTextBox.Text = DateRange.DateUtilities.GetStartOfCurrentYear().ToShortDateString();
-                eDateTextBox.Text = DateTime.Today.ToShortDateString();
+                bDateTextBox.Text = _startdate;
+                eDateTextBox.Text = _enddate;
             }
         }
         protected void Page_PreRender(object sender, EventArgs e)

@@ -32,9 +32,10 @@ namespace NQN.Bus
                 ret = x.Sequence.CompareTo(y.Sequence);
             return ret;
         }
-        public ObjectList<ShiftsObject> ShiftsToday()
+        public ObjectList<ShiftSummaryObject> ShiftsToday()
         {
-            return ShiftsOnDate(DateTime.Today);
+            ShiftsDM dm = new ShiftsDM();
+            return dm.ShiftCountReport(DateTime.Today, DateTime.Today);
         }
         public ObjectList<ShiftsObject> ShiftsOnDate(DateTime dt)
         {

@@ -18,7 +18,7 @@
     </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" 
-        TypeName="NQN.DB.GuidesDM" SelectMethod="FetchForShift" 
+        TypeName="NQN.DB.GuidesDM" SelectMethod="FetchTableForShift" 
         DataObjectTypeName="NQN.DB.GuidesObject" UpdateMethod="Update">
     <SelectParameters>
         <asp:ControlParameter ControlID="GridView1" Type="Int32" DefaultValue="0" Name="ShiftID" />

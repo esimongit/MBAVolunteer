@@ -249,10 +249,16 @@ namespace NQN.Bus
                 }
                 else
                 {
-                    // Previously entered sub
+                    // Previously entered sub, SubstituteID = 0 means no sub.
+                  
                     obj.SubstituteID = SubstituteID;
+
                     if (sb.AddSub(obj))
+                    {
+                        // Refetch to get the new Sub info (or "Need Sub")
+                        obj = dm.FetchRecord("GuideSubstituteID", obj.GuideSubstituteID);
                         sb.NotifyCaptains(obj);
+                    }
                 }
             }
             else
@@ -261,6 +267,8 @@ namespace NQN.Bus
                 if (obj != null)
                 {
                     dm.Delete(obj.GuideSubstituteID);
+                    obj.GuideSubstituteID = 0;
+
                     sb.NotifyCaptains(obj);
                 }
             }

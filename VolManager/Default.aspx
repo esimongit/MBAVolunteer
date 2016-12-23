@@ -27,8 +27,8 @@
         <Columns>
             <asp:BoundField DataField="ShiftName" HeaderText="Shift" />
             <asp:BoundField DataField="Captains" HeaderText="Captains" />
-            <asp:BoundField DataField="InfoDesk" HeaderText="Info Desk" />
-            <asp:BoundField DataField="Attendance" HeaderText="Planned Number" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+            <asp:BoundField DataField="Info" HeaderText="Info Desk" />
+            <asp:BoundField DataField="Total" HeaderText="Planned Number" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
         </Columns>
 
     </asp:GridView>
