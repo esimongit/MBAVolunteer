@@ -401,6 +401,10 @@ namespace NQN.DB
             }
         }
        
+        public bool HasInfoDesk
+        {
+            get; set;
+        }
 		public GuidesObject()
 		{
 			_tablename = "Guides";

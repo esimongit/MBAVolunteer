@@ -33,10 +33,22 @@ namespace NQN.DB
             }
         }
         #endregion
-        public string GuideName
+        public string FirstName
         {
             get;
             set;
+        }
+        public string LastName
+        {
+            get;
+            set;
+        }
+        public string GuideName
+        {
+            get
+            {
+                return FirstName + " " + LastName;
+            }
         }
         public string Email
         {
@@ -106,6 +118,10 @@ namespace NQN.DB
             get; set;
         }
         public bool NotifySubRequests
+        {
+            get; set;
+        }
+        public bool HasInfoDesk
         {
             get; set;
         }

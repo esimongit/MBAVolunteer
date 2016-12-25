@@ -292,23 +292,24 @@ namespace NQN.Bus
             GuidesDM gdm = new GuidesDM();
             SubOffersDM dm = new SubOffersDM();
             GuideSubstituteDM sdm = new GuideSubstituteDM();
-            List<int> Guides = dm.GuidesWithOffers();
+            ObjectList<SubOffersObject> offers = dm.GuidesWithOffers();
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             EmailBusiness eb = new EmailBusiness();
             int cnt = 0;
-            foreach (int GuideID in Guides)
+            foreach (SubOffersObject offer in offers)
             {
-                dList = sdm.FetchRequests(GuideID);
+                if (!offer.NotifySubRequests)
+                    continue;
+                dList = sdm.FetchRequests(offer.GuideID);
                 if (dList.Count == 0)
                     continue;
-                GuidesObject guide = gdm.FetchGuide(GuideID);
-                bool HasInfo = guide.HasRole("Info Desk");
+                
                 string msg = String.Format("Dear {0}<br/><br/> <p>Here is a list of Guides who have outstanding requests for substitutes on shifts in which you have expressed an interest</p><ul>",
-                    guide.FirstName);
+                    offer.FirstName);
                 DateTime odate = DateTime.Today;
                 foreach (GuideSubstituteObject obj in dList)
                 {
-                    if (obj.HasRole("Info Desk") && !HasInfo)
+                    if (obj.Role == "Info Desk" && !offer.HasInfoDesk)
                         continue;
                     string flag = (obj.DateEntered > DateTime.Today.AddDays(-1)) ? " *NEW*" : String.Empty;
                     if (odate != obj.SubDate)
@@ -323,7 +324,7 @@ namespace NQN.Bus
                    
                 }
                 msg += "</ul>. <p>Click on any record in the list to open the Substitute Website for the date listed.</p>";
-                eb.SendMail("substitute@mbayaq.org", guide.Email, "Pending Substitute Requests", msg, true);
+                eb.SendMail("substitute@mbayaq.org", offer.Email, "Pending Substitute Requests", msg, true);
                 cnt++;
             }
             return cnt;

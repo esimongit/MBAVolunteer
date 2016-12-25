@@ -177,7 +177,7 @@ namespace  NQN.DB
             if (ShiftID > 0)
                 qry += " and @ShiftID in (select ShiftID from GuideShift where GuideID = g.GuideID) ";
             if (RoleID > 0)
-                qry += " and g.RoleID = @RoleID ";
+                qry += " and (g.RoleID = @RoleID  or @RoleID in (select RoleID from GuideRole where GuideID = g.GuideID)) ";
             qry += " order by FirstName, LastName ";
             ShiftsDM dm = new ShiftsDM();
             using (SqlConnection conn = ConnectionFactory.getNew())
@@ -569,6 +569,8 @@ namespace  NQN.DB
                 ,DOW = 0
                 ,NotifySubRequests 
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
+                ,HasInfoDesk = case r.RoleName when 'Info Desk' then cast (1 as bit) else (select cast(count(*) as bit)
+                         from GuideRole where RoleName= 'Info Desk') end
 				FROM Guides g join Roles r on g.RoleID = r.RoleID ";
         }
         protected  string ReadAllShiftsCommand()

@@ -34,22 +34,10 @@ namespace  NQN.DB
             return Results;
         }
 
-        public List<int> GuidesWithOffers()
+        public ObjectList<SubOffersObject> GuidesWithOffers()
         {
-            List<int> Results = new List<int>();
-            string qry = @"SELECT distinct o.GuideID from SubOffers o join Guides g on g.GuideID = o.GuideID where g.NotifySubRequests = 1";
-            using (SqlConnection conn = ConnectionFactory.getNew())
-            {
-                SqlCommand myc = new SqlCommand(qry, conn);
-                using (SqlDataReader reader = myc.ExecuteReader())
-                {
-                    while (reader.Read())
-                    {
-                        Results.Add(GetNullableInt32(reader, "GuideID", 0));
-                    }  
-                }
-            }
-            return Results;
+            return Fetch(  @"  where g.NotifySubRequests = 1 and isnull(g.Inactive,0) = 0 ");
+           
         }
    
 		public void Save(SubOffersObject obj)
@@ -118,7 +106,8 @@ namespace  NQN.DB
 			SubOffersObject obj = new SubOffersObject();
 			obj.ShiftID = GetNullableInt32(reader, "ShiftID",0);
 			obj.GuideID = GetNullableInt32(reader, "GuideID",0);
-            obj.GuideName = GetNullableString(reader, "GuideName", String.Empty);
+            obj.FirstName = GetNullableString(reader, "FirstName", String.Empty);
+            obj.LastName = GetNullableString(reader, "LastName", String.Empty);
             obj.Email = GetNullableString(reader, "Email", String.Empty);
             obj.Phone = GetNullableString(reader, "Phone", String.Empty);
             obj.VolID = GetNullableString(reader, "VolID", String.Empty);
@@ -126,6 +115,7 @@ namespace  NQN.DB
             obj.HomeShift = GetNullableString(reader, "HomeShift", String.Empty);
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.NotifySubRequests = GetNullableBoolean(reader, "NotifySubRequests", false);
+            obj.HasInfoDesk = GetNullableBoolean(reader, "HasInfoDesk", false);
             return obj;
 		}
 
@@ -135,14 +125,17 @@ namespace  NQN.DB
 			SELECT
 				o.[ShiftID]
 				,o.[GuideID]
-                ,GuideName =    g.FirstName  + ' ' + g.LastName
+                ,g.FirstName
+                ,g.LastName
                 ,g.Email
                 ,g.Phone
                 ,g.VolID
                 ,g.NotifySubRequests
                 ,HomeShift=dbo.FlattenShortShifts(o.GuideID)
                 ,s.Sequence
-               ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
+                ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
+                ,HasInfoDesk = case r.RoleName when 'Info Desk' then cast (1 as bit) else (select cast(count(*) as bit)
+                         from GuideRole where RoleName= 'Info Desk') end
 				FROM SubOffers o  join Guides g on o.GuideID = g.GuideID join Shifts s on s.ShiftID = o.ShiftID
                  join Roles r on r.RoleID = g.RoleID ";
 		}
