@@ -290,13 +290,13 @@ namespace NQN.Bus
         public int SubNotices(string VolunteerUrl)
         {
             GuidesDM gdm = new GuidesDM();
-            SubOffersDM dm = new SubOffersDM();
+             
             GuideSubstituteDM sdm = new GuideSubstituteDM();
-            ObjectList<SubOffersObject> offers = dm.GuidesWithOffers();
+            ObjectList<GuidesObject> offers = gdm.GuidesWithOffers();
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             EmailBusiness eb = new EmailBusiness();
             int cnt = 0;
-            foreach (SubOffersObject offer in offers)
+            foreach (GuidesObject offer in offers)
             {
                 if (!offer.NotifySubRequests)
                     continue;

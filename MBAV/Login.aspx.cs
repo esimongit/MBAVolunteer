@@ -28,7 +28,8 @@ namespace MBAV
                 FormsAuthentication.SetAuthCookie(guide.VolID, false);
             }
             AnnouncementsDM adm = new AnnouncementsDM();
-            AnnouncementLabel.Text = adm.FetchMain().AnnouncementText;
+            FileBusiness fb = new FileBusiness();
+            AnnouncementLabel.Text = fb.CompletedText(adm.FetchMain().AnnouncementText);
         }
 
         protected void OnLoggingIn(object sender, System.Web.UI.WebControls.LoginCancelEventArgs e)

@@ -34,11 +34,7 @@ namespace  NQN.DB
             return Results;
         }
 
-        public ObjectList<SubOffersObject> GuidesWithOffers()
-        {
-            return Fetch(  @"  where g.NotifySubRequests = 1 and isnull(g.Inactive,0) = 0 ");
-           
-        }
+       
    
 		public void Save(SubOffersObject obj)
 		{

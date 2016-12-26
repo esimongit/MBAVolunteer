@@ -46,6 +46,7 @@ namespace NQN.DB
 		}
 #endregion
 
+        
 		public AnnouncementsObject()
 		{
 			_tablename = "Announcements";

@@ -287,8 +287,13 @@ namespace  NQN.DB
                 }
             }
             return Results;
-        } 
+        }
+        public ObjectList<GuidesObject> GuidesWithOffers()
+        {
+            return Fetch(@"  where g.NotifySubRequests = 1 and isnull(g.Inactive,0) = 0 
+                     and g.GuideID in (select GuideID from SubOffers)");
 
+        }
         public void Update(string FirstName, string LastName, string Phone, string Email, string CalendarType,  string Cell, bool CellPreferred,
             int GuideID, bool MaskPersonalInfo, bool NotifySubRequests)
         {

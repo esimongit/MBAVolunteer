@@ -59,6 +59,7 @@
     <Compile Include="BatchBusiness.cs" />
     <Compile Include="DateRange.cs" />
     <Compile Include="EmailBusiness.cs" />
+    <Compile Include="FileBusiness.cs" />
     <Compile Include="GuidesBusiness.cs" />
     <Compile Include="MandrillBusiness.cs" />
     <Compile Include="MembershipBusiness.cs" />
