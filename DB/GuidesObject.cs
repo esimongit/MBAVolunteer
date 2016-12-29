@@ -405,6 +405,14 @@ namespace NQN.DB
         {
             get; set;
         }
+
+        public int VolInt
+        {
+            get
+            {
+                return Convert.ToInt32(_volid);
+            }
+        }
 		public GuidesObject()
 		{
 			_tablename = "Guides";

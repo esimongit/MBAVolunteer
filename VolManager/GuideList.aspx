@@ -43,7 +43,7 @@
         AlternatingRowStyle-BackColor="White" AllowSorting="True"   OnPageSizeChanged="DoSearch" >
         <Columns>
          
-            <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolID" />
+            <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolInt" />
             <asp:BoundField DataField="FirstName" HeaderText="First Name" 
                 SortExpression="FirstName" />
             <asp:BoundField DataField="LastName" HeaderText="Last Name" 

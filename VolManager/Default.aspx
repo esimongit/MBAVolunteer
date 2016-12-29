@@ -11,7 +11,7 @@
          <asp:Label ID="Label1" CssClass="formtext" runat="server" ></asp:Label> <br />
    
     </p>
-    <asp:GridView DataSourceID="ObjectDataSource1" runat="server" AutoGenerateColumns="False" Caption="No Subs Today" >
+   <%-- <asp:GridView DataSourceID="ObjectDataSource1" runat="server" AutoGenerateColumns="False" Caption="No Subs Today" >
         <Columns>
             <asp:BoundField DataField="ShiftName" HeaderText="Shift"   /> 
             <asp:BoundField DataField="GuideName" HeaderText="Guide" ReadOnly="True"  />
@@ -22,14 +22,18 @@
             <asp:BoundField DataField="Phone" HeaderText="Phone"  />
         </Columns>
         <EmptyDataTemplate>No Missing Substitutes</EmptyDataTemplate>
-    </asp:GridView>
-    <asp:GridView DataSourceID="ObjectDataSource2" runat="server" AutoGenerateColumns="false" Caption="Today's Shifts">
+    </asp:GridView>--%>
+    <cc2:NQNGridView id="GridView2" DataSourceID="ObjectDataSource2" runat="server" AutoGenerateColumns="false" Caption="<b>Today's Shifts</b> (Click for details)" 
+         DataKeyNames="ShiftID,ShiftDate" OnSelectedIndexChanged="ShiftSelected" Selectable="true">
         <Columns>
             <asp:BoundField DataField="ShiftName" HeaderText="Shift" />
             <asp:BoundField DataField="Captains" HeaderText="Captains" />
             <asp:BoundField DataField="Info" HeaderText="Info Desk" />
+             <asp:BoundField DataField="BaseCnt" HeaderText="Base" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+             <asp:BoundField DataField="Substitutes" HeaderText="Subs" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+             <asp:BoundField DataField="Dropins" HeaderText="Drop-ins" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
             <asp:BoundField DataField="Total" HeaderText="Planned Number" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
         </Columns>
 
-    </asp:GridView>
+    </cc2:NQNGridView>
 </asp:Content>

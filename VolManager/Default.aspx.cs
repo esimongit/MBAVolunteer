@@ -15,5 +15,10 @@ namespace VolManager
            
             Label1.Text = String.Format("<b> Current Volunteer IDs On Line:</b> {0} ",   mb.GetCurrentUsers("MBAV"));
         }
+        protected void ShiftSelected(object sender, EventArgs e)
+        {
+            DataKey dk = GridView2.SelectedDataKey;
+            Response.Redirect(String.Format("~/ShiftDetail.aspx?ShiftID={0}&ShiftDate={1}", dk.Values[0].ToString(), ((DateTime)dk.Values[1]).ToShortDateString()));
+        }
     }
 }

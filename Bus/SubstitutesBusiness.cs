@@ -286,7 +286,7 @@ namespace NQN.Bus
 
         }
 
-        //Nightly notifications of who needs a sub
+        //Nightly notifications of who needs a sub.  Only send the mail if there is at least one new request.
         public int SubNotices(string VolunteerUrl)
         {
             GuidesDM gdm = new GuidesDM();
@@ -303,10 +303,11 @@ namespace NQN.Bus
                 dList = sdm.FetchRequests(offer.GuideID);
                 if (dList.Count == 0)
                     continue;
-                
+
                 string msg = String.Format("Dear {0}<br/><br/> <p>Here is a list of Guides who have outstanding requests for substitutes on shifts in which you have expressed an interest</p><ul>",
                     offer.FirstName);
                 DateTime odate = DateTime.Today;
+               // bool doPrint = false;
                 foreach (GuideSubstituteObject obj in dList)
                 {
                     if (obj.Role == "Info Desk" && !offer.HasInfoDesk)
@@ -317,15 +318,21 @@ namespace NQN.Bus
                         odate = obj.SubDate;
                         msg += "<br />";
                     }
-                        string link = String.Format("{0}/SubRequest.aspx?dt={1}",VolunteerUrl, obj.SubDate);
+                    string link = String.Format("{0}/SubRequest.aspx?dt={1}", VolunteerUrl, obj.SubDate);
                     msg += String.Format("<li><a href='{0}'>{1}: {2} ({3}) needs a substitute for shift {4} {5}.</a></li>",
                         link, obj.SubDate.ToLongDateString(),
                         obj.GuideName, obj.Role, obj.Sequence, flag);
-                   
+                    //if (flag == "*NEW*")
+                    //    doPrint = true;
+
+
                 }
-                msg += "</ul>. <p>Click on any record in the list to open the Substitute Website for the date listed.</p>";
-                eb.SendMail("substitute@mbayaq.org", offer.Email, "Pending Substitute Requests", msg, true);
-                cnt++;
+                //if (doPrint)
+                //{
+                    msg += "</ul>. <p>Click on any record in the list to open the Substitute Website for the date listed.</p>";
+                    eb.SendMail("substitute@mbayaq.org", offer.Email, "Pending Substitute Requests", msg, true);
+                    cnt++;
+                //}
             }
             return cnt;
         }

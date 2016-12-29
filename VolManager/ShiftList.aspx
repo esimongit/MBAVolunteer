@@ -121,7 +121,7 @@
                  PageSize="100" Selectable="true" OnSelectedIndexChanged="GuideSelected" Caption="<b>Current Guides</b> - click to edit"
                  DataKeyNames="GuideID">
                 <Columns>
-                    <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolID" />
+                    <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolInt" />
                     <asp:BoundField DataField="FirstName" HeaderText="First Name" SortExpression="FirstName" />
                     <asp:BoundField DataField="LastName" HeaderText="Last Name" SortExpression="LastName" />
                     <asp:BoundField DataField="Phone" HeaderText="Phone" SortExpression="Phone" />

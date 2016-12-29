@@ -54,7 +54,7 @@
                  <asp:CommandField ButtonType="Image" CancelImageUrl="~/Images/cancel.gif"  ShowEditButton="true"
                      EditImageUrl="~/Images/iedit.gif" UpdateImageUrl="~/Images/save.gif" />
                  
-                 <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolID"  ReadOnly="true"/>
+                 <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolInt"  ReadOnly="true"/>
             <asp:BoundField DataField="FirstName" HeaderText="First Name"  ReadOnly="true"
                 SortExpression="FirstName" />
             <asp:BoundField DataField="LastName" HeaderText="Last Name"  ReadOnly="true"
