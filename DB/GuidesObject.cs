@@ -83,6 +83,13 @@ namespace NQN.DB
                 _cellpreferred = value;
             }
         }
+        public string PreferredPhone
+        {
+            get
+            {
+                return _cellpreferred ? _cell : _phone;
+            }
+        }
         private string _email = String.Empty;
 		public string Email 
 		{

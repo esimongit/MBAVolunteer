@@ -105,7 +105,7 @@ namespace  NQN.DB
             obj.FirstName = GetNullableString(reader, "FirstName", String.Empty);
             obj.LastName = GetNullableString(reader, "LastName", String.Empty);
             obj.Email = GetNullableString(reader, "Email", String.Empty);
-            obj.Phone = GetNullableString(reader, "Phone", String.Empty);
+            obj.Phone = GetNullableString(reader, "Phone", String.Empty);         
             obj.VolID = GetNullableString(reader, "VolID", String.Empty);
             obj.Sequence = GetNullableInt32(reader, "Sequence", 0);
             obj.HomeShift = GetNullableString(reader, "HomeShift", String.Empty);
@@ -124,7 +124,7 @@ namespace  NQN.DB
                 ,g.FirstName
                 ,g.LastName
                 ,g.Email
-                ,g.Phone
+                 ,Phone = case g.CellPreferred WHEN 1 THEN g.Cell ELSE g.Phone END
                 ,g.VolID
                 ,g.NotifySubRequests
                 ,HomeShift=dbo.FlattenShortShifts(o.GuideID)

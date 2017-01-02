@@ -30,7 +30,8 @@
             <asp:BoundField DataField="Captains" HeaderText="Captains" />
             <asp:BoundField DataField="Info" HeaderText="Info Desk" />
              <asp:BoundField DataField="BaseCnt" HeaderText="Base" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
-             <asp:BoundField DataField="Substitutes" HeaderText="Subs" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+             <asp:BoundField DataField="SubRequests" HeaderText="Requests" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+              <asp:BoundField DataField="Substitutes" HeaderText="Subs" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
              <asp:BoundField DataField="Dropins" HeaderText="Drop-ins" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
             <asp:BoundField DataField="Total" HeaderText="Planned Number" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
         </Columns>

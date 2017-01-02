@@ -199,11 +199,15 @@ namespace NQN.DB
         { get; set; }
         public int Total
         { get
-            { return BaseCnt + Substitutes + Dropins; }
+            { return BaseCnt - SubRequests + Substitutes + Dropins; }
         }
         public int BaseCnt
         {
             get;set;
+        }
+        public int SubRequests
+        {
+            get; set;
         }
         public int Substitutes
         { get; set; }

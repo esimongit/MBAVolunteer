@@ -572,6 +572,7 @@ namespace  NQN.DB
                 ,[Captains]  
                 ,[Info]  
                 ,[BaseCnt]
+                ,[SubRequests]
                 ,[Substitutes]
                 ,[Dropins]
                 from dbo.ShiftSummary (@StartDate, @EndDate)";
@@ -596,6 +597,7 @@ namespace  NQN.DB
                         obj.Captains = GetNullableString(reader, "Captains", String.Empty);
                         obj.Info = GetNullableString(reader, "Info", String.Empty);
                         obj.BaseCnt = GetNullableInt32(reader, "BaseCnt", 0);
+                        obj.SubRequests = GetNullableInt32(reader, "SubRequests", 0);
                         obj.Substitutes = GetNullableInt32(reader, "Substitutes", 0);
                         obj.Dropins = GetNullableInt32(reader, "Dropins", 0);
                         Results.Add(obj);

@@ -45,7 +45,7 @@
             <asp:TemplateField HeaderText="Phone" SortExpression="Phone">
                 
                 <ItemTemplate>
-                    <asp:Label ID="Label1" runat="server" Text='<%# Bind("Phone") %>' Visible='<%#Eval("ShowContactInfo")%>'></asp:Label>
+                    <asp:Label ID="Label1" runat="server" Text='<%# Bind("PreferredPhone") %>' Visible='<%#Eval("ShowContactInfo")%>'></asp:Label>
                 </ItemTemplate>
             </asp:TemplateField>
             <asp:TemplateField HeaderText="Email" SortExpression="Email">
