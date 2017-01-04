@@ -126,20 +126,20 @@ namespace NQN.Bus
         // Staff changes Guide Password via reset
         public static string VolChangePassword(string UserName)
         {
-             
-            string pw = String.Empty; 
-            Membership.ApplicationName = ConfigurationManager.AppSettings["VolAccessApp"];
+
+            string pw = String.Empty;
+            Membership.ApplicationName = "MBAV";
             MembershipUserCollection col = Membership.FindUsersByName(UserName);
             if (col.Count > 0)
             {
                 MembershipUser u = col[UserName];
                 if (u.IsLockedOut) u.UnlockUser();
               
-                string oldpw = u.ResetPassword();
-                u.ChangePassword(oldpw, pw);
+                pw = u.ResetPassword();
+                
                 PasswordRecoveryDM dm = new PasswordRecoveryDM();
                 NQNMembershipObject mobj = new NQNMembershipObject(UserName, u.Email, pw);
-                mobj.VolAccessUrl = StaticFieldsObject.StaticValue("VolAccessUrl");
+                mobj.VolAccessUrl = StaticFieldsObject.StaticValue("GuideURL");
                 PasswordRecoveryObject pwobj = dm.FetchUser(UserName, Membership.ApplicationName);
                 if (pwobj == null)
                     pwobj = new PasswordRecoveryObject(Membership.ApplicationName);
