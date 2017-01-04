@@ -52,7 +52,7 @@
                 SortExpression="Sequence" />
            <asp:BoundField DataField="RoleName" HeaderText="Role" 
                 SortExpression="RoleName" />
-            <asp:BoundField DataField="Phone" HeaderText="Phone" SortExpression="Phone" />
+            <asp:BoundField DataField="PreferredPhone" HeaderText="Phone" SortExpression="PreferredPhone" />
             <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
             <asp:CheckBoxField DataField="Inactive" HeaderText="Inactive" 
                 SortExpression="Inactive" />

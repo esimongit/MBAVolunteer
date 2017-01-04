@@ -80,32 +80,39 @@ namespace NQN.Bus
                 return String.Empty;
             }
             
-            //string password = Membership.GeneratePassword(7, 1);
+            string password = Membership.GeneratePassword(7, 1);
             GuidesDM gdm = new GuidesDM();
-            GuidesObject guide = gdm.FetchGuide(UserName);
-            if (guide == null)
-                return String.Empty;
-            string password = guide.FirstName.Substring(0, 1).ToLower() + guide.LastName.ToLower();
+           
+          
             string res = String.Empty;
              MembershipUser u = Membership.CreateUser(UserName, password, Email);
-             
-            //if (u != null)
-            //{
-            //    PasswordRecoveryDM dm = new PasswordRecoveryDM();
-            //    NQNMembershipObject mobj = new NQNMembershipObject(UserName, Email, password);
-            //    mobj.VolAccessUrl = StaticFieldsObject.StaticValue("VolAccessUrl"); 
-            //    PasswordRecoveryObject pwobj = new PasswordRecoveryObject();
-                
-            //    pwobj.username = UserName;
-            //    pwobj.tstamp = DateTime.Now;
-            //    dm.Save(pwobj);
-            //    mobj.PRKey = pwobj.ID;
-            //    EmailBusiness eb = new EmailBusiness();
-            //    MailTextDM mtdm = new MailTextDM();
-            //    MailTextObject mtobj = mtdm.FetchForSymbol("VolAccessLogin");
-            //    if (mtobj != null && mtobj.Enabled)
-            //        eb.SendMail(mtobj.MailFrom, Email, mtobj.Subject, mtobj.CompletedText(mobj), mtobj.IsHtml);
-            //}
+            
+            if (u != null)
+            {
+                GuidesObject guide = gdm.FetchGuide(UserName);
+                if (guide == null)
+                {
+                    Membership.ApplicationName = "VolManager";
+                    throw new Exception("Guide not found");
+                }
+                PasswordRecoveryDM dm = new PasswordRecoveryDM();
+                NQNMembershipObject mobj = new NQNMembershipObject(UserName, Email, password);
+                mobj.FirstName = guide.FirstName;
+                mobj.LastName = guide.LastName;
+
+                mobj.VolAccessUrl = StaticFieldsObject.StaticValue("GuideURL");
+                PasswordRecoveryObject pwobj = new PasswordRecoveryObject(Membership.ApplicationName);
+
+                pwobj.username = UserName;
+                pwobj.tstamp = DateTime.Now;
+                dm.Save(pwobj);
+                mobj.PRKey = pwobj.ID;
+                EmailBusiness eb = new EmailBusiness();
+                MailTextDM mtdm = new MailTextDM();
+                MailTextObject mtobj = mtdm.FetchForSymbol("VolAccessLogin");
+                if (mtobj != null && mtobj.Enabled)
+                    eb.SendMail(mtobj.MailFrom, Email, mtobj.Subject, mtobj.CompletedText(mobj), mtobj.IsHtml);
+            }
 
             Membership.ApplicationName = "VolManager";
 
@@ -114,26 +121,28 @@ namespace NQN.Bus
 
        
 
-        // Volunteer pw requests only require Email = UserName. Don't return generated pw
-        // If Reset record is found, use it.
-        public static void VolUserChangePassword(string UserName, string ApplicationName)
+       
+           
+        // Staff changes Guide Password via reset
+        public static string VolChangePassword(string UserName)
         {
-
-            Membership.ApplicationName = ApplicationName;
+             
+            string pw = String.Empty; 
+            Membership.ApplicationName = ConfigurationManager.AppSettings["VolAccessApp"];
             MembershipUserCollection col = Membership.FindUsersByName(UserName);
             if (col.Count > 0)
             {
                 MembershipUser u = col[UserName];
                 if (u.IsLockedOut) u.UnlockUser();
-
+              
+                string oldpw = u.ResetPassword();
+                u.ChangePassword(oldpw, pw);
                 PasswordRecoveryDM dm = new PasswordRecoveryDM();
-                NQNMembershipObject mobj = new NQNMembershipObject(u.Email);
+                NQNMembershipObject mobj = new NQNMembershipObject(UserName, u.Email, pw);
                 mobj.VolAccessUrl = StaticFieldsObject.StaticValue("VolAccessUrl");
-
-                PasswordRecoveryObject pwobj = dm.FetchUser(UserName, ApplicationName);
-       
+                PasswordRecoveryObject pwobj = dm.FetchUser(UserName, Membership.ApplicationName);
                 if (pwobj == null)
-                    pwobj = new PasswordRecoveryObject(ApplicationName);
+                    pwobj = new PasswordRecoveryObject(Membership.ApplicationName);
                 // If the timestamp is within the last day, keep it
                 if (pwobj.tstamp.Date < DateTime.Today)
                 {
@@ -146,62 +155,11 @@ namespace NQN.Bus
                 {
                     mobj.PRKey = pwobj.ID;
                 }
-          
                 EmailBusiness eb = new EmailBusiness();
                 MailTextDM mtdm = new MailTextDM();
                 MailTextObject mtobj = mtdm.FetchForSymbol("VolAccessReset");
                 if (mtobj != null && mtobj.Enabled)
                     eb.SendMail(mtobj.MailFrom, mobj.Email, mtobj.Subject, mtobj.CompletedText(mobj), mtobj.IsHtml);
-
-            }
-            else
-            {
-               
-                throw new Exception("User Name not Found");
-            }
-           
-        }
-           
-        public static string VolChangePassword(string UserName)
-        {
-             
-            string pw = String.Empty;
-            GuidesDM dm = new GuidesDM();
-            Membership.ApplicationName = ConfigurationManager.AppSettings["VolAccessApp"];
-            MembershipUserCollection col = Membership.FindUsersByName(UserName);
-            if (col.Count > 0)
-            {
-                MembershipUser u = col[UserName];
-                if (u.IsLockedOut) u.UnlockUser();
-                GuidesObject guide = dm.FetchGuide(UserName);
-
-                pw = guide.FirstName.Substring(0, 1).ToLower() + guide.LastName.ToLower();
-                
-                string oldpw = u.ResetPassword();
-                u.ChangePassword(oldpw, pw);
-                //PasswordRecoveryDM dm = new PasswordRecoveryDM();
-                //NQNMembershipObject mobj = new NQNMembershipObject(UserName, u.Email, pw);
-                //mobj.VolAccessUrl = StaticFieldsObject.StaticValue("VolAccessUrl");
-                //PasswordRecoveryObject pwobj = dm.FetchUser(UserName, Membership.ApplicationName);
-                //if (pwobj == null)
-                //    pwobj = new PasswordRecoveryObject(Membership.ApplicationName);
-                //// If the timestamp is within the last day, keep it
-                //if (pwobj.tstamp.Date < DateTime.Today)
-                //{
-                //    pwobj.ID = mobj.PRKey;
-                //    pwobj.tstamp = DateTime.Now;
-                //    pwobj.username = UserName;
-                //    dm.Save(pwobj);
-                //}
-                //else
-                //{
-                //    mobj.PRKey = pwobj.ID;
-                //}
-                //EmailBusiness eb = new EmailBusiness();
-                //MailTextDM mtdm = new MailTextDM();
-                //MailTextObject mtobj = mtdm.FetchForSymbol("VolAccessReset");
-                //if (mtobj != null && mtobj.Enabled)
-                //    eb.SendMail(mtobj.MailFrom, mobj.Email, mtobj.Subject, mtobj.CompletedText(mobj), mtobj.IsHtml);
 
             }
             else
@@ -212,6 +170,8 @@ namespace NQN.Bus
             Membership.ApplicationName = "VolManager";
             return pw;
         }
+
+        // Change password for staff person from Manage Users screen
         public string ChangePassword(string UserName)
         {
             MembershipUserCollection col = Membership.FindUsersByName(UserName);
@@ -221,9 +181,13 @@ namespace NQN.Bus
                 if (u.IsLockedOut) u.UnlockUser();
                 string  pw = u.ResetPassword();
                 NQNMembershipObject mobj = new NQNMembershipObject(UserName, u.Email, pw);
-                mobj.VolAccessUrl = "http://" + HttpContext.Current.Request.Url.DnsSafeHost;
-                if (HttpContext.Current.Request.Url.Port != 80)
-                    mobj.VolAccessUrl += ":" + HttpContext.Current.Request.Url.Port.ToString(); 
+                int Port = HttpContext.Current.Request.Url.Port;
+                if (Port == 80)
+                    mobj.VolAccessUrl = "http://" + mobj.VolAccessUrl;
+                else if (Port == 443)
+                    mobj.VolAccessUrl = "https://" + mobj.VolAccessUrl;
+                else
+                    mobj.VolAccessUrl = "http://" + mobj.VolAccessUrl + ":" + HttpContext.Current.Request.Url.Port.ToString();
                 PasswordRecoveryDM dm = new PasswordRecoveryDM();
                 PasswordRecoveryObject pwobj = dm.FetchUser(UserName, Membership.ApplicationName);
                 if (pwobj == null)
@@ -259,6 +223,7 @@ namespace NQN.Bus
             return String.Empty;
         }
 
+        // Request a new password from login screen.  Staff or guides
         public void ResetPassword(string uname, string ApplicationName)
         {
             string pw = String.Empty;
@@ -274,15 +239,21 @@ namespace NQN.Bus
             EmailBusiness eb = new EmailBusiness();
             PasswordRecoveryDM dm = new PasswordRecoveryDM();
             NQNMembershipObject mobj = new NQNMembershipObject(u.Email, pw);
-            //MailTextDM mtm = new MailTextDM();
-            //MailTextObject mtobj = mtm.FetchForSymbol("PasswordReset");
-            mobj.VolAccessUrl = "http://" + HttpContext.Current.Request.Url.DnsSafeHost;
-            if (HttpContext.Current.Request.Url.Port != 80)
-                mobj.VolAccessUrl += ":" + HttpContext.Current.Request.Url.Port.ToString();
+            MailTextDM mtm = new MailTextDM();
+            MailTextObject mtobj = mtm.FetchForSymbol("PasswordReset");
+            
+            mobj.VolAccessUrl =   HttpContext.Current.Request.Url.DnsSafeHost;
+            int Port = HttpContext.Current.Request.Url.Port;
+            if (Port == 80)
+                mobj.VolAccessUrl = "http://" + mobj.VolAccessUrl;
+            else if (Port == 443)
+                mobj.VolAccessUrl = "https://" + mobj.VolAccessUrl;
+            else
+                mobj.VolAccessUrl = "http://" + mobj.VolAccessUrl +":"+ HttpContext.Current.Request.Url.Port.ToString();
 
             PasswordRecoveryObject pwobj = dm.FetchUser(uname, ApplicationName);
             if (pwobj == null)
-                pwobj = new PasswordRecoveryObject();
+                pwobj = new PasswordRecoveryObject(ApplicationName);
             // If the timestamp is within the last day, keep it
             if (pwobj.tstamp.Date < DateTime.Today)
             {

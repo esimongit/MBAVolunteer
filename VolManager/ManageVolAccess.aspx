@@ -26,7 +26,7 @@ Title="Manage Volunteer Logins" %>
             <td>
                 <asp:Label ID="SearchLabel" runat="server"  ForeColor="White" Font-Bold="True" Text="Search Criteria" ></asp:Label></td><td colspan="2">
                <asp:Button ID="Button2" runat="server" Text="Add new" OnClick="AddButtonClick"/> 
-                <asp:Button ID="Button1" runat="server" Text="Generate All" OnClick="GenerateAll"/> 
+               <%-- <asp:Button ID="Button1" runat="server" Text="Generate All" OnClick="GenerateAll"/> --%>
                </td></tr>
                 
     <tr><td style="height: 51px">

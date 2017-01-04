@@ -37,13 +37,13 @@ namespace VolManager
         protected void DoDelete(object sender, EventArgs e)
         {
             BatchBusiness bb = new BatchBusiness();
-            InfoMessage.Set(String.Format("{0} Records Deleted successfully.", bb.Inactive()));
+            InfoMessage.Set(String.Format("{0} Records Deleted successfully.", bb.Delete()));
             Repeater1.DataBind();
         }
         protected void DoInactive(object sender, EventArgs e)
         {
             BatchBusiness bb = new BatchBusiness();
-            InfoMessage.Set(String.Format("{0} Records Deleted successfully.", bb.Delete()));
+            InfoMessage.Set(String.Format("{0} Records made inactive.", bb.Inactive()));
             Repeater1.DataBind();
         }
     }

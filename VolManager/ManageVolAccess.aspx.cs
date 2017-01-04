@@ -47,7 +47,7 @@ namespace VolManager
             } 
             else 
             {
-                InfoMessage.Set("Password changed to " + pw);
+                InfoMessage.Set("Password changed to: " + pw);
             }
         }
         protected void OnDeleted(object sender, ObjectDataSourceStatusEventArgs e)
@@ -88,31 +88,31 @@ namespace VolManager
         {
             MultiView1.SetActiveView(View1);
         }
-        protected void GenerateAll(object sender, EventArgs e)
-        {
-            GuidesDM dm = new GuidesDM();
-            ObjectList<GuidesObject> dList = dm.FetchMissingLogins();
-            MembershipBusiness mb = new MembershipBusiness();
-            int cnt = 0;
-            string err = String.Empty;
-            foreach (GuidesObject obj in dList)
-            {
-                if (obj.Email != null  )
-                {
-                    try
-                    {
-                         mb.InsertVols(obj.VolID, obj.Email);
-                        cnt++;
-                    }
-                    catch (Exception ex)
-                    {
-                        err += String.Format("<br />{0} {1}", ex.Message, obj.Email);
-                    }
-                }
-            }
-            if (err != String.Empty)
-                ErrorMessage.Set(err);
-            InfoMessage.Set(String.Format("{0} Logins created", cnt));
-        }
+        //protected void GenerateAll(object sender, EventArgs e)
+        //{
+        //    GuidesDM dm = new GuidesDM();
+        //    ObjectList<GuidesObject> dList = dm.FetchMissingLogins();
+        //    MembershipBusiness mb = new MembershipBusiness();
+        //    int cnt = 0;
+        //    string err = String.Empty;
+        //    foreach (GuidesObject obj in dList)
+        //    {
+        //        if (obj.Email != null  )
+        //        {
+        //            try
+        //            {
+        //                 mb.InsertVols(obj.VolID, obj.Email);
+        //                cnt++;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                err += String.Format("<br />{0} {1}", ex.Message, obj.Email);
+        //            }
+        //        }
+        //    }
+        //    if (err != String.Empty)
+        //        ErrorMessage.Set(err);
+        //    InfoMessage.Set(String.Format("{0} Logins created", cnt));
+        //}
     }
 }

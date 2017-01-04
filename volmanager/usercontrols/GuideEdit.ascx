@@ -117,8 +117,10 @@
                  Has Login:</td><td>
                  <asp:CheckBox ID="CheckBox1" runat="server" 
                      Checked='<%# Eval("HasLogin") %>' />
-                     <asp:Button ID="AddLoginButton" runat="server" Text="Setup Login" Visible = '<%#Eval("NeedsLogin") %>'  OnClick="AddLogin" />
-                 <asp:Button ID="ChangePWButton" runat="server" Text="ResetPW" Visible = '<%#Eval("HasLogin") %>'  OnClick="ResetPW" />
+                     <asp:Button ID="AddLoginButton" runat="server" Text="Setup Login" Visible = '<%#Eval("NeedsLogin") %>'  OnClick="AddLogin"
+                          ToolTip="Clicking this button will generate an Email message to the Guide to allow them to set a new password." />
+                 <asp:Button ID="ChangePWButton" runat="server" Text="ResetPW" Visible = '<%#Eval("HasLogin") %>'  OnClick="ResetPW" 
+                      ToolTip="Clicking this button will generate an Email message to the Guide to allow them to set a new password." />
                 
                  </td></tr>
                <tr><td class="formlabel">

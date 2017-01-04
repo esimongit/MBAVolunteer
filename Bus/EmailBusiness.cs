@@ -50,7 +50,14 @@ namespace NQN.Bus
                 Please set a password to begin using the login:</p><ul>", Program);
  
             }
-            string server = "http://" + HttpContext.Current.Request.Url.DnsSafeHost;
+            string server = HttpContext.Current.Request.Url.DnsSafeHost;
+            int Port = HttpContext.Current.Request.Url.Port;
+            if (Port == 80)
+                server = "http://" + server;
+            else if (Port == 443)
+                server = "https://" + server;
+            else
+                server = "http://" + server + ":" + HttpContext.Current.Request.Url.Port.ToString();
 
             msg += String.Format(@"<li>URL:   <a href='{0}'>{0}</a></li>", server);
             msg += String.Format(@"<li>   User Name: {0}</li>",loginid) ;

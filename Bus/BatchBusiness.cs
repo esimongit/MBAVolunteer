@@ -108,12 +108,13 @@ namespace NQN.Bus
             int cnt = 0;
             GuidesDM gdm = new GuidesDM();
             BatchImportDM dm = new BatchImportDM();
+            MembershipBusiness mb = new MembershipBusiness();
             foreach (BatchImportObject import in dm.FetchDecoded())
             {
                 GuidesObject guide = new GuidesObject();
                 if (import.ImportStatus == (int)ImportStatusValues.NewRecord)
                 {
-                    cnt++;
+                  
                     guide.VolID = import.ID;
                     guide.FirstName = import.First;
                     guide.LastName = import.Last;
@@ -126,9 +127,19 @@ namespace NQN.Bus
                     guide.ShiftID = import.ShiftID;
                     guide.UpdateBy = UserSecurity.GetUserName();
                     guide.LastUpdate = DateTime.Now;
-                    gdm.Save(guide);
-                    
-                    dm.Delete(import.ImportID);
+                   
+                    // Only count Success
+                    try
+                    {
+                        cnt++;
+                        gdm.Save(guide);
+                        mb.InsertVols(import.ID, import.Email);
+                        dm.Delete(import.ImportID);
+                    }
+                    catch  
+                    { 
+                    }
+                   
                 }
                 if (import.ImportStatus == (int)ImportStatusValues.MatchFound)
                 {
@@ -188,6 +199,7 @@ namespace NQN.Bus
                         cnt++;
                         sdm.DeleteAllForGuide(guide.GuideID);
                         ddm.Delete(guide.GuideID);
+                        guide.Inactive = true;
                     }
                 }
             }

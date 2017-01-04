@@ -21,7 +21,8 @@ namespace NQN.Bus
         {
             ShiftsDM dm = new ShiftsDM();
             ShiftsObject obj = dm.FetchShift(ShiftID);
-            obj.ShiftDate = dt;
+            if (obj != null)
+                obj.ShiftDate = dt;
             return obj;
         }
         protected int ShiftSort(ShiftsObject x, ShiftsObject y)

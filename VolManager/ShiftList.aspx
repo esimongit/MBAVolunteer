@@ -124,7 +124,7 @@
                     <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolInt" />
                     <asp:BoundField DataField="FirstName" HeaderText="First Name" SortExpression="FirstName" />
                     <asp:BoundField DataField="LastName" HeaderText="Last Name" SortExpression="LastName" />
-                    <asp:BoundField DataField="Phone" HeaderText="Phone" SortExpression="Phone" />
+                    <asp:BoundField DataField="PreferredPhone" HeaderText="Phone" SortExpression="PreferredPhone" />
                     <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email" />
                     <asp:BoundField DataField="RoleName" HeaderText="Role" SortExpression="RoleName" />
                     <asp:BoundField DataField="AltRoleName" HeaderText="Alt Role" SortExpression="AltRoleName" />

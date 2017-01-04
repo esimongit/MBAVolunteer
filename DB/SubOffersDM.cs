@@ -74,7 +74,7 @@ namespace  NQN.DB
             return true;
         }
         
-		public void Delete(int ShiftID, int GuideID)
+		public void Delete(int GuideID, int ShiftID)
 		{
             string qry = "delete from SubOffers where ShiftID = @ShiftID and GuideID = @GuideID ";
 			 using (SqlConnection conn = ConnectionFactory.getNew())

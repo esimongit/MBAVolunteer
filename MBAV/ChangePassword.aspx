@@ -52,14 +52,15 @@
                 </fieldset>
                 <div class="row">
        
-                  <div class="col-md-6"  style="padding-top:10px">
-                    <asp:Button ID="CancelPushButton" runat="server" CausesValidation="False"   CssClass="btn btn-info" Text="Return to Calendar" OnClick="ClosePage"/> 
-                    </div>
                     <div class="col-md-6"  style="padding-top:10px">
                     <asp:Button ID="ChangePasswordPushButton" runat="server" CommandName="ChangePassword" CssClass="btn btn-success"   Text="Change Password" 
                         />
          
                 </div>
+                    
+                  <div class="col-md-6"  style="padding-top:10px">
+                    <asp:Button ID="CancelPushButton" runat="server" CausesValidation="False"   CssClass="btn btn-info" Text="Return to Calendar" OnClick="ClosePage"/> 
+                    </div>
             </div>
         </ChangePasswordTemplate>
     </asp:ChangePassword>

@@ -66,7 +66,7 @@ namespace MBAV
             string name = LoginUser.UserName;
             if (string.IsNullOrEmpty(name))
             {
-                AlertMsg.Show("You must enter a known Username to request a password reset.");
+                AlertMsg.Show("You must enter a valid Guide ID to request a password reset.");
             }
             MembershipBusiness mb = new MembershipBusiness();
             try

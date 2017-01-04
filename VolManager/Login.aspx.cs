@@ -36,14 +36,7 @@ namespace VolManager
                 FailureText.Text = "Login failed. Please check your user name and password and try again.";
             }
         }
-        protected void SetPW(object sender, EventArgs e)
-        {
-            string name = LoginUser.UserName;
-            MembershipBusiness mb = new MembershipBusiness();
-            string pw = mb.ChangePassword(name);
-            TextBox PWText = (TextBox) LoginUser.FindControl("Password");
-            PWText.Text = pw;
-        }
+        
         protected void ResetPW(object sender, EventArgs e)
         {
             string name = LoginUser.UserName;
