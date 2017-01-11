@@ -33,7 +33,7 @@
        </td><td >
        
          <asp:Button ID="AddButton" runat="server" Text="Add New Guide" OnClick="ToView3" />  &nbsp;&nbsp;
-          <asp:CheckBox ID="SearchInactiveCheckBox" Text="Search Inactive" runat="server" />
+          <asp:CheckBox ID="SearchInactiveCheckBox" Text="Search Inactive" runat="server" AutoPostBack="true" />
            </td> 
         </tr>
     </table>

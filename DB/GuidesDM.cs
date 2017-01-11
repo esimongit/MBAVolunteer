@@ -30,6 +30,16 @@ namespace  NQN.DB
         public bool CheckVolID(GuidesObject obj)
         {
             bool ret = false;
+            if (String.IsNullOrEmpty(obj.VolID))
+                return false;
+            try
+            {
+                int volid = Convert.ToInt32(obj.VolID);
+            }
+            catch
+            {
+                return true;
+            }
             string qry = "select cast(1 as bit) from Guides where  VolID = @VolID and GuideID != @GuideID";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -172,7 +182,7 @@ namespace  NQN.DB
             if (Pattern != String.Empty)
             {
                 Wildcard = "%"+ Pattern + "%";
-                qry += " and VolID = @Pattern or (FirstName like @Wildcard or LastName like @Wildcard) ";
+                qry += " and (VolID = @Pattern or FirstName like @Wildcard or LastName like @Wildcard) ";
             }
             if (ShiftID > 0)
                 qry += " and @ShiftID in (select ShiftID from GuideShift where GuideID = g.GuideID) ";
@@ -319,7 +329,7 @@ namespace  NQN.DB
 		public void Update(GuidesObject obj)
 		{
             if (CheckVolID(obj))
-                throw new Exception("An active Guide with this ID Number already exists");
+                throw new Exception("This Guide ID has the wrong format or an active Guide with this ID Number already exists");
             obj.Phone = GuidesObject.Standardize(obj.Phone);
             obj.Cell = GuidesObject.Standardize(obj.Cell);
             obj.PhoneDigits = GuidesObject.DigitsOnly(obj.CellPreferred ? obj.Cell : obj.Phone);
@@ -373,7 +383,7 @@ namespace  NQN.DB
 		public void Save(GuidesObject obj)
 		{
             if (CheckVolID(obj))
-                throw new Exception("An active Guide with this ID Number already exists");
+                throw new Exception("This Guide ID has the wrong format or an active Guide with this ID Number already exists");
             obj.Phone = GuidesObject.Standardize(obj.Phone);
             obj.Cell = GuidesObject.Standardize(obj.Cell);
             obj.PhoneDigits = GuidesObject.DigitsOnly(obj.CellPreferred ? obj.Cell : obj.Phone);

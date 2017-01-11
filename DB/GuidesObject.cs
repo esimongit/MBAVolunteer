@@ -417,6 +417,8 @@ namespace NQN.DB
         {
             get
             {
+                if (String.IsNullOrEmpty(_volid))
+                    return 0;
                 return Convert.ToInt32(_volid);
             }
         }

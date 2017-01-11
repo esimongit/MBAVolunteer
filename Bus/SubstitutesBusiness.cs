@@ -318,7 +318,7 @@ namespace NQN.Bus
                         odate = obj.SubDate;
                         msg += "<br />";
                     }
-                    string link = String.Format("{0}/SubRequest.aspx?dt={1}", VolunteerUrl, obj.SubDate);
+                    string link = String.Format("{0}/SubRequest.aspx?dt={1}", VolunteerUrl, obj.SubDate.ToShortDateString());
                     msg += String.Format("<li><a href='{0}'>{1}: {2} ({3}) needs a substitute for shift {4} {5}.</a></li>",
                         link, obj.SubDate.ToLongDateString(),
                         obj.GuideName, obj.Role, obj.Sequence, flag);

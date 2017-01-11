@@ -241,20 +241,18 @@ namespace MBAV
             {
                
                 GridView gv = (e.CommandArgument.ToString() == "1") ? GridView1 : GridView2;
-                int Index = (e.CommandArgument.ToString() == "1") ? 4 : 3;
+                // Default Gridview1
+                int Index = 4;
+                if (e.CommandArgument.ToString() == "2")
+                {
+                    //For XS layout
+                    Index = 3;
+                }
                 foreach (GridViewRow row in gv.Rows)
                 {
                     if (row.RowType == DataControlRowType.DataRow)
                     {
-                        CheckBox cb = null;
-                        try
-                        {
-                            cb = (CheckBox)row.Cells[Index].Controls[3];
-                        }
-                        catch (Exception ex)
-                        {
-                            ErrorMessage.Set(ex.Message);
-                        }
+                        CheckBox  cb = (CheckBox)row.Cells[Index].FindControl("SubCheckBox"); 
                         if (cb != null && cb.Checked)
                         {
                             int indx = row.RowIndex;
