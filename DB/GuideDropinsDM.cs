@@ -207,6 +207,22 @@ namespace  NQN.DB
             return Results;
         }
 
+        public int FutureDropins()
+        {
+            int ret = 0;
+            string qry = @"select count(*) from GuideDropins where DropinDate >= convert(date,getdate()) ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                try
+                {
+                    ret = Convert.ToInt32(myc.ExecuteScalar());
+                }
+                catch { }
+
+            }
+            return ret;
+        }
 		public void Update(GuideDropinsObject obj)
 		{
 			 string qry = @"UPDATE  GuideDropins SET 

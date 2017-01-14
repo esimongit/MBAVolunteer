@@ -9,7 +9,7 @@
  
     <p> 
          <asp:Label ID="Label1" CssClass="formtext" runat="server" ></asp:Label> <br />
-   
+    <asp:Label ID="Label2" CssClass="formtext" runat="server" ></asp:Label> <br />
     </p>
    <%-- <asp:GridView DataSourceID="ObjectDataSource1" runat="server" AutoGenerateColumns="False" Caption="No Subs Today" >
         <Columns>

@@ -13,7 +13,7 @@ namespace  NQN.DB
         public int GuideForVol(string VolID)
         {
             int GuideID = 0;
-            string qry = "select min(GuideID) from Guides where   VolID = @VolID ";
+            string qry = "select min(GuideID) from Guides where   VolID = @VolID and isnull(Inactive,0) = 0  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -40,7 +40,8 @@ namespace  NQN.DB
             {
                 return true;
             }
-            string qry = "select cast(1 as bit) from Guides where  VolID = @VolID and GuideID != @GuideID";
+            string qry = @"select cast(1 as bit) from Guides where  VolID = @VolID and GuideID != @GuideID
+                and isnull(Inactive,0) = 0";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -58,7 +59,7 @@ namespace  NQN.DB
         {
             GuidesObject obj = null;
             ShiftsDM dm = new ShiftsDM();
-            string qry = ReadAllCommand() + " WHERE g.Email = @Email";
+            string qry = ReadAllCommand() + " WHERE g.Email = @Email and  isnull(Inactive,0) = 0 ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -77,7 +78,8 @@ namespace  NQN.DB
         {
             GuidesObject obj = null;
             ShiftsDM dm = new ShiftsDM();
-            string qry = ReadAllCommand() + " WHERE g.FirstName = @First and g.LastName = @Last and g.Email = @Email";
+            string qry = ReadAllCommand() + @" WHERE g.FirstName = @First and g.LastName = @Last and g.Email = @Email
+                 and isnull(Inactive,0) = 0 ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -123,7 +125,7 @@ namespace  NQN.DB
         {
             ShiftsDM dm = new ShiftsDM();
             GuidesObject obj = null;
-            string qry = ReadAllCommand() + " WHERE g.VolID = @VolID";
+            string qry = ReadAllCommand() + " WHERE g.VolID = @VolID and  isnull(Inactive,0) = 0 ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);

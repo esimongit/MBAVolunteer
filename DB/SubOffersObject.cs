@@ -32,6 +32,18 @@ namespace NQN.DB
                 _guideid = value;
             }
         }
+        private DateTime _dateentered = DateTime.Today;
+        public DateTime DateEntered
+        {
+            get
+            {
+                return _dateentered;
+            }
+            set
+            {
+                _dateentered = value;
+            }
+        }
         #endregion
         public string FirstName
         {

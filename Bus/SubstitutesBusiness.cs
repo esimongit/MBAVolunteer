@@ -206,7 +206,7 @@ namespace NQN.Bus
                 obj = dm.FetchRecord("GuideSubstituteID", dm.GetLast()); 
             }
             // Have Sub VolID in hand,
-            if (Sub != null && Sub.Trim() != String.Empty)
+            if (!String.IsNullOrWhiteSpace(Sub))
             {
                 Sub = Sub.Trim();
                 obj.SubstituteID = gdm.GuideForVol(Sub);
@@ -242,7 +242,7 @@ namespace NQN.Bus
                 ddm.Delete(dropin.GuideDropinID);
             }
            
-            // if obj.SubstituteID == 0,remove the current sub, otherwise add a new sub or replace one.
+            //  add a new sub or replace one.
             // In either case, notify folks
             dm.Update(obj);
             return true;
@@ -296,10 +296,12 @@ namespace NQN.Bus
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             EmailBusiness eb = new EmailBusiness();
             int cnt = 0;
+            DateTime Yesterday = DateTime.Today.AddDays(-1);
+            string NewFlag = "*NEW*";
             foreach (GuidesObject offer in offers)
             {
-                if (!offer.NotifySubRequests)
-                    continue;
+
+                bool doPrint = false;
                 dList = sdm.FetchRequests(offer.GuideID);
                 if (dList.Count == 0)
                     continue;
@@ -307,12 +309,13 @@ namespace NQN.Bus
                 string msg = String.Format("Dear {0}<br/><br/> <p>Here is a list of Guides who have outstanding requests for substitutes on shifts in which you have expressed an interest</p><ul>",
                     offer.FirstName);
                 DateTime odate = DateTime.Today;
-               // bool doPrint = false;
+         
                 foreach (GuideSubstituteObject obj in dList)
                 {
                     if (obj.Role == "Info Desk" && !offer.HasInfoDesk)
                         continue;
-                    string flag = (obj.DateEntered > DateTime.Today.AddDays(-1)) ? " *NEW*" : String.Empty;
+                   
+                    string flag = (obj.DateEntered > Yesterday) ? NewFlag : String.Empty;
                     if (odate != obj.SubDate)
                     {
                         odate = obj.SubDate;
@@ -322,17 +325,25 @@ namespace NQN.Bus
                     msg += String.Format("<li><a href='{0}'>{1}: {2} ({3}) needs a substitute for shift {4} {5}.</a></li>",
                         link, obj.SubDate.ToLongDateString(),
                         obj.GuideName, obj.Role, obj.Sequence, flag);
-                    //if (flag == "*NEW*")
-                    //    doPrint = true;
-
-
+                    if (flag == NewFlag)
+                        doPrint = true;
                 }
-                //if (doPrint)
-                //{
+                if (!doPrint)
+                {
+                    // If there is an offer from this guide less than 2 days old, they get the mail.
+                    SubOffersDM odm = new SubOffersDM();
+                    foreach (SubOffersObject soffer in odm.FetchForGuide(offer.GuideID))
+                    {
+                        if (soffer.DateEntered > DateTime.Today.AddDays(-2))
+                            doPrint = true;
+                    }
+                }
+                if (doPrint)
+                {
                     msg += "</ul>. <p>Click on any record in the list to open the Substitute Website for the date listed.</p>";
                     eb.SendMail("substitute@mbayaq.org", offer.Email, "Pending Substitute Requests", msg, true);
                     cnt++;
-                //}
+                }
             }
             return cnt;
         }

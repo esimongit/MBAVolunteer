@@ -43,13 +43,14 @@
                 <div class="col-md-3"> 
           <asp:HyperLink ID="SubListLink" runat="server"  CssClass="btn btn-info" Text='<%#Eval("ShortName", "Substitutes for {0}") %>' Target="_blank"  NavigateUrl='<%#Eval("ShiftID", "~/SubList.aspx?ShiftID={0}") %>'/>
             </div></div>
+            </ItemTemplate>
+              </asp:Repeater>
         <div class="row" > 
         <div class="col-md-5 col-xs-6" style="margin-left:0px;padding-top:16px; padding-bottom:10px"> 
              <asp:HyperLink ID="SearchLink" runat="server"  CssClass="btn btn-info" Text="Search Guides"  NavigateUrl="Search.aspx"/>
             </div>
             </div>
-              </ItemTemplate>
-              </asp:Repeater>
+             
            </div>
         <div class="col-md-5 col-xs-6"  style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
           

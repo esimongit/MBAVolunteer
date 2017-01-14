@@ -277,6 +277,39 @@ namespace  NQN.DB
             }
             return Results;
         }
+
+        public int OpenRequests()
+        {
+            int ret = 0;
+            string qry = @"select count(*) from GuideSubstitute where SubDate >= convert(date,getdate()) and SubstituteID is null";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                try
+                {
+                    ret = Convert.ToInt32(myc.ExecuteScalar());
+                }
+                catch { }
+
+            }
+            return ret;
+        }
+        public int RequestsWithSubs()
+        {
+            int ret = 0;
+            string qry = @" select count(*) from GuideSubstitute where SubDate >= convert(date,getdate()) and SubstituteID is not null";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                try
+                {
+                    ret = Convert.ToInt32(myc.ExecuteScalar());
+                }
+                catch { }
+
+            }
+            return ret;
+        }
 		public void Update(GuideSubstituteObject obj)
 		{
             

@@ -4,6 +4,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using NQN.Bus;
+using NQN.DB;
 
 namespace VolManager
 {
@@ -13,7 +14,14 @@ namespace VolManager
         {
             MembershipBusiness mb = new MembershipBusiness();
            
-            Label1.Text = String.Format("<b> Current Volunteer IDs On Line:</b> {0} ",   mb.GetCurrentUsers("MBAV"));
+            Label1.Text = String.Format("Current Guide IDs On Line: {0} ",   mb.GetCurrentUsers("MBAV"));
+            if (!Page.IsPostBack)
+            {
+                GuideDropinsDM gdm = new GuideDropinsDM();
+                GuideSubstituteDM dm = new GuideSubstituteDM();
+                Label2.Text = String.Format("Outstanding Guide Requests: {0}; Requests with Substitutes: {1}; Future Drop-ins: {2}.",
+                    dm.OpenRequests(), dm.RequestsWithSubs(), gdm.FutureDropins());
+            }
         }
         protected void ShiftSelected(object sender, EventArgs e)
         {

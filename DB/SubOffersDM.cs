@@ -34,9 +34,29 @@ namespace  NQN.DB
             return Results;
         }
 
-       
-   
-		public void Save(SubOffersObject obj)
+        public ObjectList<SubOffersObject> FetchForGuide(int GuideID)
+        {
+            ObjectList<SubOffersObject> Results = new ObjectList<SubOffersObject>();
+            string qry = ReadAllCommand() + " WHERE o.GuideID = @GuideID  ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    SubOffersObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
+
+        public void Save(SubOffersObject obj)
 		{
 			 string qry = @"INSERT INTO SubOffers (
 				[ShiftID]
@@ -112,6 +132,7 @@ namespace  NQN.DB
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.NotifySubRequests = GetNullableBoolean(reader, "NotifySubRequests", false);
             obj.HasInfoDesk = GetNullableBoolean(reader, "HasInfoDesk", false);
+            obj.DateEntered = GetNullableDateTime(reader, "DateEntered", DateTime.Today);
             return obj;
 		}
 
@@ -121,6 +142,7 @@ namespace  NQN.DB
 			SELECT
 				o.[ShiftID]
 				,o.[GuideID]
+                ,o.[DateEntered]
                 ,g.FirstName
                 ,g.LastName
                 ,g.Email
