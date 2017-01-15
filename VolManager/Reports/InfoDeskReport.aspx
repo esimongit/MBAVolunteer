@@ -5,10 +5,10 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
   
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 
-        SelectMethod="FetchRoleForShift" TypeName="NQN.DB.GuidesDM">
+        SelectMethod="FetchInfoForShift" TypeName="NQN.DB.GuidesDM">
         <SelectParameters>
         <asp:Parameter Name="ShiftID" Type="Int32" DefaultValue="0" />
-         <asp:Parameter Name="Role" Type="String" DefaultValue="Info Desk" />
+        
         </SelectParameters>
     </asp:ObjectDataSource>
     
@@ -16,7 +16,7 @@
     
     </atk:ToolkitScriptManager>
     <div style="width:600px; margin-left:auto; margin-right:auto; padding-bottom: 10px">
-<h2 style="color:Black">Info Desk List</h2></div>
+<h2 style="color:Black">Info Center List</h2></div>
    
      <div class="clear"></div>
       

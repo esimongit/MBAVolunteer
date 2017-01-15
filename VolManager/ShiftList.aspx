@@ -55,7 +55,7 @@
             <ItemStyle HorizontalAlign="Right" />
             </asp:BoundField>
             <asp:BoundField DataField="Captains" HeaderText="Captains" />
-            <asp:BoundField DataField="InfoDesk" HeaderText="Info Desk" />
+            <asp:BoundField DataField="InfoDesk" HeaderText="Info Center" />
         </Columns>
     </cc2:NQNGridView>
             </asp:View>
@@ -106,7 +106,7 @@
                     <asp:Label ID="CaptainsLabel" runat="server" Text='<%# Eval("Captains") %>' />
                     </td></tr>
                     <tr><td class="formlabel">
-                    Info Desk:</td><td>
+                    Info Center:</td><td>
                     <asp:Label ID="InfoDeskLabel" runat="server" Text='<%# Eval("InfoDesk") %>' />
                     </td></tr></table>
                    

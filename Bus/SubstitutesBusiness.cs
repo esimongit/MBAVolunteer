@@ -312,7 +312,7 @@ namespace NQN.Bus
          
                 foreach (GuideSubstituteObject obj in dList)
                 {
-                    if (obj.Role == "Info Desk" && !offer.HasInfoDesk)
+                    if (obj.IsInfo && !offer.HasInfoDesk)
                         continue;
                    
                     string flag = (obj.DateEntered > Yesterday) ? NewFlag : String.Empty;

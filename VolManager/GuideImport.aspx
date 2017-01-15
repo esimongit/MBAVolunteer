@@ -8,7 +8,7 @@
 </ul></p>
 <p>Fields:  ID, First, Last, Email, Phone, Cell,Shift,Role </p>
 <p>Shift must match one of the Shift "Short Names", otherwise no shift is applied.</p>
-<p>Role is one of: Aquarium Guide, Seasonal Guide, Shift Captain, TCL, Info Desk</p>
+<p>Role is one of: Aquarium Guide, Seasonal Guide, Shift Captain, TCL, Info Center</p>
     <asp:FileUpload ID="FileUpload1" runat="server"  /> <asp:Button runat="server" ID="ImportButton" Text="Import" OnClick="ImportButton_Click" />
     <br />
  

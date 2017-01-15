@@ -152,8 +152,8 @@ namespace  NQN.DB
                 ,HomeShift=dbo.FlattenShortShifts(o.GuideID)
                 ,s.Sequence
                 ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
-                ,HasInfoDesk = case r.RoleName when 'Info Desk' then cast (1 as bit) else (select cast(count(*) as bit)
-                         from GuideRole where RoleName= 'Info Desk') end
+                ,HasInfoDesk = case r.IsInfo WHEN 1 then r.IsInfo else (select cast(count(*) as bit)
+                         from GuideRole gr join Roles r2 on gr.RoleID = r2.RoleID where gr.GuideID = g.GuideID and r2.IsInfo = 1) end
 				FROM SubOffers o  join Guides g on o.GuideID = g.GuideID join Shifts s on s.ShiftID = o.ShiftID
                  join Roles r on r.RoleID = g.RoleID ";
 		}

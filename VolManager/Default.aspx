@@ -28,7 +28,7 @@
         <Columns>
             <asp:BoundField DataField="ShiftName" HeaderText="Shift" />
             <asp:BoundField DataField="Captains" HeaderText="Captains" />
-            <asp:BoundField DataField="Info" HeaderText="Info Desk" />
+            <asp:BoundField DataField="Info" HeaderText="Info Center" />
              <asp:BoundField DataField="BaseCnt" HeaderText="Base" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
              <asp:BoundField DataField="SubRequests" HeaderText="Requests" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
               <asp:BoundField DataField="Substitutes" HeaderText="Subs" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />

@@ -44,6 +44,18 @@ namespace NQN.DB
 				 _iscaptain = value;
 			}
 		}
+        private bool _isinfo = false;
+        public bool IsInfo
+        {
+            get
+            {
+                return _isinfo;
+            }
+            set
+            {
+                _isinfo = value;
+            }
+        }
         private bool _maskcontactinfo = false;
         public bool MaskContactInfo
         {

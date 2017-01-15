@@ -44,6 +44,7 @@ namespace  NQN.DB
 			 string qry = @"UPDATE  Roles SET 
 				RoleName=@RoleName
 				,IsCaptain=@IsCaptain
+                ,IsInfo = @IsInfo
                 ,MaskContactInfo=@MaskContactInfo
 				 WHERE RoleID = @RoleID";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
@@ -52,6 +53,7 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("RoleID",obj.RoleID));
 				myc.Parameters.Add(new SqlParameter("RoleName",obj.RoleName));
 				myc.Parameters.Add(new SqlParameter("IsCaptain",obj.IsCaptain));
+                myc.Parameters.Add(new SqlParameter("IsInfo", obj.IsInfo));
                 myc.Parameters.Add(new SqlParameter("MaskContactInfo", obj.MaskContactInfo));
                 myc.ExecuteNonQuery();
 			}
@@ -62,17 +64,20 @@ namespace  NQN.DB
 			 string qry = @"INSERT INTO Roles (
 				[RoleName]
 				,[IsCaptain]
+                ,[IsInfo]
                 ,[MaskContactInfo]
 				)
 			VALUES(
 				@RoleName
 				,@IsCaptain
+                ,@IsInfo
 				,@MaskContactInfo)";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{
 				SqlCommand myc = new SqlCommand(qry, conn);
 				myc.Parameters.Add(new SqlParameter("RoleName",obj.RoleName));
 				myc.Parameters.Add(new SqlParameter("IsCaptain",obj.IsCaptain));
+                myc.Parameters.Add(new SqlParameter("IsInfo", obj.IsInfo));
                 myc.Parameters.Add(new SqlParameter("MaskContactInfo", obj.MaskContactInfo));
                 myc.ExecuteNonQuery();
 			}
@@ -101,6 +106,7 @@ namespace  NQN.DB
 			obj.RoleID = GetNullableInt32(reader, "RoleID",0);
 			obj.RoleName = GetNullableString(reader, "RoleName",String.Empty);
 			obj.IsCaptain = GetNullableBoolean(reader, "IsCaptain",false);
+            obj.IsInfo = GetNullableBoolean(reader, "IsInfo", false);
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.Number = GetNullableInt32(reader, "Number", 0);
 			return obj;
@@ -113,6 +119,7 @@ namespace  NQN.DB
 				[RoleID]
 				,[RoleName]
 				,[IsCaptain]
+                ,[IsInfo]
                 ,[MaskContactInfo]
                 ,Number = (select count(*) from Guides where RoleID = r.RoleID and isnull(Inactive,0) = 0)
 				FROM Roles r";

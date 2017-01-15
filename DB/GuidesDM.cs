@@ -141,22 +141,19 @@ namespace  NQN.DB
             return obj;
         }
 
-        public  ObjectList<GuidesObject> FetchRoleForShift(int ShiftID, string Role)
+        public  ObjectList<GuidesObject> FetchInfoForShift(int ShiftID)
         {
             RolesDM dm = new RolesDM();
-            RolesObject role = dm.FetchRole(Role);
-            if (role == null)
-                return null;
+            
              ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
-             string qry = ReadAllShiftsCommand() + " where  isnull(Inactive,0) = 0 and r.RoleName = @Role ";
+             string qry = ReadAllShiftsCommand() + " where  isnull(Inactive,0) = 0 and r.IsInfo = 1 ";
              if (ShiftID > 0)
                  qry += " and g.ShiftID = @ShiftID ";
              qry += " order by DOW,Sequence,FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn); 
-                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
-                myc.Parameters.Add(new SqlParameter("Role", Role));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID)); 
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
                     GuidesObject obj = LoadFrom(reader);
@@ -260,7 +257,7 @@ namespace  NQN.DB
         public ObjectList<GuidesObject> FetchGuidesForShift(int ShiftID)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
-            string qry = ReadAllShiftsCommand() + " WHERE gs.ShiftID = @ShiftID and isnull(Inactive,0) = 0 and r.RoleName != 'Info Desk'  order by FirstName  ";
+            string qry = ReadAllShiftsCommand() + " WHERE gs.ShiftID = @ShiftID and isnull(Inactive,0) = 0 and isnull(r.IsInfo,0) = 0  order by FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -586,8 +583,8 @@ namespace  NQN.DB
                 ,DOW = 0
                 ,NotifySubRequests 
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
-                ,HasInfoDesk = case r.RoleName when 'Info Desk' then cast (1 as bit) else (select cast(count(*) as bit)
-                         from GuideRole where RoleName= 'Info Desk') end
+                ,HasInfoDesk = case r.IsInfo WHEN 1 then r.IsInfo else (select cast(count(*) as bit)
+                         from GuideRole gr join Roles r2 on gr.RoleID = r2.RoleID where gr.GuideID = g.GuideID and r2.IsInfo = 1) end
 				FROM Guides g join Roles r on g.RoleID = r.RoleID ";
         }
         protected  string ReadAllShiftsCommand()

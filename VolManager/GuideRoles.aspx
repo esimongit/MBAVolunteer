@@ -18,7 +18,8 @@
            
             <asp:BoundField DataField="RoleName" HeaderText="Role Name"  />
             <asp:CheckBoxField DataField="IsCaptain" HeaderText="Is Captain"  />
-            <asp:CheckBoxField DataField="MaskContactInfo" HeaderText="Mask Info"  />
+             <asp:CheckBoxField DataField="IsInfo" HeaderText="Is Info"  />
+            <asp:CheckBoxField DataField="MaskContactInfo" HeaderText="Mask Contact Info"  />
             <asp:BoundField DataField="Number" HeaderText="Current Count" 
                ReadOnly = "true" />
         </Columns>
@@ -26,8 +27,6 @@
     Add New Role:
     <asp:FormView ID="FormView1" runat="server" DataSourceID="ObjectDataSource1" DefaultMode="Insert">
         <InsertItemTemplate>
-           
-         
             Role Name:
             <asp:TextBox ID="RoleNameTextBox" runat="server" 
                 Text='<%# Bind("RoleName") %>' />
@@ -35,6 +34,10 @@
             Is Captain:
             <asp:CheckBox ID="IsCaptainCheckBox" runat="server" 
                 Checked='<%# Bind("IsCaptain") %>' />
+       <br />
+             Is Info Center:
+            <asp:CheckBox ID="CheckBox2" runat="server" 
+                Checked='<%# Bind("IsInfo") %>' />
        <br />
             Mask Contact Info:
             <asp:CheckBox ID="CheckBox1" runat="server" 
