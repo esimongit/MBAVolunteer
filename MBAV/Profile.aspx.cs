@@ -24,7 +24,7 @@ namespace MBAV
             if (GuideID > 0)
             {
                 GuidesObject guide = dm.FetchGuide(GuideID);
-                IrregularButton.Visible = guide.IrregularShift;
+                IrregularButton.Visible = guide.IrregularSchedule;
             }
             
         }
@@ -44,10 +44,7 @@ namespace MBAV
         {
             MultiView1.SetActiveView(View3);
         }
-        protected void ToView5(object sender, EventArgs e)
-        {
-            MultiView1.SetActiveView(View5);
-        }
+      
         protected void ToView4(object sender, EventArgs e)
         {
             MultiView1.SetActiveView(View4);
@@ -83,24 +80,7 @@ namespace MBAV
             }
             cb.Focus();
         }
-        protected void SpecialShiftChanged(object sender, EventArgs e)
-        {
-            GuideDropinsDM dm = new GuideDropinsDM();
-            int GuideID = Convert.ToInt32(Session["GuideID"]);
-            if (GuideID == 0)
-                return;
-            CheckBox cb = (CheckBox)sender;
-            HiddenField hf = (HiddenField)(cb.Parent.FindControl("ShiftIDHidden"));
-            int ShiftID = Convert.ToInt32(hf.Value);
-            if (cb.Checked)
-                cb.Checked = dm.AddSpecial(GuideID, ShiftID);
-            else
-            {
-                dm.DeleteSpecial(GuideID, ShiftID);
-                cb.Checked = false;
-            }
-            cb.Focus();
-        }
+       
         // Drop-ins
         protected void DoSubmit(object sender, EventArgs e)
         {
@@ -122,13 +102,14 @@ namespace MBAV
                 CheckBox cb = (CheckBox)itm.FindControl("DateCheckBox");
                 HiddenField hf = (HiddenField)(cb.Parent.FindControl("DropinIDHidden"));
                 Label DateLabel = (Label)cb.Parent.FindControl("DateLabel");
+               
                 DateTime dt = DateTime.Parse(DateLabel.Text);
                 int DropinID = Convert.ToInt32(hf.Value);
                 if (cb.Checked)
                 {
                     if (DropinID < 0)
                     {
-                        dm.SaveOnShift(GuideID, ShiftID, dt);
+                        dm.SaveOnShift(GuideID, ShiftID, dt, Convert.ToInt32(RoleSelect.SelectedValue));
 
                     }
                 }

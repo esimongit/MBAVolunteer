@@ -248,7 +248,19 @@ namespace NQN.DB
                 _notifysubrequests = value;
             }
         }
-#endregion
+        private bool _irregularschedule = false;
+        public bool IrregularSchedule
+        {
+            get
+            {
+                return _irregularschedule;
+            }
+            set
+            {
+                _irregularschedule = value;
+            }
+        }
+        #endregion
 
         public string GuideName
         {
@@ -362,22 +374,18 @@ namespace NQN.DB
             }
             set
             {
-                _irregularshift = false;
+               
                 _shifts = value;
-                if (_shifts.Count == 0)
-                    _irregularshift = true;
-                else if (_shifts.Count == 1)
+                if (_shifts.Count == 1)
                 {
                     ShiftsObject pshift = Shifts[0];
                     _shiftid = pshift.ShiftID;
                     ShiftName = pshift.ShiftName;
                     ShortName = pshift.ShortName;
                     Sequence = pshift.Sequence;
-                    DOW = pshift.DOW;
-                    if (DOW == 0)
-                        _irregularshift = true;
+                    DOW = pshift.DOW;    
                 }
-                else
+                else if (_shifts.Count > 1)
                 {
                     string sep = String.Empty;
                     foreach (ShiftsObject sobj in _shifts)
@@ -389,15 +397,7 @@ namespace NQN.DB
                 }
             }
         }
-        private bool _irregularshift = false;
-        public bool IrregularShift
-        {
-            get
-            {
-                return _irregularshift;
-            }
-            
-        }
+        
         public string EmailLink
         {
             get

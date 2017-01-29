@@ -342,6 +342,7 @@ namespace  NQN.DB
             return Results;
         }
 
+        
         public ObjectList<ShiftsObject> SpecialShiftsForGuide(int GuideID)
         {
             ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
@@ -358,11 +359,12 @@ namespace  NQN.DB
                 ,s.ShiftTimeID
                 ,ShiftStart=cast(t.ShiftStart as DateTime)
                 ,ShiftEnd=cast(t.ShiftEnd as DateTime)
+                ,Attendance = (select count(*) from GuideDropins d join Roles r on d.RoleID =r.RoleID and r.IsCaptain = 0 and r.IsInfo = 0 where ShiftID = s.ShiftID)
                 ,[Captains] = dbo.FlattenCaptains(s.ShiftID)
                 ,[Info] = dbo.FlattenInfo(s.ShiftID)
 				,[Selected]  = (select cast(max(1) as bit) from GuideDropins where ShiftID = s.ShiftID and GuideID = @GuideID)
                 FROM Shifts s join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID
-                WHERE Recurring = 0 and ShiftDate >= getdate() - 1   order by ShiftDate, sequence";
+                WHERE Recurring = 0 and ShiftDate >= cast( getdate() as date)    order by ShiftDate, sequence";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -403,7 +405,7 @@ namespace  NQN.DB
                 ,[Attendance]
                 ,[ShiftStart] = null
                 ,[ShiftEnd] = null
-			   FROM dbo.ShiftsForMonth(@Yr, @Mo) order by dt, Sequence ";
+			   FROM dbo.ShiftsForMonth(@Yr, @Mo) where Recurring = 1 order by dt, Sequence ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);

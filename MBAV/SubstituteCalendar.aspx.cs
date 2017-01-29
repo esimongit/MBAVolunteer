@@ -12,7 +12,9 @@ namespace MBAV
     public partial class SubstituteCalendar : System.Web.UI.Page
     {
         protected ObjectList<CalendarDateObject> CurrentEvents = null;
-
+        
+        int InfoRole = 0;
+         
         protected void Page_Load(object sender, EventArgs e)
         {
             int GuideID = 0;
@@ -24,17 +26,29 @@ namespace MBAV
             if (GuideID == 0)
                 Response.Redirect("Login.aspx");
             GuidesDM dm = new GuidesDM();
-            GuidesObject guide = dm.FetchGuide( GuideID);
-            
-            NameLabel.Text = guide.GuideName;
-            
+            GuidesObject guide = dm.FetchGuide(GuideID);
            
+           
+            NameLabel.Text = guide.GuideName;
+            CalendarTypeLabel.Text = (Convert.ToInt32(Session["RoleID"]) == 0) ?  "Guide Calendar" : "Info Center Calendar" ;
+
             if (!Page.IsPostBack)
             {
+                SpecialShiftButton.Visible = StaticFieldsObject.StaticValue("ShowSpecialShifts").ToLower() == "yes";
                 if (Session["VolCalDate"] != null)
                 {
                     Calendar1.SelectedDate = (DateTime)Session["VolCalDate"];
                     Calendar1.VisibleDate = (DateTime)Session["VolCalDate"];
+                }
+                ToggleDiv.Visible = false;
+                ToggleCalendar.Visible = false;
+
+                // If the Vol has something other than Info...
+                if (guide.HasInfoDesk && guide.Roles.Count > 0)
+                {
+                    ToggleDiv.Visible = true;
+                    ToggleCalendar.Visible = true;
+                    ToggleCalendar.Text = (Convert.ToInt32(Session["RoleID"]) == 0) ?  "Show Info Center Calendar" : "Show Guide Calendar" ;
                 }
             }
             Calendar2.SelectedDate = DateTime.Today;
@@ -97,15 +111,31 @@ namespace MBAV
         protected void GetCurrentEvents()
         {
             int GuideID = Convert.ToInt32(Session["GuideID"]);
+            int RoleID = (int)Session["RoleID"];
             SubstitutesBusiness sb = new SubstitutesBusiness();
             DateTime curdate = DateTime.Today;
             CurrentEvents = new ObjectList<CalendarDateObject>();
             for (int i = 0; i < 4; i++)
             {
-                CurrentEvents.AddRange(sb.CalendarList(curdate.Year, curdate.Month, GuideID));
+                CurrentEvents.AddRange(sb.CalendarList(curdate.Year, curdate.Month, GuideID, RoleID));
                 curdate = curdate.AddMonths(1);
             }
         }
+        protected void CalendarToggle(Object sender, EventArgs e)
+        {
+            InfoRole = RolesDM.GetInfo();
+            int RoleID = Convert.ToInt32(Session["RoleID"]);
+            // Session["RoleID"] is either InfoRole or 0
+            RoleID = InfoRole - RoleID;
+            Session["RoleID"] =   RoleID;
+         
+            GetCurrentEvents();
+            
+            CalendarTypeLabel.Text = (RoleID == 0) ?    "Guide Calendar" : "Info Center Calendar";
+            ToggleCalendar.Text = (RoleID == 0) ?   "Show Info Center Calendar" : "Show Guide Calendar" ;
+            CurrentEvents = null;
+        }
+
         protected void MonthChanged(Object sender, MonthChangedEventArgs e)
         {
             CurrentEvents = null;

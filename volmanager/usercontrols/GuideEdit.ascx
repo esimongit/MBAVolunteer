@@ -23,6 +23,18 @@
             <asp:SessionParameter Name="GuideID" SessionField="GuideID" DefaultValue="0" Type="Int32" />
         </SelectParameters>
 </asp:ObjectDataSource>
+  <asp:ObjectDataSource ID="ObjectDataSource1" runat='server' TypeName="NQN.Bus.SubstitutesBusiness" SelectMethod="FutureDatesForShift">
+ <SelectParameters>
+   <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
+   <asp:ControlParameter ControlID="ShiftSelect" Name="ShiftID" Type="Int32" DefaultValue="0" />
+       <asp:Parameter Name="RoleID" Type="Int32" DefaultValue="0" />
+ </SelectParameters>
+ </asp:ObjectDataSource>
+<asp:ObjectDataSource ID="RolesDataSource" runat="server" TypeName="NQN.DB.GuideRoleDM" SelectMethod="FetchAllRoles">
+    <SelectParameters>
+    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
+        </SelectParameters>
+</asp:ObjectDataSource>
 <style>
     td, th
     {
@@ -113,6 +125,12 @@
                      Checked='<%# Bind("MaskPersonalInfo") %>' />  
                 
                  </td></tr>
+                      <tr><td class="formlabel">
+                 Irregular Schedule:</td><td>
+                 <asp:CheckBox ID="IrregularCheckBox" runat="server" 
+                     Checked='<%# Bind("IrregularSchedule") %>'   /> Check here if this guide is not assumed to be on an assigned shift. Select dates in the Irregular Schedule tab.
+                
+                 </td></tr>
                  <tr><td class="formlabel">
                  Has Login:</td><td>
                  <asp:CheckBox ID="CheckBox1" runat="server" 
@@ -148,29 +166,29 @@
      
          </asp:FormView>
      
-          <div style=" padding-left:10px">
-         <cc2:NQNGridView  ID="GridView2" runat="server"  Caption="Sub Requests"
-                 DataSourceID="SubRequestsDataSource" AllowMultiColumnSorting="False" 
-                 AutoGenerateColumns="False" DeleteMessage="Are you sure you want to delete?" 
-                 Privilege="" AllowSorting="True" DataKeyNames="GuideSubstituteID">
-             <Columns>
-                 <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Images/delete.gif" 
-                     ShowDeleteButton="True" />
-                 <asp:BoundField DataField="SubDate" HeaderText="Date"   DataFormatString="{0:d}" />
-                 <asp:BoundField DataField="ShiftName" HeaderText="Shift"  />
-                 
-                 
-                 <asp:BoundField DataField="Sub" HeaderText="Sub ID"   />
-                
-                 <asp:BoundField DataField="SubName" HeaderText="Sub Name"  />
-                
-                
-             </Columns>
-             <EmptyDataTemplate>No Future Requests</EmptyDataTemplate>
-             </cc2:NQNGridView>
-         <br />
-          <cc2:NQNGridView  ID="GridView3" runat="server" 
-                  DataSourceID="SubCommitmentsDataSource"  Caption="Sub Commitments"
+           
+          </div>
+   <div style="float:left; padding-left:10px; color:#663399; background-color:#FFECAD; min-width:300px; min-height:500px"">
+          <asp:Menu ID="Menu1" runat="server" 
+    onmenuitemclick="Menu1_MenuItemClick" Orientation="Horizontal" 
+    BackColor="#FFFBD6" DynamicHorizontalOffset="2" Font-Names="Verdana" 
+    Font-Size="12px" ForeColor="#000000"  >
+    <StaticSelectedStyle BackColor="#FFCC66" />
+    <StaticMenuItemStyle HorizontalPadding="10px" VerticalPadding="2px"  BorderStyle="Solid" BorderWidth="1"/>
+    
+    <StaticHoverStyle BackColor="#990000" ForeColor="White" />
+    <Items>
+     <asp:MenuItem Text="Sub Commitments" Selected="true" Value="0"></asp:MenuItem>
+      <asp:MenuItem Text="Need Subs" Value="1"></asp:MenuItem>
+        <asp:MenuItem   Text="Available" Value="2"></asp:MenuItem>
+        <asp:MenuItem Text="Irreg Schedule" Value="3"></asp:MenuItem>        
+       
+    </Items>
+    </asp:Menu>
+   <asp:MultiView ID="MultiView1" runat="server">
+         <asp:View ID="View0" runat="server">
+               <cc2:NQNGridView  ID="GridView3" runat="server" 
+                  DataSourceID="SubCommitmentsDataSource"  
                  AllowMultiColumnSorting="False" AutoGenerateColumns="False"  DataKeyNames="GuideSubstituteID"
                  DeleteMessage="Are you sure you want to delete?" Privilege="" 
                   AllowSorting="True">
@@ -187,10 +205,30 @@
               </Columns>
               <EmptyDataTemplate>No Future Commitments</EmptyDataTemplate>
              </cc2:NQNGridView>
-         </div>
-          </div>
-         <div style="float:left; padding-left:10px">
+         </asp:View>
+         <asp:View ID="View1" runat="server">
+               <cc2:NQNGridView  ID="GridView2" runat="server"   
+                 DataSourceID="SubRequestsDataSource" AllowMultiColumnSorting="False" 
+                 AutoGenerateColumns="False" DeleteMessage="Are you sure you want to delete?" 
+                 Privilege="" AllowSorting="True" DataKeyNames="GuideSubstituteID">
+             <Columns>
+                 <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Images/delete.gif" 
+                     ShowDeleteButton="True" />
+                 <asp:BoundField DataField="SubDate" HeaderText="Date"   DataFormatString="{0:d}" />
+                 <asp:BoundField DataField="ShiftName" HeaderText="Shift"  />
           
+                 <asp:BoundField DataField="Sub" HeaderText="Sub ID"   />
+                
+                 <asp:BoundField DataField="SubName" HeaderText="Sub Name"  />
+                
+                
+             </Columns>
+             <EmptyDataTemplate>No Future Requests</EmptyDataTemplate>
+             </cc2:NQNGridView>
+         </asp:View>
+         <asp:View ID="View2" runat="server">
+
+
           <h2>Available to Sub on Shifts:</h2>
          <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ShiftsDataSource" >
             <HeaderTemplate><table ></HeaderTemplate>
@@ -201,5 +239,38 @@
             </ItemTemplate>
             <FooterTemplate></table></FooterTemplate>
          </asp:Repeater>
-         </div>
-        
+      
+       </asp:View>
+         <asp:View ID="View3" runat="server">
+     
+    <div   style="float:left; font-size:large; color:purple">  First select a Shift: </div>
+   <div style="float:left"> 
+ <asp:DropDownList ID="ShiftSelect" runat="server" DataSourceID="ShiftsDataSource" DataTextField="ShiftName" DataValueField="ShiftID" AppendDataBoundItems="true"
+  AutoPostBack="true">
+  <asp:ListItem Value="0" Text="(Select a shift)"></asp:ListItem>
+ </asp:DropDownList> 
+ </div> 
+
+<div style="clear:both; padding-top:10px;padding-bottom:10px; font-size:large; color:purple"  >
+    In the table below,  check all the boxes for dates  
+planned and select a role. Uncheck dates to remove them. Then click "Submit".  </div>
+  
+<asp:Repeater ID="Repeater2" runat="server" DataSourceID="ObjectDataSource1" >
+<HeaderTemplate><table cellpadding="5"></HeaderTemplate>
+<ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#afcfdf":"background-color:#ffffff" %>'> 
+<td style="padding:2px 4px 2px 2px; text-align:right"><asp:Label ID="DateLabel" runat="server" Text='<%#Eval("DropinDate",  "{0:d}") %>'></asp:Label></td><td>
+    <asp:DropDownList runat="server" ID="RoleSelect" DataSourceID="RolesDataSource" DataValueField="RoleID" DataTextField="RoleName"></asp:DropDownList>
+ </td>
+ <td>
+<asp:CheckBox ID="DateCheckBox" runat="server" Checked='<%#Eval("Selected") %>'   />
+<asp:HiddenField ID="DropinIDHidden" runat="server" Value='<%#Eval("GuideDropinID") %>' />
+</td></tr>
+</ItemTemplate>
+<FooterTemplate></table></FooterTemplate>
+</asp:Repeater>
+<div  >
+<asp:Button ID="SubmitButton" OnClick="DoSubmit" runat="server" Text="Submit" CssClass="btn btn-success" />
+</div>
+         </asp:View> 
+</asp:MultiView>
+    </div>

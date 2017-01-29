@@ -58,6 +58,15 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.Repeater SubLinkRepeater;
         
         /// <summary>
+        /// RosterButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink RosterButton;
+        
+        /// <summary>
         /// SearchLink control.
         /// </summary>
         /// <remarks>
@@ -67,13 +76,40 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.HyperLink SearchLink;
         
         /// <summary>
-        /// RosterButton control.
+        /// ToggleDiv control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink RosterButton;
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ToggleDiv;
+        
+        /// <summary>
+        /// ToggleCalendar control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ToggleCalendar;
+        
+        /// <summary>
+        /// SpecialShiftButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.HyperLink SpecialShiftButton;
+        
+        /// <summary>
+        /// CalendarTypeLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label CalendarTypeLabel;
         
         /// <summary>
         /// Calendar1 control.

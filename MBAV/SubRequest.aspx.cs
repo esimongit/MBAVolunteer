@@ -52,6 +52,8 @@ namespace MBAV
             RoleLabel.Text = guide.RoleName;
 
             DropinCell.Visible = tdm.ShiftsForDateAndGuide(dt, GuideID).Count > 0;
+            if (Convert.ToInt32(Session["RoleID"]) > 0)
+                    DropinCell.Visible = false;
             SubstitutesBusiness sb = new SubstitutesBusiness();
             string SubShifts = sb.SubShiftsForGuideAndDate(GuideID, dt);
             CurrentSubCell.Visible = false;
@@ -256,7 +258,7 @@ namespace MBAV
                         if (cb != null && cb.Checked)
                         {
                             int indx = row.RowIndex;
-                            int GuideSubstituteID = Convert.ToInt32(GridView1.DataKeys[indx].Value);
+                            int GuideSubstituteID = Convert.ToInt32(gv.DataKeys[indx].Value);
                             GuideSubstituteObject sub = dm.FetchRecord("GuideSubstituteID", GuideSubstituteID);
                             ShiftID = sub.ShiftID;
                             sub.SubstituteID = GuideID;
@@ -368,9 +370,11 @@ namespace MBAV
                 }
 
                 
-                sb.Notify(NotifyList, msg);
+               // sb.Notify(NotifyList, msg);
                 if (NotifyInterestedSubs > 0)
-                    sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
+                { 
+                   //sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
+                }
                 msg = "The following message has been sent: <br /> " + msg;
                 MsgLabel.Text = msg;
                 RecipientsRepeater.DataSource = NotifyList;

@@ -17,6 +17,7 @@
  <SelectParameters>
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
    <asp:ControlParameter ControlID="ShiftSelect" Name="ShiftID" Type="Int32" DefaultValue="0" />
+       <asp:ControlParameter ControlID="RoleSelect" Name="RoleID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
  </asp:ObjectDataSource>
  <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchWithSubOffers">
@@ -36,7 +37,8 @@
             <asp:SessionParameter Name="GuideID" SessionField="GuideID" DefaultValue="0" Type="Int32" />
         </SelectParameters>
 </asp:ObjectDataSource>
-     <asp:ObjectDataSource ID="SpecialsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="SpecialShiftsForGuide">
+  
+      <asp:ObjectDataSource ID="RolesDataSource" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="RolesForGuide">
   <SelectParameters>
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
@@ -154,9 +156,9 @@
         <div class="row" style="padding-bottom:4px">
         <div class="col-md-4" style="color:blue; font-weight:bold">    
          Shift:  </div>
-        <div class="col-md-8"> 
-       
-         <asp:Label ID="Label1" runat="server"  Font-Bold="true" Text='<%# Eval("ShiftName") %>' />
+        <div class="col-md-8">        
+         <asp:Label ID="Label1" runat="server"  Font-Bold="true" Text='<%# Eval("ShiftName") %>' />&nbsp;
+            <asp:Label ID="IrregLabel" runat="server" Font-Bold="true"  Font-Italic="true" Text="Irregular" Visible='<%#Eval("IrregularSchedule") %>'></asp:Label>
        </div>
        </div>
           <div class="row" style="padding-bottom:4px">
@@ -200,10 +202,7 @@
      <div class="col-xs-12">
 <asp:Button ID="Button2" runat="server" Text="Review your substitute commitments" CssClass="btn btn-info" OnClick="ToView4"    CausesValidation="false" BackColor="#6e8aa0"/>
         </div></div>
-<%--<div class="row" style="padding-top:20px">
-    <div class="col-xs-12">
-<asp:Button ID="Button3" runat="server" Text="Select Special Shifts" CssClass="btn btn-info" OnClick="ToView5"   CausesValidation="false" BackColor="#9e8aa0"/>
-        </div></div>--%>
+ 
  </div>
     </div>
   
@@ -249,10 +248,18 @@ you can substitute. </h3><hr/>
  </asp:DropDownList> 
  </div></div>
   
+        <div class="row" style="padding-top:10px">
+    <div class="col-md-4" style="font-size:large; color:purple">  Next select a Role: </div>
+   <div class="col-md-4"> 
+ <asp:DropDownList ID="RoleSelect" runat="server" DataSourceID="RolesDataSource" DataTextField="RoleName" DataValueField="RoleID" AppendDataBoundItems="true"
+  AutoPostBack="true">
+  <asp:ListItem Value="0" Text="(Select a role)"></asp:ListItem>
+ </asp:DropDownList> 
+ </div></div>
    
 <div class="row" style="padding-top:10px; padding-bottom:20px; font-size:large; margin-left:5px">
     In the table below,  check all the boxes for dates  
-you plan to be a guide for this shift, then click "Submit". If you later discover that you will be absent on a selected date, please request a substitute.</div>
+you plan to be a guide for this shift with this role, then click "Submit".  </div>
   
 <asp:Repeater ID="Repeater2" runat="server" DataSourceID="ObjectDataSource2" >
 <HeaderTemplate><table cellpadding="5"></HeaderTemplate>
@@ -317,33 +324,6 @@ you plan to be a guide for this shift, then click "Submit". If you later discove
              CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
 </div></div>
     </asp:View>
-    <asp:View runat="server" ID="View5">
-<div class="row"><div class="col-md-12">
-<h3>In the table below,  check all the boxes for special shifts on which 
-you can participate. </h3><hr/>
-  <div class="row" style="padding-bottom:10px"><div class="col-md-6 col-md-offset-2">
-         <asp:LinkButton ID="LinkButton4" runat="server" CssClass="btn btn-info"
-             CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
-  </div></div>
-<asp:Repeater ID="SpecialRepeater" runat="server" DataSourceID="SpecialsDataSource" >
-<HeaderTemplate><table cellpadding="5" border="1">
-    <tr><th>Date</th><th>Start Time</th><th>Shift</th><th>Check to Participate</th></tr></HeaderTemplate>
-<ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#efefef":"background-color:#ffffff" %>'>
-     <td><asp:Label runat="server" Text='<%#Eval("ShiftDate","{0:d}") %>'></asp:Label></td>
-    <td><asp:Label runat="server" Text='<%#Eval("ShiftStart","{0:t}") %>'></asp:Label></td>
-    <td><asp:Label runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></td>
-    <td style="text-align:center"> 
-    <asp:CheckBox ID="ShiftCheckBox" runat="server" Checked='<%#Eval("Selected") %>' OnCheckedChanged="SpecialShiftChanged"  AutoPostBack="true" />
-    <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />
-   </td></tr>
-</ItemTemplate>
-<FooterTemplate></table></FooterTemplate>
-</asp:Repeater>
-    </div></div>
-<div class="row" style="padding-top:10px"><div class="col-md-6 col-md-offset-2">
-         <asp:LinkButton ID="LinkButton5" runat="server" CssClass="btn btn-info"
-             CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
-  </div></div>
-        </asp:View>
+    
          </asp:MultiView>
 </asp:Content>

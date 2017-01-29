@@ -11,7 +11,12 @@ namespace VolManager
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!Page.IsPostBack)
+            {
                 MultiView1.SetActiveView(View1);
+                GridView1.Columns[2].Visible = true;
+                GridView1.Columns[3].Visible = true;
+                GridView1.Columns[4].Visible = false;
+            }
         }
         protected void ToView2(object sender, EventArgs e)
         {
@@ -26,6 +31,23 @@ namespace VolManager
             MultiView1.SetActiveView(View4);
             FormView2.DataSourceID = null;
             FormView2.DataSourceID = "ObjectDataSource2";
+        }
+        //Select filter change on Shift List
+        protected void RecurSpecial(object sender, EventArgs e)
+        {
+            if (RecurringSelect.SelectedValue == "True")
+            {
+                GridView1.Columns[2].Visible = true;
+                GridView1.Columns[3].Visible = true;
+                GridView1.Columns[4].Visible = false;
+            }
+            else
+            {
+                GridView1.Columns[2].Visible = false;
+                GridView1.Columns[3].Visible = false;
+                GridView1.Columns[4].Visible = true;
+            }
+            GridView1.DataBind();
         }
         protected void RecurringChanged(object sender, EventArgs e)
         {
@@ -60,7 +82,7 @@ namespace VolManager
                 return;
             }
           
-            InfoMessage.Set("ShiftDeleted"); 
+            InfoMessage.Set("Shift Deleted"); 
         }
         protected void OnInserted(object sender, ObjectDataSourceStatusEventArgs e)
         {

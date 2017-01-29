@@ -151,16 +151,20 @@ namespace  NQN.DB
             }
             return Results;
         }
-        public ObjectList<GuideSubstituteObject> FetchForDate( DateTime dt)
+        public ObjectList<GuideSubstituteObject> FetchForDate( DateTime dt, int RoleID)
         {
             if (dt == DateTime.MinValue)
                 return null;
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
-            string qry = ReadAllCommand() + " WHERE  SubDate = @dt order by h.Sequence, g.VolID ";
+            string qry = ReadAllCommand() + " WHERE  SubDate = @dt ";
+            if (RoleID > 0)
+                qry += " and g.RoleID = @RoleID ";
+            qry += " order by h.Sequence, g.VolID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn); 
                 myc.Parameters.Add(new SqlParameter("dt", dt));
+                myc.Parameters.Add(new SqlParameter("RoleID", RoleID));
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
                     GuideSubstituteObject obj = LoadFrom(reader);
@@ -192,15 +196,19 @@ namespace  NQN.DB
             return ret;
         }
 
-        public ObjectList<GuideSubstituteObject> FetchForMonth(int Year, int Month)
+        public ObjectList<GuideSubstituteObject> FetchForMonth(int Year, int Month, int RoleID)
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
-            string qry = ReadAllCommand() + @" where month(SubDate) = @Month and Year(SubDate) = @Year order by SubDate";
+            string qry = ReadAllCommand() + @" where month(SubDate) = @Month and Year(SubDate) = @Year ";
+            if (RoleID > 0)
+                qry += " and g.RoleID = @RoleID ";
+            qry += " order by SubDate";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("Year", Year));
                 myc.Parameters.Add(new SqlParameter("Month", Month));
+                myc.Parameters.Add(new SqlParameter("RoleID", RoleID));
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
                     GuideSubstituteObject obj = LoadFrom(reader);

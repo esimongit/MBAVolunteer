@@ -29,6 +29,18 @@ namespace  NQN.DB
             }
             return Results;
         }
+        public ObjectList<GuideRoleObject> FetchAllRoles(int GuideID)
+        {
+            ObjectList<GuideRoleObject> Results = FetchForGuide(GuideID);
+            GuidesDM dm = new GuidesDM();
+            GuidesObject guide = dm.FetchGuide(GuideID);
+            GuideRoleObject obj = new GuideRoleObject();
+            obj.GuideID = GuideID;
+            obj.RoleID = guide.RoleID;
+            obj.RoleName = guide.RoleName;
+            Results.Add(obj);
+            return Results;
+        }
         public bool HasRole(int GuideID, string Role)
         {
             bool ret = false;

@@ -68,7 +68,19 @@ namespace NQN.DB
                 _onshift = value;
             }
         }
-#endregion
+        private int _roleid = 0;
+        public int RoleID
+        {
+            get
+            {
+                return _roleid;
+            }
+            set
+            {
+                _roleid = value;
+            }
+        }
+        #endregion
         public string FirstName
         {
             get;

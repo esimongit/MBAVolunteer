@@ -68,9 +68,12 @@
          </cc2:NQNGridView>
      </asp:View>
      <asp:View ID="View2" runat="server">
-        <asp:LinkButton ID="ReturnButton" runat="server"  OnClick="ToView1" Font-Bold="true"
-                     CausesValidation="False" CommandName="Cancel" Text="Return to List" />
+        <asp:LinkButton ID="LinkButton1" runat="server"  OnClick="ToView1" Font-Bold="true"
+                     CausesValidation="False" CommandName="Cancel" Text="Return to List" /><br />
      <uc3:GuideEdit id="GuideEdit1" runat="server"  ></uc3:GuideEdit>
+         <div style="clear:both"></div>
+          <asp:LinkButton ID="ReturnButton" runat="server"  OnClick="ToView1" Font-Bold="true"
+                     CausesValidation="False" CommandName="Cancel" Text="Return to List" />
     </asp:View>
      <asp:View ID="View3" runat="server">
          <asp:ValidationSummary runat="server" ForeColor="Red" />

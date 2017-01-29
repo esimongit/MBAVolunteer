@@ -67,13 +67,13 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.ObjectDataSource SubCommitmentsDataSource;
         
         /// <summary>
-        /// SpecialsDataSource control.
+        /// RolesDataSource control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource SpecialsDataSource;
+        protected global::System.Web.UI.WebControls.ObjectDataSource RolesDataSource;
         
         /// <summary>
         /// MultiView1 control.
@@ -202,6 +202,15 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.DropDownList ShiftSelect;
         
         /// <summary>
+        /// RoleSelect control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList RoleSelect;
+        
+        /// <summary>
         /// Repeater2 control.
         /// </summary>
         /// <remarks>
@@ -263,41 +272,5 @@ namespace MBAV {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.LinkButton LinkButton3;
-        
-        /// <summary>
-        /// View5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.View View5;
-        
-        /// <summary>
-        /// LinkButton4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton4;
-        
-        /// <summary>
-        /// SpecialRepeater control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater SpecialRepeater;
-        
-        /// <summary>
-        /// LinkButton5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton LinkButton5;
     }
 }

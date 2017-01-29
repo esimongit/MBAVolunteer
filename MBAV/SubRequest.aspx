@@ -4,17 +4,27 @@
 <SelectParameters>  
   <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
      <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
+     <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource2" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectRequestsForDate">
 <SelectParameters>  
   <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
      <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
+     <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
+</SelectParameters>
+</asp:ObjectDataSource>
+    <asp:ObjectDataSource ID="ObjectDataSource2s" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectOpenRequestsForDate">
+<SelectParameters>  
+  <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
+     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
+     <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectSubsForDate">
 <SelectParameters>  
   <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
+     <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource4" runat="server" TypeName="NQN.Bus.SubstitutesBusiness" SelectMethod="SelectShiftsForGuideAndDate">
@@ -184,7 +194,8 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 </asp:GridView>
 </div>
 <div  class="row hidden-md hidden-lg hidden-sm">
-<asp:GridView ID="GridView2" runat="server" DataSourceID="ObjectDataSource2" Caption="Current Requests" AlternatingRowStyle-BackColor="Beige"  
+    <div class="col-xs-12  "  >  
+<asp:GridView ID="GridView2" runat="server" DataSourceID="ObjectDataSource2s" Caption="Current Requests" AlternatingRowStyle-BackColor="Beige"  
         AutoGenerateColumns="false"  DataKeyNames="GuideSubstituteID" CellPadding="0"  HeaderStyle-Font-Bold="true" >
 <Columns>
 <asp:BoundField DataField="Sequence" HeaderText="Shift" />
@@ -213,6 +224,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 <EmptyDataTemplate>No Subs</EmptyDataTemplate>  
 </asp:GridView>
 </div>
+    </div>
 <hr />
 <p style="text-align:center;font-size:12pt; font-weight:bold">
     Click on "Submit" to record changes. </p>
@@ -222,25 +234,25 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
     Click on "Return to Calendar" to return you to the calendar without
     changing anything.</p>
 <div class="row">
-  <div class="col-md-2 col-xs-2"></div>
+  <div class="col-md-2 col-xs-1"></div>
    <div class="col-md-3  hidden-xs" style="text-align:center; padding-top:2px; padding-bottom:2px ">
     <asp:Button ID="SubmitButton" runat="server" Text="Submit" OnCommand="DoSubmit" CssClass="btn btn-success" CommandArgument="1"/>
   </div>
-  <div class="col-xs-3  hidden-md hidden-lg hidden-sm" style="text-align:center; padding-top:2px; padding-bottom:2px ">
+  <div class="col-xs-3    hidden-md hidden-lg hidden-sm" style="text-align:center; padding-top:2px; padding-bottom:2px ">
     <asp:Button ID="Button1" runat="server" Text="Submit" OnCommand="DoSubmit" CssClass="btn btn-success" CommandArgument= "2"/>
   </div>
    <div class="col-md-3 col-xs-3" style="text-align:center; padding-top:2px; padding-bottom:2px ">
    <asp:Button ID="ResetButton" OnClick="DoReset"  Text="Reset" runat="server" CssClass="btn btn-danger"/> 
    </div>
-    <div class="col-md-2 col-xs-3" style="text-align:center; padding-top:2px; padding-bottom:2px  ">
+    <div class="col-md-2 col-xs-4" style="text-align:center; padding-top:2px; padding-bottom:2px  ">
    <asp:HyperLink ID="HyperLink3" runat="server"  ForeColor="Black" Font-Underline="false"  Font-Size="11"
        CssClass="btn btn-info" Text="Return to Calendar"  NavigateUrl="SubstituteCalendar.aspx"/>
   </div>
-  <div class="col-md-2"></div>
-  </div>  
- <div class="clear"></div>
+    
+  
   
 </div>
+    </div>
 </asp:View>
  <asp:View ID="View2" runat="server">
  <div class="row"> 

@@ -13,6 +13,8 @@
  </style>
  <div class="row">
  <div class="col-md-5" style="margin-left:20px; font-size:12pt"> 
+    <div class="row">
+        <div class="col-md-12">
   <asp:Label ID="NameLabel" runat="server" Font-Bold="true" Font-Size="Large"></asp:Label>
    <p>Click on the date you need or can be a substitute.
    </p><p>We need substitutes on dates indicated in: <span style='color:blue;font-weight:bold; font-style:italic'>blue</span>.
@@ -22,6 +24,15 @@
    <p>You are expected on a shift on dates that are  <span style="color:#222; font-weight:bold; text-decoration:underline">underlined</span>.
    </p>
  </div>
+  </div>     
+       
+           <div class="row" > 
+            <div class="col-xs-6 " style=" max-width:120px;background-color:#9aff9a; font-size:large" >A Weeks</div>
+          <div class="col-xs-6 " style="max-width:120px;background-color:#FFFFFF ; font-size:large" >B Weeks</div>
+       </div>
+      
+      </div>
+   
  <style>
      th { text-align:center}
  </style>
@@ -45,32 +56,34 @@
             </div></div>
             </ItemTemplate>
               </asp:Repeater>
-        <div class="row" > 
-        <div class="col-md-5 col-xs-6" style="margin-left:0px;padding-top:16px; padding-bottom:10px"> 
-             <asp:HyperLink ID="SearchLink" runat="server"  CssClass="btn btn-info" Text="Search Guides"  NavigateUrl="Search.aspx"/>
-            </div>
-            </div>
-             
+       
            </div>
         <div class="col-md-5 col-xs-6"  style="margin-left:5px;padding-top:10px; padding-bottom:10px"> 
           
             <asp:HyperLink ID="RosterButton" runat="server"   Text="Daily Roster" CssClass="btn btn-info" Target="_blank" NavigateUrl="ShiftRoster.aspx"></asp:HyperLink>
          </div> 
       </div>
-    
+     <div class="row" > 
+        <div class="col-md-5 col-xs-6" style="margin-left:0px;padding-top:16px; padding-bottom:10px"> 
+             <asp:HyperLink ID="SearchLink" runat="server"  CssClass="btn btn-info" Text="Search Guides"  NavigateUrl="Search.aspx"/>
+            </div>
+            <div  runat="server" id="ToggleDiv" class="col-md-5 col-xs-6" style="margin-left:0px;padding-top:16px; padding-bottom:10px"> 
+             <asp:Button ID="ToggleCalendar" runat="server"  CssClass="btn btn-info" Text="Info Center Calendar"  OnClick="CalendarToggle"/>
+            </div>
+         <div class="col-md-5 col-xs-6" style="margin-left:0px;padding-top:16px; padding-bottom:10px"> 
+             <asp:HyperLink ID="SpecialShiftButton" runat="server"  CssClass="btn btn-info" Text="Special Shifts"  NavigateUrl ="Special.aspx"/>
+            </div>
+   </div>
+             
     </div>
-      <div class="row"  >          
-        <div class="col-md-9 col-xs-9" style="margin-left:20px;padding-top:10px; padding-bottom:10px"> 
-           <div class="row" > 
-            <div class="col-md-6 " style=" max-width:120px;background-color:#9aff9a; font-size:large" >A Weeks</div>
-          <div class="col-md-6 " style="max-width:120px;background-color:#FFFFFF ; font-size:large" >B Weeks</div>
-       </div>
-      
-      </div>
-    </div>
-  
+   
+ 
 </div>
-      <div class="clear"></div>
+      
+    <div class="row">
+        <div class="col-xs-11 col-xs-offset-1"><asp:Label ID="CalendarTypeLabel" runat="server" Text="Guide Calendar" Font-Bold="true" Font-Size="Large"></asp:Label></div>
+   
+    </div>
       <div class="row">
       <div class="col-xs-12 hidden-md hidden-lg hidden-sm">
       <div style="display:block;   margin-top:10px;margin-left:auto; margin-right: auto">
@@ -117,7 +130,9 @@
 
        </asp:Calendar>
    </div>
- </div></div>
+ </div>
+
+ </div>
  <div class="row">
         <div class="col-md-6 hidden-xs">
       <div style="display:block;   margin-top:10px;margin-left:auto; margin-right: auto">

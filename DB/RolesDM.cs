@@ -24,22 +24,24 @@ namespace  NQN.DB
             }
             return obj;
         }
-        public RolesObject FetchCaptain()
+        
+        public static int GetInfo()
         {
-            RolesObject obj = null;
-            string qry = ReadAllCommand() + " WHERE IsCaptain = 1 ";
+            int RoleID = 0;
+            string qry = "select RoleID from Roles WHERE IsInfo = 1 ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
-                SqlCommand myc = new SqlCommand(qry, conn); 
-                using (SqlDataReader reader = myc.ExecuteReader())
+                SqlCommand myc = new SqlCommand(qry, conn);
+                try
                 {
-                    obj = LoadFrom(reader);
+                    RoleID = Convert.ToInt32(myc.ExecuteScalar());
                 }
+                catch { }
             }
-            return obj;
+            return RoleID;
         }
-
-		public void Update(RolesObject obj)
+       
+        public void Update(RolesObject obj)
 		{
 			 string qry = @"UPDATE  Roles SET 
 				RoleName=@RoleName

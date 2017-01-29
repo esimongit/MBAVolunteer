@@ -14,7 +14,7 @@ namespace VolManager
             int ShiftID = 0;
             try
             {
-                Convert.ToInt32(Request.QueryString["ShiftID"]);
+                ShiftID = Convert.ToInt32(Request.QueryString["ShiftID"]);
                 DateTime ShiftDate = DateTime.Parse(Request.QueryString["ShiftDate"]);
                 ReportLink.NavigateUrl = String.Format("~/Reports/Roster.aspx?ShiftID={0}&ShiftDate={1:d}", ShiftID, ShiftDate);
             }

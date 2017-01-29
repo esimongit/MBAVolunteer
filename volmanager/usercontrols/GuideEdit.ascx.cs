@@ -11,7 +11,7 @@ namespace VolManager.UserControls
 {
     public partial class GuideEdit : System.Web.UI.UserControl
     {
-        
+
         public void SetupEdit()
         {
             HyperLink MBAVLink = (HyperLink)FormView1.FindControl("MBAVLink");
@@ -20,11 +20,21 @@ namespace VolManager.UserControls
             if (guide == null)
                 return;
             MBAVLink.NavigateUrl = String.Format("{0}/Login.aspx?ID={1}", StaticFieldsObject.StaticValue("GuideURL"), guide.UserId);
- 
+            Repeater1.DataBind();
+            GridView2.DataBind();
+            if (guide.IrregularSchedule)
+                GridView3.DataBind();
+            Menu1.Items[3].Enabled = guide.IrregularSchedule;
+            MultiView1.SetActiveView(View0);
         }
         protected void SetLink(object sender, EventArgs e)
         {
             SetupEdit();
+        }
+        protected void Menu1_MenuItemClick(object sender, MenuEventArgs e)
+        {
+            int index = Convert.ToInt32(e.Item.Value);
+            MultiView1.ActiveViewIndex = index;
         }
         protected void OnUpdated(object sender, ObjectDataSourceStatusEventArgs e)
         {
@@ -37,7 +47,7 @@ namespace VolManager.UserControls
             else
             {
                 InfoMessage.Set("Changes accepted.");
-                
+
             }
         }
         protected void AddLogin(object sender, EventArgs e)
@@ -49,7 +59,7 @@ namespace VolManager.UserControls
             try
             {
                 mb.InsertVols(obj.VolID, obj.Email);
-                FormView1.DataBind(); 
+                FormView1.DataBind();
             }
             catch (Exception ex)
             {
@@ -66,13 +76,14 @@ namespace VolManager.UserControls
             try
             {
                 pw = MembershipBusiness.VolChangePassword(obj.VolID);
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 ErrorMessage.Set(ex.Message);
                 return;
             }
             InfoMessage.Set(String.Format("New Password: {0}", pw));
-            FormView1.DataBind(); 
+            FormView1.DataBind();
         }
         protected void DeleteShift(object sender, GridViewDeleteEventArgs e)
         {
@@ -80,13 +91,13 @@ namespace VolManager.UserControls
             try
             {
                 dm.DeleteGuideShift(Convert.ToInt32(Session["GuideID"]), Convert.ToInt32(e.Keys[0]));
-                FormView1.DataBind(); 
+                FormView1.DataBind();
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 ErrorMessage.Set(ex.Message);
-            } 
-            
+            }
+
         }
         protected void DeleteRole(object sender, GridViewDeleteEventArgs e)
         {
@@ -119,5 +130,54 @@ namespace VolManager.UserControls
             else
                 dm.Delete(GuideID, ShiftID);
         }
+
+        protected void DoSubmit(object sender, EventArgs e)
+        {
+
+            GuideDropinsDM dm = new GuideDropinsDM();
+            int GuideID = Convert.ToInt32(Session["GuideID"]);
+            int ShiftID = 0;
+            try
+            {
+                ShiftID = Convert.ToInt32(ShiftSelect.SelectedValue);
+            }
+            catch
+            { }
+
+            if ((ShiftID == 0) || (GuideID == 0))
+                return;
+            int cnt = 0;
+            foreach (RepeaterItem itm in Repeater2.Items)
+            {
+                CheckBox cb = (CheckBox)itm.FindControl("DateCheckBox");
+                HiddenField hf = (HiddenField)(cb.Parent.FindControl("DropinIDHidden"));
+                Label DateLabel = (Label)cb.Parent.FindControl("DateLabel");
+                DropDownList RoleSelect = (DropDownList)cb.Parent.FindControl("RoleSelect");
+                DateTime dt = DateTime.Parse(DateLabel.Text);
+                int DropinID = Convert.ToInt32(hf.Value);
+                if (cb.Checked)
+                {
+                    if (DropinID < 0)
+                    {
+                        try
+                        {
+                            dm.SaveOnShift(GuideID, ShiftID, dt, Convert.ToInt32(RoleSelect.SelectedValue));
+                            cnt++;
+                        }
+                        catch
+                        {
+                            ErrorMessage.Add(String.Format("Select a Role for {0:d}", dt));
+                        }
+                    }
+                }
+                else if (DropinID > 0)
+                {
+                    dm.Delete(DropinID);
+                    cnt++;
+                }
+            }
+            InfoMessage.Set(String.Format("{0} changes made.", cnt));
+        }
+      
     }
 }

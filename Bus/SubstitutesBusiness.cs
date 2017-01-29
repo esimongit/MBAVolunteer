@@ -123,15 +123,15 @@ namespace NQN.Bus
             return sub;
         }
 
-        public ObjectList<CalendarDateObject> CalendarList(int Year, int Month, int GuideID)
+        public ObjectList<CalendarDateObject> CalendarList(int Year, int Month, int GuideID, int RoleID)
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
             GuideDropinsDM ddm = new GuideDropinsDM();
             GuidesDM gdm = new GuidesDM();
             ShiftsDM sdm = new ShiftsDM();
             ObjectList<CalendarDateObject> Results = new ObjectList<CalendarDateObject>();
-            ObjectList<GuideSubstituteObject> sList = dm.FetchForMonth(Year, Month);
-            ObjectList<GuideDropinsObject> dList = ddm.FetchForMonth(Year, Month, GuideID);
+            ObjectList<GuideSubstituteObject> sList = dm.FetchForMonth(Year, Month, RoleID);
+            ObjectList<GuideDropinsObject> dList = ddm.FetchForMonth(Year, Month, GuideID, RoleID);
              GuidesObject guide = gdm.FetchGuide(GuideID);
             DateTime CurDay = new DateTime(Year, Month, 1);
            
@@ -139,7 +139,7 @@ namespace NQN.Bus
             {
                 CalendarDateObject obj = new CalendarDateObject();
                 obj.Dt = CurDay;
-                if (sdm.IsShiftOnDate(guide.ShiftID, CurDay))
+                if (!guide.IrregularSchedule && sdm.IsShiftOnDate(guide.ShiftID, CurDay))
                     obj.IsSubstitute = true;
                 foreach (GuideSubstituteObject sub in sList.FindAll(x => x.SubDate == CurDay))
                 {
@@ -180,7 +180,7 @@ namespace NQN.Bus
         public ObjectList<GuideSubstituteObject> SelectOpen()
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
-            ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(DateTime.Today);
+            ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(DateTime.Today, 0);
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
             foreach (GuideSubstituteObject sub in dList)
             {
@@ -249,12 +249,12 @@ namespace NQN.Bus
         }
 
         // Get a year's worth of the future dates for a given shift, mark as selected if already a drop-in
-        public ObjectList<GuideDropinsObject> FutureDatesForShift(int ShiftID, int GuideID)
+        public ObjectList<GuideDropinsObject> FutureDatesForShift(int ShiftID, int GuideID, int RoleID)
         {
             if (ShiftID == 0)
                 return null;
             GuideDropinsDM ddm = new GuideDropinsDM();
-            ObjectList<GuideDropinsObject> dList = ddm.FetchOnShiftForGuide(GuideID,ShiftID);
+            ObjectList<GuideDropinsObject> dList = ddm.FetchOnShiftForGuide(GuideID,ShiftID, RoleID);
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             ShiftsDM dm = new ShiftsDM();
             ShiftsObject shift = dm.FetchRecord("ShiftID", ShiftID);
@@ -360,7 +360,7 @@ namespace NQN.Bus
                 int ndays = Convert.ToInt32(stat.FieldValue);
                 DateTime dt = DateTime.Today;
                 dt = dt.AddDays(ndays);
-                ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(dt);
+                ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(dt,0);
                 ObjectList<GuideDropinsObject> eList = ddm.FetchForDate(dt);
                 EmailBusiness eb = new EmailBusiness();
                 MailTextDM mtdm = new MailTextDM();

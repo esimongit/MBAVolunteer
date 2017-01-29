@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Security;
 using NQN.DB;
+using NQN.Core;
 
 namespace NQN.Bus
 {
@@ -46,6 +47,7 @@ namespace NQN.Bus
             }
             return dt;
         }
+      
         public void Insert(string RoleName, bool IsAdmin)
         {
             if (Roles.RoleExists(RoleName))

@@ -58,11 +58,11 @@ namespace NQN.Bus
             dList.Sort(SubSort);
             return dList;
         }
-        public ObjectList<GuideSubstituteObject> SelectForDate( DateTime dt, int GuideID)
+        public ObjectList<GuideSubstituteObject> SelectForDate( DateTime dt, int GuideID, int RoleID)
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
             ObjectList<GuideSubstituteObject> eList = dm.FetchForSub(GuideID, dt);
-            ObjectList<GuideSubstituteObject> dList = dm.FetchForDate( dt);
+            ObjectList<GuideSubstituteObject> dList = dm.FetchForDate( dt, RoleID);
             List<int> ShiftsOccupied = new List<int>();
             foreach(GuideSubstituteObject obj in eList)
             {
@@ -80,29 +80,33 @@ namespace NQN.Bus
                 dList[i].CanSub = (dList[i].NoSub   && (dList[i].GuideID != GuideID));
             }
             GuideDropinsDM ddm = new GuideDropinsDM();
-            foreach (GuideDropinsObject obj in ddm.FetchForDate( dt))
+            if (RoleID == 0)
             {
-                GuideSubstituteObject newsubs = new GuideSubstituteObject();
-                newsubs.ShiftID = obj.ShiftID;
-                newsubs.Sequence = obj.Sequence;
-                newsubs.Sub = obj.VolID;
-                newsubs.SubDate = obj.DropinDate;
-                newsubs.FirstName = "Drop-in";
-                newsubs.NoSub = false;
-                newsubs.HasSub = true;
-                newsubs.SubFirst = obj.FirstName;
-                newsubs.SubLast = obj.LastName;
-                newsubs.Role = obj.Role;
-                dList.Add(newsubs);
+                // Only list Drop-ins for non-InfoCenter queries
+                foreach (GuideDropinsObject obj in ddm.FetchForDate(dt))
+                {
+                    GuideSubstituteObject newsubs = new GuideSubstituteObject();
+                    newsubs.ShiftID = obj.ShiftID;
+                    newsubs.Sequence = obj.Sequence;
+                    newsubs.Sub = obj.VolID;
+                    newsubs.SubDate = obj.DropinDate;
+                    newsubs.FirstName = "Drop-in";
+                    newsubs.NoSub = false;
+                    newsubs.HasSub = true;
+                    newsubs.SubFirst = obj.FirstName;
+                    newsubs.SubLast = obj.LastName;
+                    newsubs.Role = obj.Role;
+                    dList.Add(newsubs);
+                }
             }
             dList.Sort((x, y) => x.Sequence.CompareTo(y.Sequence));
             return dList;
         }
-        public ObjectList<GuideSubstituteObject> SelectRequestsForDate(DateTime dt, int GuideID )
+        public ObjectList<GuideSubstituteObject> SelectRequestsForDate(DateTime dt, int GuideID, int RoleID )
         {
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             GuideSubstituteDM dm = new GuideSubstituteDM();
-            foreach (GuideSubstituteObject obj in dm.FetchForDate(dt))
+            foreach (GuideSubstituteObject obj in dm.FetchForDate(dt, RoleID))
             {
                 if (obj.SubstituteID == 0)
                 {
@@ -112,11 +116,25 @@ namespace NQN.Bus
             }
             return dList;
         }
-        public ObjectList<GuideSubstituteObject> SelectSubsForDate(DateTime dt)
+        public ObjectList<GuideSubstituteObject> SelectOpenRequestsForDate(DateTime dt, int GuideID, int RoleID)
         {
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             GuideSubstituteDM dm = new GuideSubstituteDM();
-            foreach (GuideSubstituteObject obj in dm.FetchForDate(dt))
+            foreach (GuideSubstituteObject obj in dm.FetchForDate(dt, RoleID))
+            {
+                if (obj.SubstituteID > 0)
+                {
+                    continue;
+                }
+                dList.Add(obj);
+            }
+            return dList;
+        }
+        public ObjectList<GuideSubstituteObject> SelectSubsForDate(DateTime dt, int RoleID)
+        {
+            ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
+            GuideSubstituteDM dm = new GuideSubstituteDM();
+            foreach (GuideSubstituteObject obj in dm.FetchForDate(dt, RoleID))
             {
                 if (obj.SubstituteID > 0)
                     dList.Add(obj);
@@ -154,7 +172,7 @@ namespace NQN.Bus
             GuideDropinsDM ddm = new GuideDropinsDM();
             ObjectList<GuideSubstituteObject> sList = sdm.FetchForShift(ShiftID, dt);
             ObjectList<GuideDropinsObject> pList = ddm.FetchForShift(ShiftID, dt);
-            ObjectList<GuideDropinsObject> rList = ddm.FetchOnShift(ShiftID, dt);
+            ObjectList<GuideDropinsObject> rList = ddm.FetchOnShift(ShiftID, dt, 0);
             ObjectList<GuidesObject> iList = new ObjectList<GuidesObject>();
             foreach (GuidesObject obj in dList)
             {
@@ -316,6 +334,8 @@ namespace NQN.Bus
         public void UpdateGuide(int GuideID, string VolID, string FirstName, string LastName, string Phone, string Cell, bool CellPreferred, string Email, 
             int AddShift, int RoleID,  bool Inactive, string Notes, bool MaskPersonalInfo, int AddRole)
         {
+            if (!Inactive && String.IsNullOrEmpty(VolID))
+                throw new Exception("An active Guide must have a unique Guide ID.");
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(GuideID);
          
@@ -345,6 +365,20 @@ namespace NQN.Bus
                 sdm.DeleteAllForGuide(GuideID);
                 odm.DeleteAllForGuide(GuideID);
             }
+        }
+        public ObjectList<GuideRoleObject> RolesForGuide(int GuideID)
+        {
+            ObjectList<GuideRoleObject> Roles = new ObjectList<GuideRoleObject>();
+            GuidesDM gdm = new GuidesDM();
+            GuidesObject guide = gdm.FetchGuide(GuideID);
+            GuideRoleDM dm = new GuideRoleDM();
+
+            GuideRoleObject role = new GuideRoleObject();
+            role.RoleID = guide.RoleID;
+            role.RoleName = guide.RoleName;
+            Roles.Add(role);
+            Roles.AddRange(dm.FetchForGuide(GuideID));
+            return Roles;
         }
         protected int SubSort(GuideSubstituteObject x, GuideSubstituteObject y)
         {

@@ -32,7 +32,7 @@
     <asp:Multiview id="MultiView1" runat="server">
         <asp:View ID="View1" runat="server">
             <div style="float:left">
-        <asp:RadioButtonList ID="RecurringSelect" runat="server" RepeatDirection="Horizontal"  AutoPostBack="true">
+        <asp:RadioButtonList ID="RecurringSelect" runat="server" RepeatDirection="Horizontal"  AutoPostBack="true" OnSelectedIndexChanged="RecurSpecial">
             <asp:ListItem Text="Recurring" Value="True" Selected="true"></asp:ListItem>
              <asp:ListItem Text="Special" Value="False"></asp:ListItem>
         </asp:RadioButtonList></div>
@@ -44,14 +44,18 @@
         <Columns> 
             <asp:CommandField ButtonType="Image" DeleteImageUrl="~/Images/delete.gif" ShowDeleteButton="True" />
             <asp:BoundField DataField="ShiftName" HeaderText="Shift Name" />
-            <asp:CheckBoxField DataField="AWeek" HeaderText="A Week" />
+            <asp:CheckBoxField DataField="AWeek" HeaderText="A Week"  />
             <asp:CheckBoxField DataField="BWeek" HeaderText="B Week" />
+            <asp:BoundField DataField="ShiftDate" HeaderText ="Date" DataFormatString="{0:d}" />
             <asp:BoundField DataField="Sequence" HeaderText="Sequence" ReadOnly="true" />
             <asp:BoundField DataField="ShortName" HeaderText="Short Name" />
             <asp:BoundField DataField="ShiftStart" DataFormatString="{0:h\:mm tt}" HeaderText="Shift Start" ItemStyle-HorizontalAlign="Right">
             <ItemStyle HorizontalAlign="Right" />
             </asp:BoundField>
             <asp:BoundField DataField="ShiftEnd" DataFormatString="{0:h\:mm tt}" HeaderText="Shift End" ItemStyle-HorizontalAlign="Right">
+            <ItemStyle HorizontalAlign="Right" />
+            </asp:BoundField>
+            <asp:BoundField DataField="Attendance"   HeaderText="Count" ItemStyle-HorizontalAlign="Right">
             <ItemStyle HorizontalAlign="Right" />
             </asp:BoundField>
             <asp:BoundField DataField="Captains" HeaderText="Captains" />
@@ -178,6 +182,9 @@
                      </td></tr>
                    </asp:Panel>
                     <tr><td class="formlabel">
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="SequenceTextBox" ErrorMessage="Enter a sequence number (0 - 4) to display this list shift on the proper day and order."
+                             Display="Dynamic">*</asp:RequiredFieldValidator>
+                        <asp:RangeValidator runat="server" ControlToValidate="SequenceTextBox" Type="Integer" MinimumValue="0" MaximumValue="6" Display="Dynamic"  ErrorMessage="Sequence must be greater or equal to zero."></asp:RangeValidator>
                     Sequence:</td><td>
                     <asp:TextBox ID="SequenceTextBox" runat="server" Width="20" Text='<%# Bind("Sequence") %>' />
                    </td></tr>

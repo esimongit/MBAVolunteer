@@ -12,7 +12,7 @@ namespace  NQN.DB
         public ObjectList<GuideDropinsObject> FetchForShift(int ShiftID, DateTime dt)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt and isnull(OnShift, 0) = 0 order by d.GuideID ";
+            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt and isnull(OnShift, 0) = 0  order by d.GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -30,10 +30,12 @@ namespace  NQN.DB
             }
             return Results;
         }
-        public ObjectList<GuideDropinsObject> FetchOnShift(int ShiftID, DateTime dt)
+        public ObjectList<GuideDropinsObject> FetchOnShift(int ShiftID, DateTime dt, int RoleID)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt and OnShift = 1 order by d.GuideID ";
+            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt and g.IrregularSchedule = 1 and OnShift = 1 ";
+           
+            qry += " order by d.GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -44,7 +46,8 @@ namespace  NQN.DB
                     GuideDropinsObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
-                        Results.Add(obj);
+                        if (RoleID == 0 || RoleID == obj.RoleID)
+                            Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
                 }
@@ -57,7 +60,7 @@ namespace  NQN.DB
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             if (dt == DateTime.MinValue)
                 return Results;
-            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and isnull(OnShift,0) = 0 order by s.Sequence, d.GuideID ";
+            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and isnull(OnShift,0) = 0 and isnull(IrregularSchedule,0) = 0 order by s.Sequence, d.GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn); 
@@ -135,7 +138,7 @@ namespace  NQN.DB
             return obj;
         }
 
-        public ObjectList<GuideDropinsObject> FetchOnShiftForGuide(int GuideID, int ShiftID )
+        public ObjectList<GuideDropinsObject> FetchOnShiftForGuide(int GuideID, int ShiftID, int RoleID )
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             string qry = ReadAllCommand() + @" WHERE  DropinDate >= getdate() and d.GuideID = @GuideID 
@@ -151,6 +154,7 @@ namespace  NQN.DB
                     GuideDropinsObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
+                        if (RoleID == 0 || RoleID == obj.RoleID)
                         Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
@@ -183,17 +187,20 @@ namespace  NQN.DB
             return Results;
         }
         // Get All Drop-ins including OnShift (Irregular Guides)
-        public ObjectList<GuideDropinsObject> FetchForMonth(int Year, int Month, int GuideID)
+        public ObjectList<GuideDropinsObject> FetchForMonth(int Year, int Month, int GuideID, int RoleID)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + @" where month(DropinDate) = @Month and Year(DropinDate) = @Year and d.GuideID = @GuideID
-                order by DropinDate";
+            string qry = ReadAllCommand() + @" where month(DropinDate) = @Month and Year(DropinDate) = @Year and d.GuideID = @GuideID ";
+            if (RoleID > 0)
+                qry += " and d.RoleID = @RoleID ";
+            qry += "    order by DropinDate";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("Year", Year));
                 myc.Parameters.Add(new SqlParameter("Month", Month));
                 myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("RoleID", RoleID));
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
                     GuideDropinsObject obj = LoadFrom(reader);
@@ -230,6 +237,7 @@ namespace  NQN.DB
 				,DropinDate=@DropinDate
 				,ShiftID=@ShiftID
                 ,OnShift=@OnShift
+                ,RoleID = @RoleID
 				 WHERE GuideDropinID = @GuideDropinID";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{
@@ -239,6 +247,7 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("DropinDate",obj.DropinDate));
 				myc.Parameters.Add(new SqlParameter("ShiftID",obj.ShiftID));
                 myc.Parameters.Add(new SqlParameter("OnShift", obj.OnShift));
+                myc.Parameters.Add(new SqlParameter("RoleID", obj.RoleID));
                 myc.ExecuteNonQuery();
 			}
 		}
@@ -253,19 +262,23 @@ namespace  NQN.DB
 
         public void Save(int GuideID, int ShiftID, DateTime dt)
         {
+            GuidesDM dm = new GuidesDM();
+            GuidesObject guide = dm.FetchGuide(GuideID);
             GuideDropinsObject obj = new GuideDropinsObject();
             obj.GuideID = GuideID;
             obj.ShiftID = ShiftID;
             obj.DropinDate = dt;
+            obj.RoleID = guide.RoleID;
             Save(obj);
         }
-        public void SaveOnShift(int GuideID, int ShiftID, DateTime dt)
+        public void SaveOnShift(int GuideID, int ShiftID, DateTime dt, int RoleID)
         {
             GuideDropinsObject obj = new GuideDropinsObject();
             obj.GuideID = GuideID;
             obj.ShiftID = ShiftID;
             obj.OnShift = true;
             obj.DropinDate = dt;
+            obj.RoleID = RoleID;
             Save(obj);
         }
         public void Save(GuideDropinsObject obj)
@@ -275,12 +288,14 @@ namespace  NQN.DB
 				,[DropinDate]
 				,[ShiftID]
                 ,[OnShift]
+                ,[RoleID]
 				)
 			SELECT
 				@GuideID
 				,@DropinDate
 				,@ShiftID
                 ,isnull(@OnShift,0)
+                ,nullif(@RoleID,0)
 				 where not exists (select 1 from GuideDropins where DropinDate = @DropinDate and GuideID = @GuideID and ShiftID = @ShiftID) "; ;
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{
@@ -289,6 +304,7 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("DropinDate",obj.DropinDate));
 				myc.Parameters.Add(new SqlParameter("ShiftID",obj.ShiftID));
                 myc.Parameters.Add(new SqlParameter("OnShift", obj.OnShift));
+                myc.Parameters.Add(new SqlParameter("RoleID", obj.RoleID));
                 myc.ExecuteNonQuery();
 			}
 		}
@@ -340,6 +356,7 @@ namespace  NQN.DB
             obj.FirstName = GetNullableString(reader, "FirstName", String.Empty);
             obj.LastName = GetNullableString(reader, "LastName", String.Empty);
             obj.VolID = GetNullableString(reader, "VolID", String.Empty);
+            obj.RoleID = GetNullableInt32(reader, "RoleID", 0);
             obj.Role = GetNullableString(reader, "Role", String.Empty);
             obj.Sequence = GetNullableInt32(reader, "Sequence", 0);
             obj.ShiftName = GetNullableString(reader, "ShiftName", String.Empty);
@@ -363,13 +380,14 @@ namespace  NQN.DB
                 ,g.Email
                 ,Phone = case g.CellPreferred WHEN 1 THEN g.Cell ELSE g.Phone END
 				,g.VolID
-				,Role= r.RoleName
+                ,RoleID = case isnull(d.RoleID,0) WHEN 0 THEN g.RoleID ELSE d.RoleID END
+				,Role=  case isnull(d.RoleID,0) WHEN 0 THEN (select RoleName from Roles WHERE RoleID = g.RoleID)
+                    ELSE (select RoleName from Roles where RoleID = d.RoleID) END
                 ,d.OnShift 
-                ,MaskContactInfo = r.MaskContactInfo | g.MaskPersonalInfo
+                ,MaskContactInfo = (select MaskContactInfo from Roles where RoleID = g.RoleID) | g.MaskPersonalInfo
                 ,s.Sequence
                 ,s.ShiftName
 				FROM GuideDropins d join Guides g on d.GuideID= g.GuideID
-				join Roles r on r.RoleID = g.RoleID
                 join Shifts s on d.ShiftID= s.ShiftID ";
 		}
 		public int GetLast()

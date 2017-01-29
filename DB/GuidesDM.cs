@@ -148,7 +148,7 @@ namespace  NQN.DB
              ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
              string qry = ReadAllShiftsCommand() + " where  isnull(Inactive,0) = 0 and r.IsInfo = 1 ";
              if (ShiftID > 0)
-                 qry += " and g.ShiftID = @ShiftID ";
+                 qry += " and gs.ShiftID = @ShiftID ";
              qry += " order by DOW,Sequence,FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -237,7 +237,7 @@ namespace  NQN.DB
         public ObjectList<GuidesObject> FetchForShift(int ShiftID)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
-            string qry = ReadAllShiftsCommand() + " WHERE gs.ShiftID = @ShiftID and isnull(Inactive,0) = 0 order by FirstName  ";
+            string qry = ReadAllShiftsCommand() + " WHERE gs.ShiftID = @ShiftID and isnull(Inactive,0) = 0  order by FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -303,6 +303,8 @@ namespace  NQN.DB
                      and g.GuideID in (select GuideID from SubOffers)");
 
         }
+
+        // Update from guide uses subset of fields.
         public void Update(string FirstName, string LastName, string Phone, string Email, string CalendarType,  string Cell, bool CellPreferred,
             int GuideID, bool MaskPersonalInfo, bool NotifySubRequests)
         {
@@ -350,6 +352,7 @@ namespace  NQN.DB
 				,UpdateBy=@UpdateBy
 				,LastUpdate=@LastUpdate 
                 ,CalendarType = nullif(@CalendarType, '')
+                ,IrregularSchedule = @IrregularSchedule
 				 WHERE GuideID = @GuideID";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{
@@ -371,7 +374,8 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("UpdateBy",obj.UpdateBy));
 				myc.Parameters.Add(new SqlParameter("LastUpdate",obj.LastUpdate)); 
                 myc.Parameters.Add(new SqlParameter("CalendarType", obj.CalendarType));
-				myc.ExecuteNonQuery();
+                myc.Parameters.Add(new SqlParameter("IrregularSchedule", obj.IrregularSchedule));
+                myc.ExecuteNonQuery();
 			}
             if (obj.AddShift > 0 && obj.AddShift != obj.ShiftID)
                 SaveGuideShift(obj.GuideID, obj.AddShift);
@@ -402,6 +406,7 @@ namespace  NQN.DB
 				,[LastUpdate] 
                 ,[CalendarType]
                 ,[NotifySubRequests]
+                ,[IrregularSchedule]
 				)
 			VALUES(
 				@FirstName
@@ -418,6 +423,7 @@ namespace  NQN.DB
 				,@UpdateBy
 				,getdate() 
                 ,nullif(@CalendarType, '')
+                ,IrregularSchedule
                 ,1
 				)";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
@@ -436,7 +442,8 @@ namespace  NQN.DB
 				myc.Parameters.Add(new SqlParameter("RoleID",obj.RoleID)); 
 				myc.Parameters.Add(new SqlParameter("UpdateBy",obj.UpdateBy));  
                 myc.Parameters.Add(new SqlParameter("CalendarType", obj.CalendarType));
-				myc.ExecuteNonQuery();
+                myc.Parameters.Add(new SqlParameter("IrregularSchedule", obj.IrregularSchedule));
+                myc.ExecuteNonQuery();
 			}
             int GuideID = GetLast();
             if (obj.ShiftID > 0)
@@ -545,6 +552,8 @@ namespace  NQN.DB
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.NotifySubRequests = GetNullableBoolean(reader, "NotifySubRequests", false);
             obj.MaskPersonalInfo = GetNullableBoolean(reader, "MaskPersonalInfo", false);
+            obj.IrregularSchedule = GetNullableBoolean(reader, "IrregularSchedule", false);
+            obj.HasInfoDesk = GetNullableBoolean(reader, "HasInfoDesk", false);
             obj.GuideName =  obj.FirstName + " " + obj.LastName ;
             obj.CalendarType = GetNullableString(reader, "CalendarType", String.Empty);
             GuideRoleDM dm = new GuideRoleDM();
@@ -570,6 +579,7 @@ namespace  NQN.DB
 				,[Notes]
 				,[VolID]
                 ,[CalendarType]
+                ,[IrregularSchedule]
 				,g.[RoleID]
                 ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
                 ,MaskPersonalInfo
@@ -605,6 +615,7 @@ namespace  NQN.DB
 				,[Notes]
 				,[VolID]
                 ,[CalendarType]
+                ,[IrregularSchedule]
 				,g.[RoleID] 
                 ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
                 ,MaskPersonalInfo
@@ -618,6 +629,8 @@ namespace  NQN.DB
                 ,s.DOW
                 ,NotifySubRequests
                 ,HasLogin=(select cast(1 as bit) from aspnet_Users where UserName = g.VolID)
+                ,HasInfoDesk = case r.IsInfo WHEN 1 then r.IsInfo else (select cast(count(*) as bit)
+                         from GuideRole gr join Roles r2 on gr.RoleID = r2.RoleID where gr.GuideID = g.GuideID and r2.IsInfo = 1) end
 				FROM Guides g join Roles r on g.RoleID = r.RoleID
                 join GuideShift gs on g.GuideID = gs.GuideID  join Shifts s on s.ShiftID = gs.ShiftID  ";
 		}
