@@ -61,6 +61,7 @@ namespace NQN.Bus
         public ObjectList<GuideSubstituteObject> SelectForDate( DateTime dt, int GuideID, int RoleID)
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
+            ShiftsDM sdm = new ShiftsDM();
             ObjectList<GuideSubstituteObject> eList = dm.FetchForSub(GuideID, dt);
             ObjectList<GuideSubstituteObject> dList = dm.FetchForDate( dt, RoleID);
             List<int> ShiftsOccupied = new List<int>();
@@ -85,17 +86,17 @@ namespace NQN.Bus
                 // Only list Drop-ins for non-InfoCenter queries
                 foreach (GuideDropinsObject obj in ddm.FetchForDate(dt))
                 {
-                    GuideSubstituteObject newsubs = new GuideSubstituteObject();
-                    newsubs.ShiftID = obj.ShiftID;
-                    newsubs.Sequence = obj.Sequence;
-                    newsubs.Sub = obj.VolID;
-                    newsubs.SubDate = obj.DropinDate;
-                    newsubs.FirstName = "Drop-in";
+                    ShiftsObject shift = sdm.FetchShift(obj.ShiftID);
+                    GuideSubstituteObject newsubs = new GuideSubstituteObject(obj);
+
+                    if (!shift.Recurring)
+                    {
+                        newsubs.FirstName = shift.ShortName;
+                        newsubs.LastName = String.Empty;
+                    }
                     newsubs.NoSub = false;
-                    newsubs.HasSub = true;
-                    newsubs.SubFirst = obj.FirstName;
-                    newsubs.SubLast = obj.LastName;
-                    newsubs.Role = obj.Role;
+                    newsubs.HasSub = false;
+                  
                     dList.Add(newsubs);
                 }
             }
@@ -130,10 +131,12 @@ namespace NQN.Bus
             }
             return dList;
         }
+        // Feed Sub status for mobile second grid on MBAV
         public ObjectList<GuideSubstituteObject> SelectSubsForDate(DateTime dt, int RoleID)
         {
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             GuideSubstituteDM dm = new GuideSubstituteDM();
+            ShiftsDM sdm = new ShiftsDM();
             foreach (GuideSubstituteObject obj in dm.FetchForDate(dt, RoleID))
             {
                 if (obj.SubstituteID > 0)
@@ -142,17 +145,17 @@ namespace NQN.Bus
             GuideDropinsDM ddm = new GuideDropinsDM();
             foreach (GuideDropinsObject obj in ddm.FetchForDate(dt))
             {
-                GuideSubstituteObject newsubs = new GuideSubstituteObject();
-                newsubs.ShiftID = obj.ShiftID;
-                newsubs.Sequence = obj.Sequence;
-                newsubs.Sub = obj.VolID;
-                newsubs.SubDate = obj.DropinDate;
-                newsubs.FirstName = "Drop-in";
+                GuideSubstituteObject newsubs = new GuideSubstituteObject(obj);
+                ShiftsObject shift = sdm.FetchShift(obj.ShiftID);
+
+                if (!shift.Recurring)
+                {
+                    newsubs.FirstName = shift.ShortName;
+                    newsubs.LastName = String.Empty;
+                }
                 newsubs.NoSub = false;
-                newsubs.HasSub = true;
-                newsubs.SubFirst = obj.FirstName;
-                newsubs.SubLast = obj.LastName;
-                newsubs.Role = obj.Role;
+                newsubs.HasSub = false;
+                newsubs.HasName = false;
                 dList.Add(newsubs);
             }
             return dList;

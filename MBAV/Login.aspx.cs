@@ -24,6 +24,7 @@ namespace MBAV
                 GuidesDM gdm = new GuidesDM();
                 GuidesObject guide = gdm.FetchGuide(u.UserName);
                 Session["GuideID"] = guide.GuideID;
+                Session["RoleID"] = (guide.RoleID == RolesDM.GetInfo()) ? guide.RoleID : 0;
                 FormsAuthentication.RedirectFromLoginPage(guide.VolID, LoginUser.RememberMeSet);
                 FormsAuthentication.SetAuthCookie(guide.VolID, false);
             }

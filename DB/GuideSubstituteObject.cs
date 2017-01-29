@@ -187,11 +187,14 @@ namespace NQN.DB
                 return System.Drawing.ColorTranslator.FromHtml((SubLast == null || SubLast == String.Empty) ? "#ff0000" : "#000000");
             }
         }
+        public bool HasName
+        {
+            get; set;
+        }
         public bool HasSub
         {
             get;
             set;
-
         }
         public bool NoSub
         {
@@ -282,6 +285,7 @@ namespace NQN.DB
             _guideid = obj.GuideID;
             FirstName = "Drop";
             LastName = "In";
+            HasName = false;
             GuideSubstituteID = -obj.GuideDropinID;
         }
      

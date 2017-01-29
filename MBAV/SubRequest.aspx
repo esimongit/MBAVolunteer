@@ -7,13 +7,7 @@
      <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
-<asp:ObjectDataSource ID="ObjectDataSource2" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectRequestsForDate">
-<SelectParameters>  
-  <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
-     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
-     <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
-</SelectParameters>
-</asp:ObjectDataSource>
+ 
     <asp:ObjectDataSource ID="ObjectDataSource2s" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectOpenRequestsForDate">
 <SelectParameters>  
   <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
@@ -172,8 +166,13 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 <asp:BoundField DataField="Sequence" HeaderText="Shift" />
 <asp:BoundField DataField="Role" HeaderText="Role" />
 <asp:BoundField DataField="VolID" HeaderText="ID" /> 
-<asp:HyperLinkField DataNavigateUrlFields="GuideID" ControlStyle-ForeColor="#330088"  ControlStyle-Font-Underline="false" ControlStyle-Font-Bold="true" DataNavigateUrlFormatString="ContactInfo.aspx?ID={0}"     Target="_blank" 
-  HeaderText="Requestor (Click for Contact Info)" DataTextField="GuideName" /> 
+<asp:TemplateField  HeaderText="Requestor (Click for Contact Info)">
+     <ItemTemplate>
+        <asp:HyperLink  runat="server"  ForeColor="#330088"   Font-Underline="false" Font-Bold="true" NavigateUrl='<%#Eval("GuideID","ContactInfo.aspx?ID={0}") %>'
+             Target="_blank"  Enabled='<%#Eval("HasName") %>' Text='<%#Eval("GuideName") %>' /> 
+    </ItemTemplate>
+</asp:TemplateField>
+ 
 <asp:TemplateField HeaderText="I can sub"  ItemStyle-HorizontalAlign="Center">
  <ItemTemplate>
  
@@ -181,10 +180,10 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
    <asp:CheckBox ID="SubCheckBox" runat="server"  Enabled = '<%#Eval("CanSub") %>' Visible='<%#Eval("NoSub") %>' Checked = '<%#Bind("SubOffer") %>' />
  </ItemTemplate>
 </asp:TemplateField>
+ 
 <asp:TemplateField HeaderText="Substitute">
     <ItemTemplate>
-        <asp:HyperLink  runat="server"   ForeColor='<%#Eval("SubColor") %>'  Text='<%#Eval("SubName") %>' Font-Underline="false"  Font-Bold="true" 
-              NavigateUrl='<%#Eval("SubstituteID", "ContactInfo.aspx?ID={0}")   %>'   Target="_blank"     /> 
+        <asp:Label  runat="server"   ForeColor='<%#Eval("SubColor") %>'  Text='<%#Eval("SubName") %>' Font-Underline="false"  Font-Bold="true"    /> 
   </ItemTemplate>
 </asp:TemplateField>
  
@@ -200,8 +199,12 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 <Columns>
 <asp:BoundField DataField="Sequence" HeaderText="Shift" />
 <asp:BoundField DataField="Role" HeaderText="Role" /> 
-<asp:HyperLinkField DataNavigateUrlFields="GuideID" ControlStyle-ForeColor="#330088"  ControlStyle-Font-Bold="true" DataNavigateUrlFormatString="ContactInfo.aspx?ID={0}"     Target="_blank" 
-  HeaderText="Requestor (Click for Contact Info)" DataTextField="GuideName" /> 
+<asp:TemplateField  HeaderText="Requestor (Click for Contact Info)">
+     <ItemTemplate>
+        <asp:HyperLink  runat="server"  ForeColor="#330088"   Font-Underline="false" Font-Bold="true" NavigateUrl='<%#Eval("GuideID","ContactInfo.aspx?ID={0}") %>'
+             Target="_blank"  Enabled='<%#Eval("HasName") %>' Text='<%#Eval("GuideName") %>' /> 
+    </ItemTemplate>
+</asp:TemplateField>
 <asp:TemplateField HeaderText="I can sub">
  <ItemTemplate>
   <asp:CheckBox ID="SubCheckBox" runat="server" Enabled = '<%#Eval("CanSub") %>' Visible='<%#Eval("CanSub") %>' Checked = '<%#Bind("SubOffer") %>' />
@@ -218,7 +221,11 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
 <asp:BoundField DataField="Role" HeaderText="Role" /> 
 <asp:HyperLinkField DataNavigateUrlFields="GuideID" ControlStyle-ForeColor="#330088"  ControlStyle-Font-Bold="true" DataNavigateUrlFormatString="ContactInfo.aspx?ID={0}"     Target="_blank" 
   HeaderText="Requestor (Click for Contact Info)" DataTextField="GuideName" /> 
-<asp:HyperLinkField DataTextField="SubName" DataNavigateUrlFields="SubstituteID"  DataNavigateUrlFormatString="ContactInfo.aspx?ID={0}" Target="_blank"  HeaderText="Substitute" />
+<asp:TemplateField HeaderText="Substitute">
+    <ItemTemplate>
+        <asp:Label  runat="server"   ForeColor='<%#Eval("SubColor") %>'  Text='<%#Eval("SubName") %>' Font-Underline="false"  Font-Bold="true"    /> 
+  </ItemTemplate>
+</asp:TemplateField>
 <asp:BoundField DataField="Sub" HeaderText="Sub ID" />
 </Columns>
 <EmptyDataTemplate>No Subs</EmptyDataTemplate>  

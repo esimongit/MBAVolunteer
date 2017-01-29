@@ -453,6 +453,7 @@ namespace  NQN.DB
             obj.NoSub = (obj.SubstituteID == 0);
             obj.HasSub = (obj.SubstituteID > 0);
             obj.CanSub = obj.NoSub;
+            obj.HasName = true;
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
 			return obj;
 		}
