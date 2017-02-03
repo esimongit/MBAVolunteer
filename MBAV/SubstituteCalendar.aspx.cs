@@ -31,7 +31,7 @@ namespace MBAV
            
             NameLabel.Text = guide.GuideName;
             CalendarTypeLabel.Text = (Convert.ToInt32(Session["RoleID"]) == 0) ?  "Guide Calendar" : "Info Center Calendar" ;
-
+           
             if (!Page.IsPostBack)
             {
                 SpecialShiftButton.Visible = StaticFieldsObject.StaticValue("ShowSpecialShifts").ToLower() == "yes";
@@ -42,7 +42,7 @@ namespace MBAV
                 }
                 ToggleDiv.Visible = false;
                 ToggleCalendar.Visible = false;
-
+                CalendarListLink.Visible = guide.HasInfoDesk;  
                 // If the Vol has something other than Info...
                 if (guide.HasInfoDesk && guide.Roles.Count > 0)
                 {
@@ -50,6 +50,7 @@ namespace MBAV
                     ToggleCalendar.Visible = true;
                     ToggleCalendar.Text = (Convert.ToInt32(Session["RoleID"]) == 0) ?  "Show Info Center Calendar" : "Show Guide Calendar" ;
                 }
+                
             }
             Calendar2.SelectedDate = DateTime.Today;
             Calendar2.VisibleDate = DateTime.Today;
@@ -136,6 +137,7 @@ namespace MBAV
             CurrentEvents = null;
         }
 
+        
         protected void MonthChanged(Object sender, MonthChangedEventArgs e)
         {
             CurrentEvents = null;

@@ -239,6 +239,36 @@ namespace  NQN.DB
             return Results;
         }
 
+        // For CalendarList on mbav
+        public ObjectList<GuideSubstituteObject> FetchAllRequests(int SubstituteID, int RoleID)
+        {
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            string qry = ReadAllCommand() + @" where SubDate > convert(date,getdate()) 
+			
+				and not Exists (select 1 from GuideSubstitute s2 join (Guides g3 join GuideShift gs on g3.GuideID = gs.GuideID) on s2.GuideID = g3.GuideID
+					 where s2.SubstituteID = @GuideID and s2.SubDate = s.SubDate and gs.ShiftID = s.ShiftID)
+                and not Exists (select 1 from GuideDropins where GuideID = @GuideID and DropinDate = s.SubDate and ShiftID = s.ShiftID) ";
+				
+            if (RoleID > 0)
+                qry += "	and g.RoleID = @RoleID ";
+            qry += "order by SubDate, Sequence, g.FirstName "; 
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", SubstituteID));
+                myc.Parameters.Add(new SqlParameter("RoleID", RoleID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideSubstituteObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         // Fetch all open requests for shifts in which our Sub has expressed an interest (SubOffers)
         // but this Sub has not yet offered to sub for anybody on that Shift and date
         public ObjectList<GuideSubstituteObject> FetchRequests(int SubstituteID)

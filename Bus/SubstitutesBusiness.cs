@@ -67,6 +67,8 @@ namespace NQN.Bus
             return Shifts;
         }
 
+       
+
         public ObjectList<GuideSubstituteObject> SelectShiftsForGuideAndDate(int GuideID, DateTime dt)
         {
            
@@ -95,7 +97,30 @@ namespace NQN.Bus
             return subs;
              
         }
-
+        // For CalendarList on mbav
+        public ObjectList<GuideSubstituteObject> SelectAllRequests(int SubstituteID, int RoleID)
+        {
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            GuidesDM gdm = new GuidesDM();
+            GuideSubstituteDM sdm = new GuideSubstituteDM();
+            ObjectList<GuideSubstituteObject> dList = sdm.FetchAllRequests(SubstituteID, RoleID);
+            foreach (GuideSubstituteObject obj in dList)
+            {
+                ObjectList<GuidesObject> guides = gdm.FetchInfoForShift(obj.ShiftID);
+                foreach (GuidesObject guide in guides)
+                {
+                    if (!dList.Exists(x => (x.GuideID == guide.GuideID) && (x.ShiftID == obj.ShiftID)))
+                    {
+                        if (obj.GuideID != SubstituteID)
+                            obj.PartnerName = guide.GuideName;
+                        
+                    }
+                        
+                }
+                Results.Add(obj);
+            }
+            return Results;
+        }
         public  GuideSubstituteObject SelectSubstituteShift(int GuideID, DateTime dt, int ShiftID)
         {
 

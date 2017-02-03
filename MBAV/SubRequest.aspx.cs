@@ -370,10 +370,10 @@ namespace MBAV
                 }
 
                 
-               // sb.Notify(NotifyList, msg);
+                sb.Notify(NotifyList, msg);
                 if (NotifyInterestedSubs > 0)
                 { 
-                   //sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
+                   sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);
                 }
                 msg = "The following message has been sent: <br /> " + msg;
                 MsgLabel.Text = msg;

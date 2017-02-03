@@ -116,7 +116,11 @@ namespace NQN.DB
         {
             get;set;
         }
-		public string VolID
+        public string PartnerName
+        {
+            get; set;
+        }
+        public string VolID
         {
             get; set;
         }

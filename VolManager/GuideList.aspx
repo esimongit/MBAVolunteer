@@ -111,12 +111,16 @@
                  Shift:</td><td>
                   <cc2:ShiftSelector ID="ShiftSelector1" runat="server" SelectedValue='<%#Bind("ShiftID") %>'></cc2:ShiftSelector>
                    </td></tr>
+                    <tr><td class="formlabel">
+                 Irregular Schedule:</td><td>
+                  <asp:CheckBox ID="IrregularScheduleCheckBox" runat="server" Checked='<%#Bind("IrregularSchedule") %>' />
+                   </td></tr>
                 <tr><td class="formlabel">
                  Primary Role:</td><td>
                   <cc2:RoleSelector ID="RoleSelect1" runat="server" SelectedValue='<%#Bind("RoleID") %>'></cc2:RoleSelector>
                    </td></tr>
                   <tr><td class="formlabel">
-                 Alternate Roles:</td><td>
+                 
                 Alternate Roles:</td><td>
                <div style="float:left"><asp:Label ID="Label2" runat="server" Text='<%#Eval("AltRoleName") %>'></asp:Label></div>
                      <div style="float:left; padding-left:10px">

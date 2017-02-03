@@ -10,16 +10,34 @@
 namespace MBAV {
     
     
-    public partial class SubstituteCalendar {
+    public partial class CalendarList {
         
         /// <summary>
-        /// ShiftsDataSource control.
+        /// ObjectDataSource1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.ObjectDataSource ShiftsDataSource;
+        protected global::System.Web.UI.WebControls.ObjectDataSource ObjectDataSource1;
+        
+        /// <summary>
+        /// MultiView1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.MultiView MultiView1;
+        
+        /// <summary>
+        /// View1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.View View1;
         
         /// <summary>
         /// NameLabel control.
@@ -31,6 +49,42 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.Label NameLabel;
         
         /// <summary>
+        /// RoleLabel control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label RoleLabel;
+        
+        /// <summary>
+        /// GridView1 control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.GridView GridView1;
+        
+        /// <summary>
+        /// SubmitButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button SubmitButton;
+        
+        /// <summary>
+        /// ResetButton control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ResetButton;
+        
+        /// <summary>
         /// HyperLink3 control.
         /// </summary>
         /// <remarks>
@@ -40,129 +94,57 @@ namespace MBAV {
         protected global::System.Web.UI.WebControls.HyperLink HyperLink3;
         
         /// <summary>
-        /// HyperLink4 control.
+        /// View2 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink HyperLink4;
+        protected global::System.Web.UI.WebControls.View View2;
         
         /// <summary>
-        /// SubLinkRepeater control.
+        /// InfoLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Repeater SubLinkRepeater;
+        protected global::System.Web.UI.WebControls.Label InfoLabel;
         
         /// <summary>
-        /// RosterButton control.
+        /// ConfirmLink control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink RosterButton;
+        protected global::NQN.Controls.CalendarLink ConfirmLink;
         
         /// <summary>
-        /// SearchLink control.
+        /// MsgLabel control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink SearchLink;
+        protected global::System.Web.UI.WebControls.Label MsgLabel;
         
         /// <summary>
-        /// ToggleDiv control.
+        /// RecipientsRepeater control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.HtmlControls.HtmlGenericControl ToggleDiv;
+        protected global::System.Web.UI.WebControls.Repeater RecipientsRepeater;
         
         /// <summary>
-        /// ToggleCalendar control.
+        /// HyperLink1 control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.Button ToggleCalendar;
-        
-        /// <summary>
-        /// SpecialShiftButton control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink SpecialShiftButton;
-        
-        /// <summary>
-        /// CalendarTypeLabel control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Label CalendarTypeLabel;
-        
-        /// <summary>
-        /// CalendarListLink control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.HyperLink CalendarListLink;
-        
-        /// <summary>
-        /// Calendar1 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar Calendar1;
-        
-        /// <summary>
-        /// Calendar2 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar Calendar2;
-        
-        /// <summary>
-        /// Calendar3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar Calendar3;
-        
-        /// <summary>
-        /// Calendar4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar Calendar4;
-        
-        /// <summary>
-        /// Calendar5 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Calendar Calendar5;
+        protected global::System.Web.UI.WebControls.HyperLink HyperLink1;
     }
 }

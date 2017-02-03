@@ -423,7 +423,7 @@ namespace  NQN.DB
 				,@UpdateBy
 				,getdate() 
                 ,nullif(@CalendarType, '')
-                ,IrregularSchedule
+                ,@IrregularSchedule
                 ,1
 				)";
 			 using (SqlConnection conn = ConnectionFactory.getNew())

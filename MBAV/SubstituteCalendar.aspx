@@ -80,10 +80,18 @@
  
 </div>
       
-    <div class="row">
-        <div class="col-xs-11 col-xs-offset-1"><asp:Label ID="CalendarTypeLabel" runat="server" Text="Guide Calendar" Font-Bold="true" Font-Size="Large"></asp:Label></div>
+    <div class="row" >
+        <div class="col-xs-4 col-xs-offset-1" style="padding-top:9px">
+         <asp:Label ID="CalendarTypeLabel" runat="server" Text="Guide Calendar"   Font-Bold="true" Font-Size="Large"></asp:Label></div>  
+  
    
+         <div class="col-xs-5"><asp:HyperLink ID="CalendarListLink" runat="server"   Text="List View" ForeColor="Black" CssClass="btn btn-lg btn-info" Target="_blank" NavigateUrl="CalendarList.aspx"></asp:HyperLink>
+        </div>
+                
     </div>
+    
+  
+    
       <div class="row">
       <div class="col-xs-12 hidden-md hidden-lg hidden-sm">
       <div style="display:block;   margin-top:10px;margin-left:auto; margin-right: auto">
@@ -167,4 +175,5 @@
    </div>
    </div>
 </div>
+     
 </asp:Content>

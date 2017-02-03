@@ -103,6 +103,20 @@ namespace NQN.Bus
             dList.Sort((x, y) => x.Sequence.CompareTo(y.Sequence));
             return dList;
         }
+        public ObjectList<GuideSubstituteObject> SelectRequests(int GuideID, int RoleID)
+        {
+            ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
+            GuideSubstituteDM dm = new GuideSubstituteDM();
+            foreach (GuideSubstituteObject obj in dm.FetchRequests(GuideID))
+            {
+                if (obj.SubstituteID == 0)
+                {
+                    obj.CanSub = (GuideID != obj.GuideID);
+                }
+                dList.Add(obj);
+            }
+            return dList;
+        }
         public ObjectList<GuideSubstituteObject> SelectRequestsForDate(DateTime dt, int GuideID, int RoleID )
         {
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
@@ -335,7 +349,7 @@ namespace NQN.Bus
             return obj;
         } 
         public void UpdateGuide(int GuideID, string VolID, string FirstName, string LastName, string Phone, string Cell, bool CellPreferred, string Email, 
-            int AddShift, int RoleID,  bool Inactive, string Notes, bool MaskPersonalInfo, int AddRole)
+            int AddShift, int RoleID,  bool Inactive, string Notes, bool MaskPersonalInfo, bool IrregularSchedule, int AddRole)
         {
             if (!Inactive && String.IsNullOrEmpty(VolID))
                 throw new Exception("An active Guide must have a unique Guide ID.");
@@ -358,6 +372,7 @@ namespace NQN.Bus
             guide.Notes = Notes;
             guide.MaskPersonalInfo = MaskPersonalInfo;
             guide.VolID = VolID;
+            guide.IrregularSchedule = IrregularSchedule;
             guide.LastUpdate = DateTime.Now;
             guide.UpdateBy = UserSecurity.GetUserName();
             dm.Update(guide);
