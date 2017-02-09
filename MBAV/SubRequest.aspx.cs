@@ -15,9 +15,10 @@ namespace MBAV
         protected void Page_Load(object sender, EventArgs e)
         {
 
-            UpdateCells();
+            
             if (!Page.IsPostBack)
             {
+                UpdateCells();
                 MultiView1.SetActiveView(View1);
                 GridView1.Focus();
             }
@@ -62,7 +63,13 @@ namespace MBAV
                 CurrentSubCell.Visible = true;
                 SequenceLabel.Text = SubShifts;
             }
-
+            foreach (RepeaterItem itm in AbsentShiftsRepeater.Items)
+            {
+                CheckBox NoNeedCheckBox = (CheckBox)itm.FindControl("NoNeedCheckBox");
+                NoNeedCheckBox.Checked = false;
+            }
+            NoSubCheckBox.Checked = false;
+            NewDropCheckBox.Checked = false;
         }
 
         protected void ClearCheckBoxes()
@@ -167,21 +174,24 @@ namespace MBAV
 
 
             // Remove Request for Sub
-            foreach (RepeaterItem itm in AbsentShiftsRepeater.Items)
+            if (!RequestProcessed)
             {
-                CheckBox NoNeedCheckBox = (CheckBox)itm.FindControl("NoNeedCheckBox");
-                if (!NoNeedCheckBox.Checked)
-                    continue;
-                ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
-                ShiftsObject shift = sdm.FetchShift(ShiftID);
-                NotifyList.AddRange(gdm.FetchCaptains(ShiftID));
-                GuideSubstituteObject sub = dm.FetchForGuide(GuideID, ShiftID, dt);
-                if (sub.SubstituteID > 0)
-                    NotifyList.Add(gdm.FetchGuide(sub.SubstituteID));
-                RequestProcessed = true;
-                dm.DeleteForGuideAndDate(GuideID, dt);
-                msg += String.Format("{0} was planning to be absent on Shift {1} on {2}, will be present and no longer needs a substitute.",
-                    guide.GuideName, guide.Sequence, dt.ToLongDateString());
+                foreach (RepeaterItem itm in AbsentShiftsRepeater.Items)
+                {
+                    CheckBox NoNeedCheckBox = (CheckBox)itm.FindControl("NoNeedCheckBox");
+                    if (!NoNeedCheckBox.Checked)
+                        continue;
+                    ShiftID = Convert.ToInt32(((HiddenField)itm.FindControl("ShiftIDHidden")).Value);
+                    ShiftsObject shift = sdm.FetchShift(ShiftID);
+                    NotifyList.AddRange(gdm.FetchCaptains(ShiftID));
+                    GuideSubstituteObject sub = dm.FetchForGuide(GuideID, ShiftID, dt);
+                    if (sub.SubstituteID > 0)
+                        NotifyList.Add(gdm.FetchGuide(sub.SubstituteID));
+                    RequestProcessed = true;
+                    dm.DeleteForGuideAndDate(GuideID, dt);
+                    msg += String.Format("{0} was planning to be absent on Shift {1} on {2}, will be present and no longer needs a substitute.",
+                        guide.GuideName, guide.Sequence, dt.ToLongDateString());
+                }
             }
             // Remove Sub offer
             if (!RequestProcessed && NoSubCheckBox.Checked)
@@ -286,7 +296,7 @@ namespace MBAV
                     }
                 }
             }
-             
+           
             if (!RequestProcessed && NewDropCheckBox.Checked)
             {
                 if (ShiftSelect.SelectedIndex < 0)
