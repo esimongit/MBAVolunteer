@@ -180,7 +180,7 @@ namespace NQN.Bus
                 }
                 GuideDropinsObject drop = dList.Find(x => x.DropinDate == CurDay);
                 if (drop != null)
-                    obj.IsSubstitute = true;
+                    obj.IsSubstitute = (RoleID == drop.RoleID || (RoleID == 0 && !drop.IsInfo));
                 
                 // No volunteers on Christmas day
                 if (!(CurDay.Month == 12 && CurDay.Day == 25))

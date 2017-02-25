@@ -41,7 +41,7 @@
         padding:3px 3px 3px 3px;
     }
 </style>
-<div style="float:left; padding-left:10px">
+<table><tr><td style="vertical-align:top">
       
          <asp:FormView ID="FormView1" runat="server" DataSourceID="ObjectDataSource2" DataKeyNames="GuideID" OnDataBound ="SetLink"
            DefaultMode="Edit"   >
@@ -167,8 +167,7 @@
          </asp:FormView>
      
            
-          </div>
-   <div style="float:left; padding-left:10px; color:#663399; background-color:#FFECAD; min-width:300px; min-height:500px"">
+     </td><td style ="vertical-align:top"> 
           <asp:Menu ID="Menu1" runat="server" 
     onmenuitemclick="Menu1_MenuItemClick" Orientation="Horizontal" 
     BackColor="#FFFBD6" DynamicHorizontalOffset="2" Font-Names="Verdana" 
@@ -259,7 +258,9 @@ planned and select a role. Uncheck dates to remove them. Then click "Submit".  <
 <HeaderTemplate><table cellpadding="5"></HeaderTemplate>
 <ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#afcfdf":"background-color:#ffffff" %>'> 
 <td style="padding:2px 4px 2px 2px; text-align:right"><asp:Label ID="DateLabel" runat="server" Text='<%#Eval("DropinDate",  "{0:d}") %>'></asp:Label></td><td>
-    <asp:DropDownList runat="server" ID="RoleSelect" DataSourceID="RolesDataSource" DataValueField="RoleID" DataTextField="RoleName"></asp:DropDownList>
+    <asp:DropDownList runat="server" ID="RoleSelect" DataSourceID="RolesDataSource" DataValueField="RoleID" DataTextField="RoleName" SelectedValue='<%#Eval("RoleID") %>' AppendDataBoundItems="true">
+        <asp:ListItem Value="0" Text="(Select a Role)"></asp:ListItem>
+    </asp:DropDownList>
  </td>
  <td>
 <asp:CheckBox ID="DateCheckBox" runat="server" Checked='<%#Eval("Selected") %>'   />
@@ -273,4 +274,4 @@ planned and select a role. Uncheck dates to remove them. Then click "Submit".  <
 </div>
          </asp:View> 
 </asp:MultiView>
-    </div>
+  </td></tr></table>

@@ -364,6 +364,7 @@ namespace  NQN.DB
             obj.Phone = GetNullableString(reader, "Phone", String.Empty);
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.OnShift = GetNullableBoolean(reader, "OnShift", false);
+            obj.IsInfo = GetNullableBoolean(reader, "IsInfo", false);
             return obj;
 		}
 
@@ -383,6 +384,8 @@ namespace  NQN.DB
                 ,RoleID = case isnull(d.RoleID,0) WHEN 0 THEN g.RoleID ELSE d.RoleID END
 				,Role=  case isnull(d.RoleID,0) WHEN 0 THEN (select RoleName from Roles WHERE RoleID = g.RoleID)
                     ELSE (select RoleName from Roles where RoleID = d.RoleID) END
+                ,IsInfo= case isnull(d.RoleID,0) WHEN 0 THEN (select IsInfo from Roles WHERE RoleID = g.RoleID)
+                    ELSE (select IsInfo from Roles where RoleID = d.RoleID) END
                 ,d.OnShift 
                 ,MaskContactInfo = (select MaskContactInfo from Roles where RoleID = g.RoleID) | g.MaskPersonalInfo
                 ,s.Sequence

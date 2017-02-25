@@ -27,11 +27,11 @@ namespace MBAV
                 Response.Redirect("Login.aspx");
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(GuideID);
-           
-           
+
+            int RoleID = Convert.ToInt32(Session["RoleID"]);
             NameLabel.Text = guide.GuideName;
-            CalendarTypeLabel.Text = (Convert.ToInt32(Session["RoleID"]) == 0) ?  "Guide Calendar" : "Info Center Calendar" ;
-           
+            CalendarTypeLabel.Text = (RoleID == 0) ?  "Guide Calendar" : "Info Center Calendar" ;
+            ListLink.Visible = (RoleID > 0);
             if (!Page.IsPostBack)
             {
                 SpecialShiftButton.Visible = StaticFieldsObject.StaticValue("ShowSpecialShifts").ToLower() == "yes";
@@ -134,6 +134,7 @@ namespace MBAV
             
             CalendarTypeLabel.Text = (RoleID == 0) ?    "Guide Calendar" : "Info Center Calendar";
             ToggleCalendar.Text = (RoleID == 0) ?   "Show Info Center Calendar" : "Show Guide Calendar" ;
+            ListLink.Visible = (RoleID > 0);
             CurrentEvents = null;
         }
 

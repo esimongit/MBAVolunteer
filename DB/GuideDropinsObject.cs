@@ -143,6 +143,10 @@ namespace NQN.DB
                 return !MaskContactInfo;
             }
         }
+        public bool IsInfo
+        {
+            get; set;
+        }
         public GuideDropinsObject()
 		{
 			_tablename = "GuideDropins";
