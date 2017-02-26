@@ -134,7 +134,7 @@ namespace  NQN.DB
         public ObjectList<GuideSubstituteObject> FetchAllForSub(int SubstituteID)
         {
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
-            string qry = ReadAllCommand() + " WHERE s.SubstituteID = @SubstituteID and SubDate >= getdate()";
+            string qry = ReadAllCommand() + " WHERE s.SubstituteID = @SubstituteID and SubDate >= cast(getdate() as date)";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
