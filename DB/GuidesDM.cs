@@ -237,7 +237,7 @@ namespace  NQN.DB
         public ObjectList<GuidesObject> FetchForShift(int ShiftID)
         {
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
-            string qry = ReadAllShiftsCommand() + " WHERE gs.ShiftID = @ShiftID and isnull(Inactive,0) = 0  order by FirstName  ";
+            string qry = ReadAllShiftsCommand() + " WHERE gs.ShiftID = @ShiftID and isnull(Inactive,0) = 0 and isnull(IrregularSchedule,0) = 0 order by FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -423,8 +423,8 @@ namespace  NQN.DB
 				,@UpdateBy
 				,getdate() 
                 ,nullif(@CalendarType, '')
-                ,@IrregularSchedule
                 ,1
+                ,@IrregularSchedule
 				)";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{

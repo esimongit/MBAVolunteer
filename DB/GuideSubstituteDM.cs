@@ -507,7 +507,7 @@ namespace  NQN.DB
                 ,Phone = case g.CellPreferred WHEN 1 THEN g.Cell ELSE g.Phone END
 				,g.VolID
 				,Role = r.RoleName
-                ,r.IsInfo
+                ,r.IsInfo 
                 ,MaskContactinfo = r.MaskContactInfo
 				,Sub = g2.VolID
 				,SubFirst =  g2.FirstName 

@@ -127,7 +127,8 @@ namespace NQN.Bus
                     guide.ShiftID = import.ShiftID;
                     guide.UpdateBy = UserSecurity.GetUserName();
                     guide.LastUpdate = DateTime.Now;
-                   
+                    guide.IrregularSchedule = false;
+                    guide.NotifySubRequests = true;
                     // Only count Success
                     try
                     {

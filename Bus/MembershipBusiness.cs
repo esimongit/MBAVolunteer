@@ -79,6 +79,8 @@ namespace NQN.Bus
                 Membership.ApplicationName = "VolManager";
                 return String.Empty;
             }
+
+            col = Membership.FindUsersByEmail(Email);
             
             string password = Membership.GeneratePassword(7, 1);
             GuidesDM gdm = new GuidesDM();

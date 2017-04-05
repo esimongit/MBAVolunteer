@@ -55,9 +55,7 @@
             <asp:BoundField DataField="ShiftEnd" DataFormatString="{0:h\:mm tt}" HeaderText="Shift End" ItemStyle-HorizontalAlign="Right">
             <ItemStyle HorizontalAlign="Right" />
             </asp:BoundField>
-            <asp:BoundField DataField="Attendance"   HeaderText="Count" ItemStyle-HorizontalAlign="Right">
-            <ItemStyle HorizontalAlign="Right" />
-            </asp:BoundField>
+           
             <asp:BoundField DataField="Captains" HeaderText="Captains" />
             <asp:BoundField DataField="InfoDesk" HeaderText="Info Center" />
         </Columns>

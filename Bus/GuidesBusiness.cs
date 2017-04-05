@@ -201,10 +201,11 @@ namespace NQN.Bus
                     obj.SubDescription = sub.Sub == String.Empty ? "No substitute" : "Substitute: " + sub.SubName + ", " + sub.SubRole;
                     
                 }
-                if (obj.RoleName.Contains("Info"))
+                if (obj.HasInfoDesk && !iList.Contains(obj) && !Results.Contains(obj))
                     iList.Add(obj);
                 else
-                    Results.Add(obj);
+                     if (!Results.Contains(obj))
+                        Results.Add(obj);
             }
             foreach (GuideDropinsObject drop in pList)
             {
@@ -219,10 +220,11 @@ namespace NQN.Bus
                 obj.GuideID = drop.GuideID;
                 obj.SubDescription = "Drop In";
                 obj.RoleName = drop.Role;
-                if (obj.RoleName.Contains("Info"))
+                if (drop.IsInfo && !iList.Contains(obj) && !Results.Contains(obj))
                     iList.Add(obj);
                 else
-                    Results.Add(obj); 
+                    if (!Results.Contains(obj))
+                        Results.Add(obj); 
             }
             foreach (GuideDropinsObject drop in rList)
             {
@@ -237,10 +239,11 @@ namespace NQN.Bus
                 obj.GuideID = drop.GuideID;
                 obj.SubDescription = "Special";
                 obj.RoleName = drop.Role;
-                if (obj.RoleName.Contains("Info"))
+                if (drop.IsInfo && !iList.Contains(obj) && !Results.Contains(obj))
                     iList.Add(obj);
                 else
-                    Results.Add(obj);
+                     if (!Results.Contains(obj))
+                        Results.Add(obj);
             }
             Results.Sort((x, y) => x.FirstName.CompareTo(y.FirstName));
             Results.AddRange(iList);
