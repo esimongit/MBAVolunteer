@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
-using System.Text;
+using System.Data;
 using NQN.Core;
 
 namespace  NQN.DB
@@ -348,7 +348,7 @@ namespace  NQN.DB
             }
             return ret;
         }
-        public ObjectList<GuideSubstituteObject> RequestHistory(int GuideID)
+        public DataTable RequestHistory(int GuideID)
         {
             string qry = ReadAllCommand() + " where s.GuideID = @GuideID order by Subdate";
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
@@ -369,9 +369,9 @@ namespace  NQN.DB
                     }
                 }
             }
-            return Results;
+            return Results.RenderAsTable();
         }
-        public ObjectList<GuideSubstituteObject> SubHistory(int GuideID)
+        public DataTable SubHistory(int GuideID)
         {
             string qry = ReadAllCommand() + " where s.SubstituteID = @GuideID order by Subdate";
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
@@ -391,7 +391,7 @@ namespace  NQN.DB
                     }
                 }
             }
-            return Results;
+            return Results.RenderAsTable();
         }
         public void Update(GuideSubstituteObject obj)
 		{
@@ -576,14 +576,16 @@ namespace  NQN.DB
 		}
         public ObjectList<GuideSubstituteObject> SubstituteReport(DateTime StartDate, DateTime EndDate)
         {
-            string qry = @"select  guidid,volid, firstname, lastname,
-                subs = (select count(*) from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate) ,
+            string qry = @"select  guideid,volid, firstname, lastname,
+				Subs = (select count(*) from GuideSubstitute s where SubstituteID = g.GuideID and SubDate between @StartDate and @EndDate) ,
+				
+                Requests = (select count(*) from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate) ,
                 Zerodays = (select count(*)   from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate
                   and datediff(Day, DateEntered,SubDate) = 0),
                 MinDays = (select  min(datediff(Day, DateEntered,SubDate)) from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate) ,
                 MaxDays = (select  max(datediff(Day, DateEntered,SubDate)) from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate) 
                  from Guides g
-                 order by lastname";
+                 order by lastname ";
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
              
             using (SqlConnection conn = ConnectionFactory.getNew())
@@ -600,6 +602,7 @@ namespace  NQN.DB
                         obj.LastName = GetNullableString(reader, "LastName", String.Empty);
                         obj.VolID = GetNullableString(reader, "VolID", String.Empty);
                         obj.GuideID = GetNullableInt32(reader, "GuideID", 0);
+                        obj.Requests = GetNullableInt32(reader, "Requests", 0);
                         obj.Subs = GetNullableInt32(reader, "Subs", 0);
                         obj.ZeroDays = GetNullableInt32(reader, "ZeroDays", 0);
                         obj.MinDays = GetNullableInt32(reader, "MinDays", 0);

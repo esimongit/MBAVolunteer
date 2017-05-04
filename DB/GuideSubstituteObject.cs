@@ -251,6 +251,10 @@ namespace NQN.DB
         {
             get; set;
         }
+        public int Requests
+        {
+            get; set;
+        }
         public int Subs
         {
             get; set;

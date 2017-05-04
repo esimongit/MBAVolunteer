@@ -101,6 +101,7 @@
     <Content Include="ManageVolAccess.aspx" />
     <Content Include="Recovery\Default.aspx" />
     <Content Include="Reports\CaptainsReport.aspx" />
+    <Content Include="Reports\SubstituteHistory.aspx" />
     <Content Include="Reports\ShiftCountsReport.aspx" />
     <Content Include="Reports\SumReport.aspx" />
     <Content Include="GuideRoles.aspx" />
@@ -229,6 +230,13 @@
     </Compile>
     <Compile Include="Reports\CaptainsReport.aspx.designer.cs">
       <DependentUpon>CaptainsReport.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Reports\SubstituteHistory.aspx.cs">
+      <DependentUpon>SubstituteHistory.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Reports\SubstituteHistory.aspx.designer.cs">
+      <DependentUpon>SubstituteHistory.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\ShiftCountsReport.aspx.cs">
       <DependentUpon>ShiftCountsReport.aspx</DependentUpon>
@@ -407,7 +415,11 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Reports\SubstituteHistory.rdlc">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
