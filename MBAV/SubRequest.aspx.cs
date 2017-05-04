@@ -18,6 +18,20 @@ namespace MBAV
             
             if (!Page.IsPostBack)
             {
+                
+                DateTime dt = DateTime.Today;
+                try
+                {
+                    dt = DateTime.Parse(Request.QueryString["dt"]);
+                }
+                catch
+                {
+                    ErrorMessage.Set("This page is only reached from the calendar");
+                    return;
+                }
+                if (dt < DateTime.Today)
+                    dt = DateTime.Today;
+                Session["dt"] = dt;
                 UpdateCells();
                 MultiView1.SetActiveView(View1);
                 GridView1.Focus();
@@ -36,22 +50,13 @@ namespace MBAV
             GuidesDM dm = new GuidesDM();
             ShiftsDM tdm = new ShiftsDM();
             GuideSubstituteDM sdm = new GuideSubstituteDM();
-           // GuideSubstituteObject sub = sdm.FetchForGuide(GuideID, DateTime.Parse(Request.QueryString["dt"]));
+          
             GuidesObject guide = dm.FetchGuide( GuideID);
-            DateTime dt = DateTime.Today;
-            try
-            {
-                dt = DateTime.Parse(Request.QueryString["dt"]);
-            }
-            catch
-            {
-                ErrorMessage.Set("This page is only reached from the calendar");
-                return;
-            }
-            DateLabel.Text = DateTime.Parse(Request.QueryString["dt"]).ToLongDateString();
+            DateTime dt = (DateTime)Session["dt"];
+            DateLabel.Text = dt.ToLongDateString();
             NameLabel.Text = guide.GuideName;           
             RoleLabel.Text = guide.RoleName;
-
+           
             DropinCell.Visible = tdm.ShiftsForDateAndGuide(dt, GuideID).Count > 0;
             if (Convert.ToInt32(Session["RoleID"]) > 0)
                     DropinCell.Visible = false;
@@ -95,7 +100,8 @@ namespace MBAV
             GuideDropinsDM ddm = new GuideDropinsDM();
             ShiftsDM sdm = new ShiftsDM();
             ObjectList<GuidesObject> NotifyList = new ObjectList<GuidesObject>();
-            DateTime dt = DateTime.Parse(Request.QueryString["dt"]);
+            DateTime dt = (DateTime)Session["dt"];
+            
             int NotifyInterestedSubs = 0;
             bool NeedSub = false;
             bool DoSub = false;

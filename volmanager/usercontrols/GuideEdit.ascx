@@ -35,6 +35,16 @@
     <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
         </SelectParameters>
 </asp:ObjectDataSource>
+<asp:ObjectDataSource ID="RequestHistoryDataSource" runat="server" TypeName="NQN.DB.GuideSubstituteDM" SelectMethod="RequestHistory">
+    <SelectParameters>
+    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
+        </SelectParameters>
+</asp:ObjectDataSource>
+<asp:ObjectDataSource ID="SubHistoryDataSource" runat="server" TypeName="NQN.DB.GuideSubstituteDM" SelectMethod="SubHistory">
+    <SelectParameters>
+    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
+        </SelectParameters>
+</asp:ObjectDataSource>
 <style>
     td, th
     {
@@ -181,7 +191,7 @@
       <asp:MenuItem Text="Need Subs" Value="1"></asp:MenuItem>
         <asp:MenuItem   Text="Available" Value="2"></asp:MenuItem>
         <asp:MenuItem Text="Irreg Schedule" Value="3"></asp:MenuItem>        
-       
+        <asp:MenuItem Text="Sub History" Value="4"></asp:MenuItem> 
     </Items>
     </asp:Menu>
    <asp:MultiView ID="MultiView1" runat="server">
@@ -273,5 +283,29 @@ planned and select a role. Uncheck dates to remove them. Then click "Submit".  <
 <asp:Button ID="SubmitButton" OnClick="DoSubmit" runat="server" Text="Submit" CssClass="btn btn-success" />
 </div>
          </asp:View> 
+       <asp:View ID="View4" runat="server">
+
+           <asp:GridView ID="SubRequestGridView" runat="server" DataSourceID ="RequestHistoryDataSource" PageSize="20" AutoGenerateColumns="False">
+
+               <Columns>                   
+                   <asp:BoundField DataField="SubDate" HeaderText="Sub Date" DataFormatString="{0:d}" SortExpression="SubDate" />                 
+                   <asp:CheckBoxField DataField="HasSub" HeaderText="Had a Sub" SortExpression="HasSub" />   
+                   <asp:BoundField DataField="LeadTime" HeaderText="Lead Days" SortExpression="LeadTime" />
+                  
+               </Columns>
+               <EmptyDataTemplate>No Substitute Requests</EmptyDataTemplate>
+           </asp:GridView>
+           <br />
+           <asp:GridView ID="SubHistoryGridView"  Caption="<b>Substitute Shifts</b>" runat="server" DataSourceID ="SubHistoryDataSource" PageSize="20" AutoGenerateColumns="False">
+
+               <Columns>               
+                     <asp:BoundField DataField="SubDate" HeaderText="Sub Date" SortExpression="SubDate" DataFormatString="{0:d}" />       
+                   <asp:BoundField DataField="ShiftName" HeaderText="Shift Name" SortExpression="ShiftName" />                  
+                   <asp:BoundField DataField="SubRole" HeaderText="Role" SortExpression="SubRole" />                  
+                   <asp:BoundField DataField="GuideName" HeaderText="Requestor Name" ReadOnly="True" SortExpression="GuideName" />  
+               </Columns>
+               <EmptyDataTemplate>No Substitute Shifts</EmptyDataTemplate>
+           </asp:GridView>
+           </asp:View>
 </asp:MultiView>
   </td></tr></table>

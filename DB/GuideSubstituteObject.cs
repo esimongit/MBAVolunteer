@@ -251,6 +251,26 @@ namespace NQN.DB
         {
             get; set;
         }
+        public int Subs
+        {
+            get; set;
+        }
+        public int ZeroDays
+        {
+            get; set;
+        }
+        public int MinDays
+        {
+            get; set;
+        }
+        public int MaxDays
+        {
+            get; set;
+        }
+        public int LeadTime
+        {
+            get; set;
+        }
         public GuideSubstituteObject()
 		{
 			_tablename = "GuideSubstitute";

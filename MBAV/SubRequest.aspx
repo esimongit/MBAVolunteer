@@ -2,7 +2,7 @@
 <asp:Content ID="Content1" ContentPlaceHolderID="MainContent" runat="server">
 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectForDate">
 <SelectParameters>  
-  <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
+    <asp:SessionParameter SessionField="dt" Type="DateTime"  Name="dt"   />
      <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
      <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
 </SelectParameters>
@@ -10,45 +10,45 @@
  
     <asp:ObjectDataSource ID="ObjectDataSource2s" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectOpenRequestsForDate">
 <SelectParameters>  
-  <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
+    <asp:SessionParameter SessionField="dt" Type="DateTime"  Name="dt"   />
      <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
      <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="SelectSubsForDate">
 <SelectParameters>  
-  <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
+  <asp:SessionParameter SessionField="dt" Type="DateTime"  Name="dt"   />
      <asp:SessionParameter SessionField="RoleID" Type="Int32"  Name="RoleID" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ObjectDataSource4" runat="server" TypeName="NQN.Bus.SubstitutesBusiness" SelectMethod="SelectShiftsForGuideAndDate">
 <SelectParameters>  
     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
-  <asp:QueryStringParameter QueryStringField="dt" Name="dt" Type="DateTime"   />
+   <asp:SessionParameter SessionField="dt" Type="DateTime"  Name="dt"   />
 </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="ShiftsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="ShiftsForDateAndGuide">
   <SelectParameters>
     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
-    <asp:QueryStringParameter QueryStringField="dt" Type="DateTime" Name="dt" />
+   <asp:SessionParameter SessionField="dt" Type="DateTime"  Name="dt"   />
   </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="RegularShiftsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="RegularShiftsForGuideAndDate">
     <SelectParameters>
     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
-    <asp:QueryStringParameter QueryStringField="dt" Type="DateTime" Name="dt" />
+   <asp:SessionParameter SessionField="dt" Type="DateTime"  Name="dt"   />
   </SelectParameters>
 </asp:ObjectDataSource>
 <asp:ObjectDataSource ID="NeedSubDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="NeedSubShiftsForGuideAndDate">
     <SelectParameters>
     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
-    <asp:QueryStringParameter QueryStringField="dt" Type="DateTime" Name="dt" />
+    <asp:SessionParameter SessionField="dt" Type="DateTime"  Name="dt"   />
   </SelectParameters>
 </asp:ObjectDataSource>
  <asp:ObjectDataSource ID="AbsentShiftsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="AbsentShiftsForGuideAndDate">
     <SelectParameters>
     <asp:SessionParameter SessionField="GuideID" Type="Int32"  Name="GuideID" DefaultValue="0" />
-    <asp:QueryStringParameter QueryStringField="dt" Type="DateTime" Name="dt" />
+    <asp:SessionParameter SessionField="dt" Type="DateTime"  Name="dt"   />
   </SelectParameters>
 </asp:ObjectDataSource>
 <asp:MultiView ID="MultiView1" runat="server">

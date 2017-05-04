@@ -107,7 +107,7 @@ namespace  NQN.DB
 		}
         public void DeleteAllForGuide(int GuideID)
         {
-            string qry = "delete from SubOffers where  GuideID = @GuideID ";
+            string qry = "delete from SubOffers where  GuideID = @GuideID  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn); 

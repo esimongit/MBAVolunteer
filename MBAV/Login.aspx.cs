@@ -39,9 +39,7 @@ namespace MBAV
             Label InstructionText = (Label)LoginUser.FindControl("InstructionText");
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(VolID);
-            if (guide == null)
-                return;
-            if (guide.Inactive)
+            if (guide == null || guide.Inactive)
             {
                  InstructionText.Text = "Your login has been disabled.";
                 e.Cancel = true;
@@ -57,7 +55,7 @@ namespace MBAV
             string VolID = LoginUser.UserName;
             GuidesDM dm = new GuidesDM();
             GuidesObject guide = dm.FetchGuide(VolID);
-
+            
             Session["IsCaptain"] = guide.HasRole("Shift Captain");
             Session["RoleID"] = (guide.RoleID == RolesDM.GetInfo()) ? guide.RoleID : 0;
 

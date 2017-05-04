@@ -348,7 +348,52 @@ namespace  NQN.DB
             }
             return ret;
         }
-		public void Update(GuideSubstituteObject obj)
+        public ObjectList<GuideSubstituteObject> RequestHistory(int GuideID)
+        {
+            string qry = ReadAllCommand() + " where s.GuideID = @GuideID order by Subdate";
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideSubstituteObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        obj.HasSub = (obj.SubstituteID != 0);
+                        obj.LeadTime = obj.SubDate.Subtract(obj.DateEntered).Days;
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
+        public ObjectList<GuideSubstituteObject> SubHistory(int GuideID)
+        {
+            string qry = ReadAllCommand() + " where s.SubstituteID = @GuideID order by Subdate";
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideSubstituteObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
+        public void Update(GuideSubstituteObject obj)
 		{
             
             GuidesDM dm = new GuidesDM();
@@ -444,8 +489,8 @@ namespace  NQN.DB
         }
         public void DeleteAllForGuide(int GuideID)
         {
-            string qry = @"DELETE GuideSubstitute   WHERE GuideID = @GuideID; 
-                Update GuideSubstitute set SubstituteID = null where SubstituteID = @GuideID ";
+            string qry = @"DELETE GuideSubstitute   WHERE GuideID = @GuideID  and SubDate > getdate();
+                Update GuideSubstitute set SubstituteID = null where SubstituteID = @GuideID and SubDate > getdate() ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -529,7 +574,44 @@ namespace  NQN.DB
 				return  Convert.ToInt32( myc.ExecuteScalar());
 			}
 		}
-       
+        public ObjectList<GuideSubstituteObject> SubstituteReport(DateTime StartDate, DateTime EndDate)
+        {
+            string qry = @"select  guidid,volid, firstname, lastname,
+                subs = (select count(*) from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate) ,
+                Zerodays = (select count(*)   from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate
+                  and datediff(Day, DateEntered,SubDate) = 0),
+                MinDays = (select  min(datediff(Day, DateEntered,SubDate)) from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate) ,
+                MaxDays = (select  max(datediff(Day, DateEntered,SubDate)) from GuideSubstitute s where GuideID = g.GuideID and SubDate between @StartDate and @EndDate) 
+                 from Guides g
+                 order by lastname";
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+             
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("StartDate", StartDate));
+                myc.Parameters.Add(new SqlParameter("EndDate", EndDate));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        GuideSubstituteObject obj = new GuideSubstituteObject();
+                        obj.FirstName = GetNullableString(reader, "FirstName", String.Empty);
+                        obj.LastName = GetNullableString(reader, "LastName", String.Empty);
+                        obj.VolID = GetNullableString(reader, "VolID", String.Empty);
+                        obj.GuideID = GetNullableInt32(reader, "GuideID", 0);
+                        obj.Subs = GetNullableInt32(reader, "Subs", 0);
+                        obj.ZeroDays = GetNullableInt32(reader, "ZeroDays", 0);
+                        obj.MinDays = GetNullableInt32(reader, "MinDays", 0);
+                        obj.MaxDays = GetNullableInt32(reader, "MaxDays", 0);
+                         
+                        Results.Add(obj);
+                       
+                    }
+                }
+            }
+            return Results;
+        }
 
              
 
