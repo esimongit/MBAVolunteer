@@ -20,7 +20,7 @@ you can participate. </h3><hr/>
   </div></div>
 <asp:Repeater ID="SpecialRepeater" runat="server" DataSourceID="SpecialsDataSource" >
 <HeaderTemplate><table cellpadding="5" border="1">
-    <tr><th>Shift</th><th>Date</th><th>Start Time</th><th>End Time</th><th>Count</th><th>Check to Participate</th></tr></HeaderTemplate>
+    <tr><th>Shift</th><th>Date</th><th>Start Time</th><th>End Time</th><th>Count</th><th>Needed</th><th>Check to Participate</th></tr></HeaderTemplate>
 <ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#efefef":"background-color:#ffffff" %>'>
       <td><asp:Label runat="server" Text='<%#Eval("ShortName") %>'></asp:Label></td>
     <td><asp:Label runat="server" Text='<%#Eval("ShiftDate","{0:d}") %>'></asp:Label></td>
@@ -28,6 +28,7 @@ you can participate. </h3><hr/>
      <td><asp:Label runat="server" Text='<%#Eval("ShiftEnd","{0:t}") %>'></asp:Label></td>
    
     <td><asp:Label runat="server" Text='<%#Eval("Attendance") %>'></asp:Label></td>
+     <td><asp:Label runat="server" Text='<%#Eval("Needed") %>'></asp:Label></td>
     <td style="text-align:center"> 
     <asp:CheckBox ID="ShiftCheckBox" runat="server" Checked='<%#Eval("Selected") %>' OnCheckedChanged="SpecialShiftChanged"  AutoPostBack="true" />
     <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />

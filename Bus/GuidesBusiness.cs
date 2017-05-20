@@ -338,6 +338,17 @@ namespace NQN.Bus
             dm.Save(dropin);
         }
 
+        public void RemoveDropIn(int GuideID, int ShiftID, DateTime ShiftDate)
+        {
+            ShiftsDM sdm = new ShiftsDM();
+            ShiftsObject shift = sdm.FetchShift(ShiftID);
+            GuideDropinsDM dm = new GuideDropinsDM();
+            if (shift.Recurring)
+                dm.DeleteForGuideAndDate(GuideID, ShiftID, ShiftDate);
+            else
+                dm.DeleteSpecial(GuideID, ShiftID);
+
+        }
         public GuidesObject SelectGuide(int GuideID)
         {
             GuidesDM dm = new GuidesDM();

@@ -114,6 +114,18 @@ namespace NQN.DB
                 _shifttimeid = value;
             }
         }
+        private int _quota = 0;
+        public int Quota
+        {
+            get
+            {
+                return _quota;
+            }
+            set
+            {
+                _quota = value;
+            }
+        }
         private DateTime _shiftdate = DateTime.MinValue;
         public DateTime ShiftDate
         {
@@ -162,6 +174,20 @@ namespace NQN.DB
             get
             {
                 return !_recurring;
+            }
+        }
+        public int Needed
+        {
+            get
+            {
+                return Quota - Attendance;
+            }
+        }
+        public string Type
+        {
+            get
+            {
+                return _recurring ? "Recurring" : "Special";
             }
         }
 		public ShiftsObject()

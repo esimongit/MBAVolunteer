@@ -49,6 +49,7 @@
             <asp:BoundField DataField="ShiftDate" HeaderText ="Date" DataFormatString="{0:d}" />
             <asp:BoundField DataField="Sequence" HeaderText="Sequence" ReadOnly="true" />
             <asp:BoundField DataField="ShortName" HeaderText="Short Name" />
+            <asp:BoundField DataField="Quota" HeaderText="Quota" />
             <asp:BoundField DataField="ShiftStart" DataFormatString="{0:h\:mm tt}" HeaderText="Shift Start" ItemStyle-HorizontalAlign="Right">
             <ItemStyle HorizontalAlign="Right" />
             </asp:BoundField>
@@ -93,6 +94,10 @@
                     <tr><td class="formlabel">
                     Sequence:</td><td>
                     <asp:TextBox ID="SequenceTextBox" runat="server" Width="20" Text='<%# Bind("Sequence") %>' />
+                   </td></tr>
+                        <tr><td class="formlabel">
+                    Quota:</td><td>
+                    <asp:TextBox ID="TextBox1" runat="server" Width="20" Text='<%# Bind("Quota") %>' />
                    </td></tr>
                     <tr><td class="formlabel">
                     Short Name:</td><td>

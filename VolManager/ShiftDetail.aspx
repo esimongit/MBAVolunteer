@@ -1,7 +1,7 @@
 ﻿<%@ Page Title="Shift Detail" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="ShiftDetail.aspx.cs" Inherits="VolManager.ShiftDetail" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" TypeName = "NQN.Bus.GuidesBusiness" SelectMethod="Roster" UpdateMethod="UpdateRoster"
- InsertMethod="AddDropIn" OnUpdated="OnChanged" OnDeleted="OnChanged" OnInserted="OnChanged">
+ InsertMethod="AddDropIn"  DeleteMethod="RemoveDropIn" OnUpdated="OnChanged" OnDeleted="OnChanged" OnInserted="OnChanged">
  <SelectParameters>
    <asp:QueryStringParameter QueryStringField="ShiftID" Name="ShiftID" Type="Int32" DefaultValue="0" />
    <asp:QueryStringParameter QueryStringField="ShiftDate" Name="dt" Type="DateTime" DefaultValue="1/2/2016" />
@@ -10,6 +10,10 @@
  <asp:QueryStringParameter QueryStringField="ShiftDate" Name="dt" Type="DateTime" DefaultValue="1/2/2016" />
       <asp:QueryStringParameter QueryStringField="ShiftID" Name="ShiftID" Type="Int32" DefaultValue="0" />
  </UpdateParameters>
+ <DeleteParameters>
+ <asp:QueryStringParameter QueryStringField="ShiftDate" Name="ShiftDate" Type="DateTime" DefaultValue="1/2/2016" />
+      <asp:QueryStringParameter QueryStringField="ShiftID" Name="ShiftID" Type="Int32" DefaultValue="0" />
+ </DeleteParameters>
  <InsertParameters>
   <asp:QueryStringParameter QueryStringField="ShiftID" Name="ShiftID" Type="Int32" DefaultValue="0" />
  <asp:QueryStringParameter QueryStringField="ShiftDate" Name="dt" Type="DateTime" DefaultValue="1/2/2016" />
@@ -26,7 +30,9 @@
         <table>
             <tr><td class="formlabel">
                 Shift Name:</td><td>
-                    <asp:Label ID="ShiftNameLabel" Text='<%#Eval("ShortName") %>' runat="server"></asp:Label>
+                    <asp:Label ID="ShiftNameLabel" Text='<%#Eval("ShortName") %>' runat="server"></asp:Label> 
+                       (<asp:Label ID="TypeLabel" Text='<%#Eval("Type") %>' runat="server"></asp:Label>)
+                     
                 </td></tr>
              <tr><td class="formlabel">
                 Date:</td><td>
@@ -46,13 +52,13 @@
     <div style="clear:both"></div>
     <br />
     <cc2:NQNGridView ID="GridView1" runat="server" AutoGenerateColumns="False"  PageSize="50"
-        DataSourceID="ObjectDataSource1" DataKeyNames="GuideID" 
+        DataSourceID="ObjectDataSource1" DataKeyNames="GuideID"  Caption="<b>Delete only removes drop-ins or special shifts.</b>"
         AllowMultiColumnSorting="False" 
-        DeleteMessage="Are you sure you want to delete?" Privilege="">
+        DeleteMessage="Are you sure you want to remove this guide from the shift for this date" Privilege="">
         <Columns>
          
-                 <asp:CommandField ButtonType="Image" CancelImageUrl="~/Images/cancel.gif"  ShowEditButton="true"
-                     EditImageUrl="~/Images/iedit.gif" UpdateImageUrl="~/Images/save.gif" />
+                 <asp:CommandField ButtonType="Image" CancelImageUrl="~/Images/cancel.gif"  ShowEditButton="true" 
+                     EditImageUrl="~/Images/iedit.gif" UpdateImageUrl="~/Images/save.gif" ShowDeleteButton="true" DeleteImageUrl="~/Images/delete.gif" />
                  
                  <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolInt"  ReadOnly="true"/>
             <asp:BoundField DataField="FirstName" HeaderText="First Name"  ReadOnly="true"

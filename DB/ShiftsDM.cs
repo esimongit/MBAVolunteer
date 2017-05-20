@@ -62,6 +62,7 @@ namespace  NQN.DB
                 ,[ShiftDate] = null
                 ,[Recurring]
                 ,s.[ShiftTimeID]
+                ,[Quota]
                 ,ShiftStart=cast (t.ShiftStart as DateTime)
                 ,ShiftEnd=cast (t.ShiftEnd as DateTime)
 				FROM Shifts s join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID left join SubOffers o on s.ShiftID = o.ShiftID and GuideID = @GuideID 
@@ -104,6 +105,7 @@ namespace  NQN.DB
                 ,ShiftEnd = cast(t.ShiftEnd as DateTime)
                 ,[Captains] = ''
                 ,[Info] = ''
+                ,[Quota]
              ,Attendance = dbo.ShiftAttendance(@dt, s.ShiftID)
 		     FROM Shifts s left join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID
 		    WHERE (s.recurring = 1 and dow = datepart(dw, @dt)  and ((s.AWeek = 1 and dbo.AB(@dt)  = 'AWeek') or (s.BWeek = 1 and   dbo.AB(@dt) = 'BWeek')))
@@ -357,9 +359,10 @@ namespace  NQN.DB
                 ,[Recurring]
                 ,[ShiftDate]
                 ,s.ShiftTimeID
+                ,Quota
                 ,ShiftStart=cast(t.ShiftStart as DateTime)
                 ,ShiftEnd=cast(t.ShiftEnd as DateTime)
-                ,Attendance = (select count(*) from GuideDropins d join Roles r on d.RoleID =r.RoleID and r.IsCaptain = 0 and r.IsInfo = 0 where ShiftID = s.ShiftID)
+                ,Attendance = (select count(*) from GuideDropins  where ShiftID = s.ShiftID)
                 ,[Captains] = dbo.FlattenCaptains(s.ShiftID)
                 ,[Info] = dbo.FlattenInfo(s.ShiftID)
 				,[Selected]  = (select cast(max(1) as bit) from GuideDropins where ShiftID = s.ShiftID and GuideID = @GuideID)
@@ -375,6 +378,7 @@ namespace  NQN.DB
                     while (obj != null)
                     {
                         obj.Selected = GetNullableBoolean(reader, "Selected", false);
+                        obj.Attendance = GetNullableInt32(reader, "Attendance", 0);
                         Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
@@ -405,7 +409,8 @@ namespace  NQN.DB
                 ,[Attendance]
                 ,[ShiftStart] = null
                 ,[ShiftEnd] = null
-			   FROM dbo.ShiftsForMonth(@Yr, @Mo) where Recurring = 1 order by dt, Sequence ";
+                ,[Quota]
+			   FROM dbo.ShiftsForMonth(@Yr, @Mo)  order by dt, Sequence ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -436,6 +441,7 @@ namespace  NQN.DB
 				,ShortName=@ShortName
                 ,ShiftTimeID = @ShiftTimeID 
                 ,ShiftDate = nullif(@ShiftDate, @DefaultDate)
+                ,Quota = nullif(@Quota, 0)
 				 WHERE ShiftID = @ShiftID"
                   ;
             using (SqlConnection conn = ConnectionFactory.getNew())
@@ -451,6 +457,7 @@ namespace  NQN.DB
                 myc.Parameters.Add(new SqlParameter("ShiftTimeID", obj.ShiftTimeID)); 
                 myc.Parameters.Add(new SqlParameter("ShiftDate", obj.ShiftDate));
                 myc.Parameters.Add(new SqlParameter("DefaultDate", obj.SQLMinDate));
+                myc.Parameters.Add(new SqlParameter("Quota", obj.Quota));
                 myc.ExecuteNonQuery();
             }
         }
@@ -467,6 +474,7 @@ namespace  NQN.DB
                 ,[ShiftTimeID]
                 ,[Recurring]
                 ,[ShiftDate]
+                ,[Quota]
 				)
 			VALUES(
 				@ShiftName
@@ -478,6 +486,7 @@ namespace  NQN.DB
                 ,@ShiftTimeID
                 ,@Recurring
                 ,nullif(@ShiftDate, @DefaultDate)
+                ,nullif(@Quota, 0)
 				)";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -492,6 +501,7 @@ namespace  NQN.DB
                 myc.Parameters.Add(new SqlParameter("Recurring", obj.Recurring));
                 myc.Parameters.Add(new SqlParameter("ShiftDate", obj.ShiftDate));
                 myc.Parameters.Add(new SqlParameter("DefaultDate", obj.SQLMinDate));
+                myc.Parameters.Add(new SqlParameter("Quota", obj.Quota));
                 myc.ExecuteNonQuery();
             }
         }
@@ -509,6 +519,7 @@ namespace  NQN.DB
 
         protected override ShiftsObject LoadFrom(SqlDataReader reader)
         {
+          
             if (reader == null) return null;
             if (!reader.Read()) return null;
             ShiftsObject obj = new ShiftsObject();
@@ -526,6 +537,8 @@ namespace  NQN.DB
             obj.ShiftDate = GetNullableDateTime(reader, "ShiftDate", obj.SQLMinDate);
             obj.ShiftStart = GetNullableDateTime(reader, "ShiftStart", obj.SQLMinDate);
             obj.ShiftEnd = GetNullableDateTime(reader, "ShiftEnd", obj.SQLMinDate);
+             
+            obj.Quota = GetNullableInt32(reader, "Quota", 0);
             return obj;
         }
 
@@ -543,6 +556,7 @@ namespace  NQN.DB
                 ,[Recurring]
                 ,[ShiftDate]
                 ,s.ShiftTimeID
+                ,[Quota]
                 ,ShiftStart=cast (t.ShiftStart as DateTime)
                 ,ShiftEnd=cast (t.ShiftEnd as DateTime)
                 ,[Captains] = dbo.FlattenCaptains(ShiftID)

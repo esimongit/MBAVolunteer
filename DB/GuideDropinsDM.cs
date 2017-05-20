@@ -332,19 +332,31 @@ namespace  NQN.DB
             }
         }
    
-        public void DeleteForGuideAndDate(int GuideID, DateTime dt)
+        public void DeleteForGuideAndDate(int GuideID, int ShiftID, DateTime dt)
         {
-            string qry = @"DELETE FROM GuideDropins WHERE GuideID = @GuideID and DropinDate = @dt ";
+            string qry = @"DELETE FROM GuideDropins WHERE ShiftID = @ShiftID and  GuideID = @GuideID and DropinDate = @dt ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
                 myc.Parameters.Add(new SqlParameter("dt", dt));
                 myc.ExecuteNonQuery();
             }
         }
- 
-		protected override GuideDropinsObject LoadFrom(SqlDataReader reader)
+        // removes all dropins for a date on this guide
+        public void DeleteForGuideAndDate(int GuideID,   DateTime dt)
+        {
+            string qry = @"DELETE FROM GuideDropins WHERE  GuideID = @GuideID and DropinDate = @dt ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID)); 
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                myc.ExecuteNonQuery();
+            }
+        }
+        protected override GuideDropinsObject LoadFrom(SqlDataReader reader)
 		{
 			if (reader == null) return null;
 			if (!reader.Read()) return null;
