@@ -63,6 +63,7 @@ namespace  NQN.DB
                 ,[Recurring]
                 ,s.[ShiftTimeID]
                 ,[Quota]
+                ,[ShiftQuota] = 0
                 ,ShiftStart=cast (t.ShiftStart as DateTime)
                 ,ShiftEnd=cast (t.ShiftEnd as DateTime)
 				FROM Shifts s join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID left join SubOffers o on s.ShiftID = o.ShiftID and GuideID = @GuideID 
@@ -360,6 +361,7 @@ namespace  NQN.DB
                 ,[ShiftDate]
                 ,s.ShiftTimeID
                 ,Quota
+                ,ShiftQuota = dbo.ShiftQuota(s.ShiftID)
                 ,ShiftStart=cast(t.ShiftStart as DateTime)
                 ,ShiftEnd=cast(t.ShiftEnd as DateTime)
                 ,Attendance = (select count(*) from GuideDropins  where ShiftID = s.ShiftID)
@@ -410,6 +412,7 @@ namespace  NQN.DB
                 ,[ShiftStart] = null
                 ,[ShiftEnd] = null
                 ,[Quota]
+                ,[ShiftQuota]
 			   FROM dbo.ShiftsForMonth(@Yr, @Mo)  order by dt, Sequence ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -537,7 +540,7 @@ namespace  NQN.DB
             obj.ShiftDate = GetNullableDateTime(reader, "ShiftDate", obj.SQLMinDate);
             obj.ShiftStart = GetNullableDateTime(reader, "ShiftStart", obj.SQLMinDate);
             obj.ShiftEnd = GetNullableDateTime(reader, "ShiftEnd", obj.SQLMinDate);
-             
+            obj.ShiftQuota = GetNullableInt32(reader, "ShiftQuota", 0);
             obj.Quota = GetNullableInt32(reader, "Quota", 0);
             return obj;
         }
@@ -557,6 +560,7 @@ namespace  NQN.DB
                 ,[ShiftDate]
                 ,s.ShiftTimeID
                 ,[Quota]
+                ,ShiftQuota = dbo.ShiftQuota(s.ShiftID)
                 ,ShiftStart=cast (t.ShiftStart as DateTime)
                 ,ShiftEnd=cast (t.ShiftEnd as DateTime)
                 ,[Captains] = dbo.FlattenCaptains(ShiftID)

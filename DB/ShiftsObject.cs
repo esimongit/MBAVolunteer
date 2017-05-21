@@ -180,8 +180,12 @@ namespace NQN.DB
         {
             get
             {
-                return Quota - Attendance;
+                return ShiftQuota - Attendance;
             }
+        }
+        public int ShiftQuota
+        {
+            get; set;
         }
         public string Type
         {

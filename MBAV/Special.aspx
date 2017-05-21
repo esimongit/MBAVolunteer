@@ -22,7 +22,7 @@ you can participate. </h3><hr/>
 <HeaderTemplate><table cellpadding="5" border="1">
     <tr><th>Shift</th><th>Date</th><th>Start Time</th><th>End Time</th><th>Count</th><th>Needed</th><th>Check to Participate</th></tr></HeaderTemplate>
 <ItemTemplate><tr style='<%#Container.ItemIndex %2==0 ? "background-color:#efefef":"background-color:#ffffff" %>'>
-      <td><asp:Label runat="server" Text='<%#Eval("ShortName") %>'></asp:Label></td>
+      <td><asp:Label runat="server" Text='<%#Eval("ShiftName") %>'></asp:Label></td>
     <td><asp:Label runat="server" Text='<%#Eval("ShiftDate","{0:d}") %>'></asp:Label></td>
     <td><asp:Label runat="server" Text='<%#Eval("ShiftStart","{0:t}") %>'></asp:Label></td>
      <td><asp:Label runat="server" Text='<%#Eval("ShiftEnd","{0:t}") %>'></asp:Label></td>
