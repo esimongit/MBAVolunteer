@@ -377,6 +377,7 @@ namespace  NQN.DB
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.OnShift = GetNullableBoolean(reader, "OnShift", false);
             obj.IsInfo = GetNullableBoolean(reader, "IsInfo", false);
+           
             return obj;
 		}
 
@@ -401,7 +402,7 @@ namespace  NQN.DB
                 ,d.OnShift 
                 ,MaskContactInfo = (select MaskContactInfo from Roles where RoleID = g.RoleID) | g.MaskPersonalInfo
                 ,s.Sequence
-                ,s.ShiftName
+                ,s.ShiftName 
 				FROM GuideDropins d join Guides g on d.GuideID= g.GuideID
                 join Shifts s on d.ShiftID= s.ShiftID ";
 		}

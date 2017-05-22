@@ -64,7 +64,7 @@ namespace VolManager
                 e.Cell.Controls.Add(txt);
                 HyperLink lc = new HyperLink();
                 lc.Text = shift.ShiftName;
-                if ((Weekend && shift.Attendance < WeekendCritical) || (!Weekend && shift.Attendance < WeekdayCritical))
+                if (shift.Attendance < shift.ShiftQuota)
                     lc.ForeColor = System.Drawing.Color.Red;
                 lc.NavigateUrl = shift.Url(dt);
                 e.Cell.Controls.Add(lc);

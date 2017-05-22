@@ -157,12 +157,14 @@ namespace NQN.Bus
             ObjectList<CalendarDateObject> Results = new ObjectList<CalendarDateObject>();
             ObjectList<GuideSubstituteObject> sList = dm.FetchForMonth(Year, Month, RoleID);
             ObjectList<GuideDropinsObject> dList = ddm.FetchForMonth(Year, Month, GuideID, RoleID);
+            ObjectList<ShiftsObject> tList = sdm.ShiftsForMonth(Year, Month);
              GuidesObject guide = gdm.FetchGuide(GuideID);
             DateTime CurDay = new DateTime(Year, Month, 1);
            
             while (CurDay.Month == Month)
             {
                 CalendarDateObject obj = new CalendarDateObject();
+                obj.Critical = false;
                 obj.Dt = CurDay;
                 if (!guide.IrregularSchedule && sdm.IsShiftOnDate(guide.ShiftID, CurDay))
                     obj.IsSubstitute = true;
@@ -176,12 +178,20 @@ namespace NQN.Bus
                         obj.IsSubstitute = true;
                     if (sub.GuideID == GuideID)
                         obj.IsSubstitute = false;
-                   obj.Critical = sub.Critical;
+                  
                 }
                 GuideDropinsObject drop = dList.Find(x => x.DropinDate == CurDay);
                 if (drop != null)
+                {
                     obj.IsSubstitute = (RoleID == drop.RoleID || (RoleID == 0 && !drop.IsInfo));
-                
+                }
+
+                // Lookup the shift 
+                foreach (ShiftsObject shift in tList.FindAll(x => x.ShiftDate == CurDay))
+                {
+                    if (shift.ShiftQuota > shift.Attendance)
+                        obj.Critical = true;
+                }
                 // No volunteers on Christmas day
                 if (!(CurDay.Month == 12 && CurDay.Day == 25))
                     Results.Add(obj);

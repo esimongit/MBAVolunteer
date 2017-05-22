@@ -34,6 +34,7 @@
               <asp:BoundField DataField="Substitutes" HeaderText="Subs" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
              <asp:BoundField DataField="Dropins" HeaderText="Drop-ins" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
             <asp:BoundField DataField="Total" HeaderText="Planned Number" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+             <asp:BoundField DataField="ShiftQuota" HeaderText="Minimum" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
         </Columns>
 
     </cc2:NQNGridView>

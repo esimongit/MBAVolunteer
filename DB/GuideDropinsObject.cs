@@ -147,6 +147,7 @@ namespace NQN.DB
         {
             get; set;
         }
+       
         public GuideDropinsObject()
 		{
 			_tablename = "GuideDropins";

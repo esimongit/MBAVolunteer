@@ -317,10 +317,7 @@ namespace NQN.DB
             GuideSubstituteID = -obj.GuideDropinID;
         }
      
-        public bool Critical
-        {
-            get; set;
-        }
+       
     }
     public class CalendarDateObject : RootObject
     {

@@ -239,6 +239,10 @@ namespace NQN.DB
         {
             get; set;
         }
+        public int ShiftQuota
+        {
+            get;set;
+        }
         public int Substitutes
         { get; set; }
         public int Dropins

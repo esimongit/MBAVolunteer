@@ -107,6 +107,7 @@ namespace  NQN.DB
                 ,[Captains] = ''
                 ,[Info] = ''
                 ,[Quota]
+                ,ShiftQuota = dbo.ShiftQuota(s.ShiftID)
              ,Attendance = dbo.ShiftAttendance(@dt, s.ShiftID)
 		     FROM Shifts s left join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID
 		    WHERE (s.recurring = 1 and dow = datepart(dw, @dt)  and ((s.AWeek = 1 and dbo.AB(@dt)  = 'AWeek') or (s.BWeek = 1 and   dbo.AB(@dt) = 'BWeek')))
@@ -592,6 +593,7 @@ namespace  NQN.DB
                 ,[Captains]  
                 ,[Info]  
                 ,[BaseCnt]
+                ,[ShiftQuota]
                 ,[SubRequests]
                 ,[Substitutes]
                 ,[Dropins]
@@ -617,6 +619,7 @@ namespace  NQN.DB
                         obj.Captains = GetNullableString(reader, "Captains", String.Empty);
                         obj.Info = GetNullableString(reader, "Info", String.Empty);
                         obj.BaseCnt = GetNullableInt32(reader, "BaseCnt", 0);
+                        obj.ShiftQuota = GetNullableInt32(reader, "ShiftQuota", 0);
                         obj.SubRequests = GetNullableInt32(reader, "SubRequests", 0);
                         obj.Substitutes = GetNullableInt32(reader, "Substitutes", 0);
                         obj.Dropins = GetNullableInt32(reader, "Dropins", 0);
