@@ -185,11 +185,11 @@ namespace NQN.Bus
                 NQNMembershipObject mobj = new NQNMembershipObject(UserName, u.Email, pw);
                 int Port = HttpContext.Current.Request.Url.Port;
                 if (Port == 80)
-                    mobj.VolAccessUrl = "http://" + mobj.VolAccessUrl;
+                    mobj.VolAccessUrl = "http://mba.netqnet.com"  ;
                 else if (Port == 443)
-                    mobj.VolAccessUrl = "https://" + mobj.VolAccessUrl;
+                    mobj.VolAccessUrl = "https://mba.netqnet.com" ;
                 else
-                    mobj.VolAccessUrl = "http://" + mobj.VolAccessUrl + ":" + HttpContext.Current.Request.Url.Port.ToString();
+                    mobj.VolAccessUrl = "http://mba.netqnet.com"  ;
                 PasswordRecoveryDM dm = new PasswordRecoveryDM();
                 PasswordRecoveryObject pwobj = dm.FetchUser(UserName, Membership.ApplicationName);
                 if (pwobj == null)

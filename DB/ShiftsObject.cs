@@ -194,6 +194,22 @@ namespace NQN.DB
                 return _recurring ? "Recurring" : "Special";
             }
         }
+        public int InfoGuideID
+        {
+            get;set;
+        }
+        public string InfoVolID
+        {
+            get;set;
+        }
+        public string InfoFirst
+        {
+            get;set;
+        }
+        public string InfoLast
+        {
+            get;set;
+        }
 		public ShiftsObject()
 		{
 			_tablename = "Shifts";

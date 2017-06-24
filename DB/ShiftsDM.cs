@@ -16,6 +16,27 @@ namespace  NQN.DB
 
         }
 
+        public DateTime NextDate(string AB, int ShiftID)
+        {
+            DateTime dt;
+            string qry = String.Format("select dbo.Next{0}(@ShiftID)", AB);
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+
+                try
+                {
+                    dt = Convert.ToDateTime(myc.ExecuteScalar());
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(String.Format("There are no future {0} Weeks for this Shift.", AB));
+                }
+
+                return dt;
+            }
+        }
         public bool IsShiftOnDate(int ShiftID, DateTime dt)
         {
             string qry = ReadAllCommand() + "  where (dow = datepart(dw, @dt) or ShiftDate = @dt) and ShiftID = @ShiftID ";
@@ -434,6 +455,111 @@ namespace  NQN.DB
             return Results;
         }
 
+        // Current List of Info Center guides for the month
+        public ObjectList<ShiftsObject> InfoForMonth(int Yr, int Mo)
+        {
+            ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
+
+            string qry = @"SELECT
+				dt, s.[ShiftID]
+				,[ShiftName]
+				,[DOW]
+				,[AWeek]
+				,[BWeek]
+				,[Sequence]
+				,[ShortName]
+                ,[Captains] = ''
+                ,[Info] = ''
+                ,[ShiftTimeID] 
+                ,[Recurring]
+                ,[ShiftDate] = isnull(ShiftDate, dt)
+                ,[Attendance]
+                ,[ShiftStart] = null
+                ,[ShiftEnd] = null
+                ,[Quota]
+                ,[ShiftQuota]
+                ,[FirstName]
+                ,[LastName]
+                ,g.[GuideID]
+                ,[VolID]
+			   FROM dbo.ShiftsForMonth(@Yr, @Mo)   s JOIN  GuideShift gs on s.ShiftID = gs.ShiftID 
+				 join Guides g on gs.GuideID = g.GuideID and g.RoleID = 6  
+				 where not exists (select 1 from GuideSubstitute where GuideID = g.GuideID and SubDate = dt)
+			union 
+                SELECT
+                dt,s.[ShiftID]
+				,[ShiftName]
+				,[DOW]
+				,[AWeek]
+				,[BWeek]
+				,[Sequence]
+				,[ShortName]
+                ,[Captains] = ''
+                ,[Info] = ''
+                ,[ShiftTimeID] 
+                ,[Recurring]
+                ,[ShiftDate] = isnull(ShiftDate, dt)
+                ,[Attendance]
+                ,[ShiftStart] = null
+                ,[ShiftEnd] = null
+                ,[Quota]
+                ,[ShiftQuota]
+                ,[FirstName]
+                ,[LastName]
+                ,g.[GuideID]
+                ,[VolID]
+            FROM dbo.ShiftsForMonth(@Yr, @Mo) s JOIN  GuideSubstitute gs on s.ShiftID = gs.ShiftID 
+				and s.dt = gs.SubDate
+				 join Guides g on gs.SubstituteID = g.GuideID and g.RoleID = 6 
+            union
+            SELECT
+                dt,s.[ShiftID]
+				,[ShiftName]
+				,[DOW]
+				,[AWeek]
+				,[BWeek]
+				,[Sequence]
+				,[ShortName]
+                ,[Captains] = ''
+                ,[Info] = ''
+                ,[ShiftTimeID] 
+                ,[Recurring]
+                ,[ShiftDate] = isnull(ShiftDate, dt)
+                ,[Attendance]
+                ,[ShiftStart] = null
+                ,[ShiftEnd] = null
+                ,[Quota]
+                ,[ShiftQuota]
+                ,[FirstName]
+                ,[LastName]
+                ,g.[GuideID]
+                ,[VolID]
+            FROM dbo.ShiftsForMonth(@Yr, @Mo) s JOIN  GuideDropins gs on s.ShiftID = gs.ShiftID 
+				and s.dt = gs.DropinDate
+				 join Guides g on gs.GuideID = g.GuideID and gs.RoleID = 6  			 
+                order by dt, Sequence ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("Yr", Yr));
+                myc.Parameters.Add(new SqlParameter("Mo", Mo));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    ShiftsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        obj.Attendance = GetNullableInt32(reader, "Attendance", 0);
+                        obj.InfoFirst = GetNullableString(reader, "FirstName", String.Empty);
+                        obj.InfoLast = GetNullableString(reader, "LastName", String.Empty);
+                        obj.InfoVolID = GetNullableString(reader, "VolID", String.Empty);
+                        obj.InfoGuideID = GetNullableInt32(reader, "GuideID", 0);
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         public void Update(ShiftsObject obj)
         {
             string qry = @"UPDATE  Shifts SET 

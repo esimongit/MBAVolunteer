@@ -554,6 +554,7 @@ namespace  NQN.DB
             obj.MaskPersonalInfo = GetNullableBoolean(reader, "MaskPersonalInfo", false);
             obj.IrregularSchedule = GetNullableBoolean(reader, "IrregularSchedule", false);
             obj.HasInfoDesk = GetNullableBoolean(reader, "HasInfoDesk", false);
+            obj.IsInfo = GetNullableBoolean(reader, "IsInfo", false);
             obj.GuideName =  obj.FirstName + " " + obj.LastName ;
             obj.CalendarType = GetNullableString(reader, "CalendarType", String.Empty);
             GuideRoleDM dm = new GuideRoleDM();
@@ -586,6 +587,7 @@ namespace  NQN.DB
 				,[UpdateBy]
 				,[LastUpdate] 
                 ,r.RoleName
+                ,r.IsInfo
                 ,AltRoleName = dbo.FlattenRoles(g.GuideID) 
                 ,ShiftName = ''
                 ,ShortName = ''

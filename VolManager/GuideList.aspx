@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GuideList.aspx.cs" Inherits="VolManager.GuideList" %>
+﻿<%@ Page Title="Guide List" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="GuideList.aspx.cs" Inherits="VolManager.GuideList" %>
  <%@ Register Src="~/UserControls/GuideEdit.ascx" TagName="GuideEdit" TagPrefix="uc3" %> 
 <asp:Content ID="Content1" ContentPlaceHolderID="ContentPlaceHolder1" runat="server">
 <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" 

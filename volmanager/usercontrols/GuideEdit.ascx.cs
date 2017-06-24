@@ -26,6 +26,7 @@ namespace VolManager.UserControls
                 GridView3.DataBind();
             Menu1.Items[3].Enabled = guide.IrregularSchedule;
             MultiView1.SetActiveView(View0);
+            MultiView2.SetActiveView(View3AB);
         }
         protected void SetLink(object sender, EventArgs e)
         {
@@ -130,10 +131,14 @@ namespace VolManager.UserControls
             else
                 dm.Delete(GuideID, ShiftID);
         }
-
-        protected void DoSubmit(object sender, EventArgs e)
+        protected void ChangeOption(object sender, EventArgs e)
         {
-
+            MultiView2.ActiveViewIndex = (1 - MultiView2.ActiveViewIndex );
+            OptionButton.Text = MultiView2.ActiveViewIndex == 0 ? "View/Select a Role for Each Date" : "Set future A and B Roles";
+        }
+        protected void DoSubmitAB(object sender, EventArgs e)
+        {
+            int cnt = 0;
             GuideDropinsDM dm = new GuideDropinsDM();
             int GuideID = Convert.ToInt32(Session["GuideID"]);
             int ShiftID = 0;
@@ -145,8 +150,36 @@ namespace VolManager.UserControls
             { }
 
             if ((ShiftID == 0) || (GuideID == 0))
+            {
+                ErrorMessage.Set("Select a Shift");
                 return;
+            }
+            int RoleA = Convert.ToInt32(RoleSelectA.SelectedValue);
+            int RoleB = Convert.ToInt32(RoleSelectB.SelectedValue);
+            SubstitutesBusiness sb = new SubstitutesBusiness();
+            cnt = sb.SetFutureABShifts(GuideID, ShiftID, RoleA, RoleB);
+            
+            InfoMessage.Set(String.Format("{0} changes made.", cnt));
+        }
+
+        protected void DoSubmit(object sender, EventArgs e)
+        {
             int cnt = 0;
+            GuideDropinsDM dm = new GuideDropinsDM();
+            int GuideID = Convert.ToInt32(Session["GuideID"]);
+            int ShiftID = 0;
+            try
+            {
+                ShiftID = Convert.ToInt32(ShiftSelect.SelectedValue);
+            }
+            catch
+            { }
+
+            if ((ShiftID == 0) || (GuideID == 0))
+            {
+                ErrorMessage.Set("Select a Shift");
+                return;
+            }
             foreach (RepeaterItem itm in Repeater2.Items)
             {
                 CheckBox cb = (CheckBox)itm.FindControl("DateCheckBox");

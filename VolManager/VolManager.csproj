@@ -76,6 +76,7 @@
     </Content>
     <Content Include="App_Themes\VMTheme\StyleSheet.css" />
     <Content Include="Images\volunteerLogo.jpg" />
+    <Content Include="InfoList.aspx" />
     <Content Include="Reports\Roster.aspx" />
     <Content Include="Reports\InfoDeskReport.aspx" />
     <Content Include="ChangePassword.aspx" />
@@ -108,6 +109,7 @@
     <None Include="Scripts\jquery-1.9.1-vsdoc.js" />
     <Content Include="Scripts\jquery-1.9.1.js" />
     <Content Include="Scripts\jquery-1.9.1.min.js" />
+    <Content Include="InfoCalendar.aspx" />
     <Content Include="ShiftDetail.aspx" />
     <Content Include="ShiftList.aspx" />
     <Content Include="ShiftTimes.aspx" />
@@ -142,6 +144,13 @@
     <Compile Include="Announcement.aspx.designer.cs">
       <DependentUpon>Announcement.aspx</DependentUpon>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Compile>
+    <Compile Include="InfoList.aspx.cs">
+      <DependentUpon>InfoList.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InfoList.aspx.designer.cs">
+      <DependentUpon>InfoList.aspx</DependentUpon>
     </Compile>
     <Compile Include="Reports\Roster.aspx.cs">
       <DependentUpon>Roster.aspx</DependentUpon>
@@ -265,6 +274,13 @@
     </Compile>
     <Compile Include="Secondary.Master.designer.cs">
       <DependentUpon>Secondary.Master</DependentUpon>
+    </Compile>
+    <Compile Include="InfoCalendar.aspx.cs">
+      <DependentUpon>InfoCalendar.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="InfoCalendar.aspx.designer.cs">
+      <DependentUpon>InfoCalendar.aspx</DependentUpon>
     </Compile>
     <Compile Include="ShiftDetail.aspx.cs">
       <DependentUpon>ShiftDetail.aspx</DependentUpon>

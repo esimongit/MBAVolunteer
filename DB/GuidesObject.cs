@@ -408,6 +408,10 @@ namespace NQN.DB
             }
         }
        
+        public bool IsInfo
+        {
+            get; set;
+        }
         public bool HasInfoDesk
         {
             get; set;

@@ -29,7 +29,7 @@
    <asp:ControlParameter ControlID="ShiftSelect" Name="ShiftID" Type="Int32" DefaultValue="0" />
        <asp:Parameter Name="RoleID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
- </asp:ObjectDataSource>
+ </asp:ObjectDataSource> 
 <asp:ObjectDataSource ID="RolesDataSource" runat="server" TypeName="NQN.DB.GuideRoleDM" SelectMethod="FetchAllRoles">
     <SelectParameters>
     <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
@@ -259,9 +259,31 @@
   <asp:ListItem Value="0" Text="(Select a shift)"></asp:ListItem>
  </asp:DropDownList> 
  </div> 
-
+    <div style="clear:both"></div>
+             <asp:Button ID="OptionButton" runat="server" Text="Select a Role for Each Date" OnClick="ChangeOption" />
+<asp:MultiView ID="MultiView2" runat="server">
+     <asp:View id="View3AB" runat="server">
 <div style="clear:both; padding-top:10px;padding-bottom:10px; font-size:large; color:purple"  >
-    In the table below,  check all the boxes for dates  
+    Select the role for A and B weeks for the next year. </div>
+    <div>
+        For A Weeks: <asp:DropDownList runat="server" ID="RoleSelectA" DataSourceID="RolesDataSource" DataValueField="RoleID" DataTextField="RoleName"
+               AppendDataBoundItems="true">
+        <asp:ListItem Value="0" Text="(Select a Role)"></asp:ListItem>
+            </asp:DropDownList>
+    </div>
+             <div>
+        For B Weeks: <asp:DropDownList runat="server" ID="RoleSelectB" DataSourceID="RolesDataSource" DataValueField="RoleID" DataTextField="RoleName" 
+              AppendDataBoundItems="true">
+        <asp:ListItem Value="0" Text="(Select a Role)"></asp:ListItem>
+            </asp:DropDownList>
+    </div>
+     <div  >
+        <asp:Button ID="Button1" OnClick="DoSubmitAB" runat="server" Text="Submit" CssClass="btn btn-success" />
+    </div>
+    </asp:View>
+   <asp:View id="View3Detail" runat="server">
+       <div>
+       In the table below,  check all the boxes for dates  
 planned and select a role. Uncheck dates to remove them. Then click "Submit".  </div>
   
 <asp:Repeater ID="Repeater2" runat="server" DataSourceID="ObjectDataSource1" >
@@ -278,10 +300,12 @@ planned and select a role. Uncheck dates to remove them. Then click "Submit".  <
 </td></tr>
 </ItemTemplate>
 <FooterTemplate></table></FooterTemplate>
-</asp:Repeater>
+</asp:Repeater> 
 <div  >
 <asp:Button ID="SubmitButton" OnClick="DoSubmit" runat="server" Text="Submit" CssClass="btn btn-success" />
 </div>
+     </asp:View>
+    </asp:MultiView>
          </asp:View> 
        <asp:View ID="View4" runat="server">
 

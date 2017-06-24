@@ -62,6 +62,7 @@
     <Compile Include="EmailBusiness.cs" />
     <Compile Include="FileBusiness.cs" />
     <Compile Include="GuidesBusiness.cs" />
+    <Compile Include="InfoBusiness.cs" />
     <Compile Include="MandrillBusiness.cs" />
     <Compile Include="MembershipBusiness.cs" />
     <Compile Include="NavHierarchy.cs" />

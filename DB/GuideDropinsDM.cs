@@ -273,6 +273,12 @@ namespace  NQN.DB
         }
         public void SaveOnShift(int GuideID, int ShiftID, DateTime dt, int RoleID)
         {
+           
+            if (RoleID == 0)
+            {
+                DeleteForGuideAndDate(GuideID, ShiftID, dt);
+                return;
+            }
             GuideDropinsObject obj = new GuideDropinsObject();
             obj.GuideID = GuideID;
             obj.ShiftID = ShiftID;

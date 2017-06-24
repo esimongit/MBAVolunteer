@@ -321,6 +321,36 @@ namespace NQN.Bus
 
         }
 
+        public int SetFutureABShifts(int GuideID, int ShiftID, int RoleA, int RoleB)
+        {
+            GuideDropinsDM dm = new GuideDropinsDM();
+            int cnt = 0;
+            ShiftsDM sdm = new ShiftsDM();
+            ShiftsObject shift = sdm.FetchRecord("ShiftID", ShiftID);
+            DateTime Adt;
+            DateTime Bdt;
+            if (shift.AWeek)
+            {
+                Adt = sdm.NextDate("A", ShiftID);
+                while (Adt < DateTime.Today.AddYears(1))
+                {
+                    dm.SaveOnShift(GuideID, ShiftID, Adt, RoleA);
+                    Adt = Adt.AddDays(14);
+                    cnt++;
+                }
+            }
+            if (shift.BWeek)
+            {
+                Bdt = sdm.NextDate("B", ShiftID);
+                while (Bdt < DateTime.Today.AddYears(1))
+                {
+                    dm.SaveOnShift(GuideID, ShiftID, Bdt, RoleB);
+                    Bdt = Bdt.AddDays(14);
+                    cnt++;
+                }
+            }
+            return cnt;
+        }
         //Nightly notifications of who needs a sub.  Only send the mail if there is at least one new request.
         public int SubNotices(string VolunteerUrl)
         {
@@ -347,7 +377,11 @@ namespace NQN.Bus
          
                 foreach (GuideSubstituteObject obj in dList)
                 {
+                    // If the request is for Info Desk, make sure the offer can do Info desk.
                     if (obj.IsInfo && !offer.HasInfoDesk)
+                        continue;
+                    // Only send exclusive Info Center guides requests for Info center 
+                    if (offer.IsInfo && !obj.IsInfo)
                         continue;
                    
                     string flag = (obj.DateEntered > Yesterday) ? NewFlag : String.Empty;
