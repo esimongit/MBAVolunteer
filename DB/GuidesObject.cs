@@ -262,6 +262,7 @@ namespace NQN.DB
         }
         #endregion
 
+
         public string GuideName
         {
             get;
@@ -281,6 +282,21 @@ namespace NQN.DB
         public ObjectList<GuideRoleObject> Roles
         {
             get; set;
+        }
+        public ObjectList<GuideRoleObject> AllRoles
+        {
+            get
+            {
+                ObjectList<GuideRoleObject> AllRoles = new ObjectList<GuideRoleObject>();              
+                GuideRoleObject obj = new GuideRoleObject();
+                obj.RoleID = _roleid;
+                obj.RoleName = RoleName;
+                obj.GuideID = _guideid;
+                AllRoles.Add(obj);
+                if (Roles != null && Roles.Count > 0)
+                    AllRoles.AddRange(Roles);
+                return AllRoles;
+            }
         }
         public string ShiftName
         {

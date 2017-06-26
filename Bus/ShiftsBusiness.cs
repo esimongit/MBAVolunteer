@@ -20,7 +20,7 @@ namespace NQN.Bus
         public ShiftsObject SelectShift(int ShiftID, DateTime dt)
         {
             ShiftsDM dm = new ShiftsDM();
-            ShiftsObject obj = dm.FetchShift(ShiftID);
+            ShiftsObject obj = dm.ShiftWithDate(ShiftID, dt);
             if (obj != null)
                 obj.ShiftDate = dt;
             return obj;

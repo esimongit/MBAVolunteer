@@ -624,6 +624,7 @@ namespace  NQN.DB
 				,[UpdateBy]
 				,[LastUpdate] 
                 ,r.RoleName
+                ,r.IsInfo
                 ,AltRoleName = dbo.FlattenRoles(g.GuideID) 
                 ,s.ShiftName
                 ,s.ShortName

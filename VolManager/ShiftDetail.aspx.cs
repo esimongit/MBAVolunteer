@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using NQN.DB;
 
 namespace VolManager
 {
@@ -10,16 +11,25 @@ namespace VolManager
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
-            int ShiftID = 0;
-            try
+            if (!Page.IsPostBack)
             {
-                ShiftID = Convert.ToInt32(Request.QueryString["ShiftID"]);
-                DateTime ShiftDate = DateTime.Parse(Request.QueryString["ShiftDate"]);
-                ReportLink.NavigateUrl = String.Format("~/Reports/Roster.aspx?ShiftID={0}&ShiftDate={1:d}", ShiftID, ShiftDate);
+                int ShiftID = 0;
+                try
+                {
+                    ShiftID = Convert.ToInt32(Request.QueryString["ShiftID"]);
+                    DateTime ShiftDate = DateTime.Parse(Request.QueryString["ShiftDate"]);
+                    ReportLink.NavigateUrl = String.Format("~/Reports/Roster.aspx?ShiftID={0}&ShiftDate={1:d}", ShiftID, ShiftDate);
+                    ShiftsDM dm = new ShiftsDM();
+                    ShiftsObject shift = dm.ShiftWithDate(ShiftID, ShiftDate);
+                    GridView1.Visible = shift.Recurring;
+                    GridView2.Visible = !shift.Recurring;
+                }
+                catch
+                {
+                    return;
+                }
+               
             }
-            catch { }
-
         }
         protected void ShowDropin(object sender, EventArgs e)
         {

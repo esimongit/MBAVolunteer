@@ -30,7 +30,7 @@ namespace  NQN.DB
             }
             return Results;
         }
-        public ObjectList<GuideDropinsObject> FetchOnShift(int ShiftID, DateTime dt, int RoleID)
+        public ObjectList<GuideDropinsObject> FetchOnShift(int ShiftID, DateTime dt)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt and g.IrregularSchedule = 1 and OnShift = 1 ";
@@ -46,8 +46,29 @@ namespace  NQN.DB
                     GuideDropinsObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
-                        if (RoleID == 0 || RoleID == obj.RoleID)
-                            Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
+
+        public ObjectList<GuideDropinsObject> FetchOnSpecial(int ShiftID)
+        {
+            ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
+            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID   ";
+             
+            qry += " order by FirstName ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID)); 
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideDropinsObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
                 }
@@ -252,11 +273,11 @@ namespace  NQN.DB
 			}
 		}
 
-        public bool AddSpecial(int GuideID, int ShiftID)
+        public bool AddSpecial(int GuideID, int ShiftID, int RoleID)
         {
             ShiftsDM dm = new ShiftsDM();
             ShiftsObject obj = dm.FetchShift(ShiftID);
-            Save(GuideID, ShiftID, obj.ShiftDate);
+            SaveOnShift(GuideID, ShiftID, obj.ShiftDate, RoleID);
             return true;
         }
 

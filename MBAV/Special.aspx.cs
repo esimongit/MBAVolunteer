@@ -14,7 +14,20 @@ namespace MBAV
         {
             if (!Page.IsPostBack)
             {
-                 
+                RoleSelect.Visible = false;
+                int GuideID = Convert.ToInt32(Session["GuideID"]);
+                if (GuideID == 0)
+                    return;
+                GuidesDM dm = new GuidesDM();
+                GuidesObject guide = dm.FetchGuide(GuideID);
+                if (guide.Roles.Count > 0)
+                {
+                    RoleSelect.Visible = true;
+                    foreach (GuideRoleObject role in guide.AllRoles)
+                    {
+                        RoleSelect.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString()));
+                    }
+                }
             }
         }
         protected void SpecialShiftChanged(object sender, EventArgs e)
@@ -23,11 +36,16 @@ namespace MBAV
             int GuideID = Convert.ToInt32(Session["GuideID"]);
             if (GuideID == 0)
                 return;
+            GuidesDM gdm = new GuidesDM();
+            GuidesObject guide = gdm.FetchGuide(GuideID);
+            int RoleID = guide.RoleID;
+            if (RoleSelect.SelectedIndex > -1)
+                RoleID = Convert.ToInt32(RoleSelect.SelectedValue);
             CheckBox cb = (CheckBox)sender;
             HiddenField hf = (HiddenField)(cb.Parent.FindControl("ShiftIDHidden"));
             int ShiftID = Convert.ToInt32(hf.Value);
             if (cb.Checked)
-                cb.Checked = dm.AddSpecial(GuideID, ShiftID);
+                cb.Checked = dm.AddSpecial(GuideID, ShiftID, RoleID);
             else
             {
                 dm.DeleteSpecial(GuideID, ShiftID);

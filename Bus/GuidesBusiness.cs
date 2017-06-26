@@ -178,10 +178,20 @@ namespace NQN.Bus
         
         public DataTable Roster(int ShiftID, DateTime dt)
         {
-            return RosterList(ShiftID, dt).RenderAsTable();
+            ObjectList<GuidesObject> roster  = RosterList(ShiftID, dt);
+            if (roster == null)
+                return null;
+            return roster.RenderAsTable();
         }
         public ObjectList<GuidesObject> RosterList(int ShiftID, DateTime dt)
         {
+            if (ShiftID == 0)
+                return null;
+            ShiftsDM tdm = new ShiftsDM();
+            ShiftsObject shift = tdm.FetchShift(ShiftID);
+            if (!shift.Recurring)
+                return RosterSpecial(ShiftID);
+
             ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
             GuidesDM dm = new GuidesDM();
             ObjectList<GuidesObject> dList = dm.FetchForShift(ShiftID);
@@ -189,7 +199,7 @@ namespace NQN.Bus
             GuideDropinsDM ddm = new GuideDropinsDM();
             ObjectList<GuideSubstituteObject> sList = sdm.FetchForShift(ShiftID, dt);
             ObjectList<GuideDropinsObject> pList = ddm.FetchForShift(ShiftID, dt);
-            ObjectList<GuideDropinsObject> rList = ddm.FetchOnShift(ShiftID, dt, 0);
+            ObjectList<GuideDropinsObject> rList = ddm.FetchOnShift(ShiftID, dt);
             ObjectList<GuidesObject> iList = new ObjectList<GuidesObject>();
             foreach (GuidesObject obj in dList)
             {
@@ -201,12 +211,14 @@ namespace NQN.Bus
                     obj.SubDescription = sub.Sub == String.Empty ? "No substitute" : "Substitute: " + sub.SubName + ", " + sub.SubRole;
                     
                 }
-                if (obj.HasInfoDesk && !iList.Contains(obj) && !Results.Contains(obj))
+                if ( !iList.Contains(obj) && !Results.Contains(obj))
                     iList.Add(obj);
                 else
                      if (!Results.Contains(obj))
                         Results.Add(obj);
             }
+
+           
             foreach (GuideDropinsObject drop in pList)
             {
                 GuidesObject obj = new GuidesObject();
@@ -239,7 +251,7 @@ namespace NQN.Bus
                 obj.GuideID = drop.GuideID;
                 obj.SubDescription = "Special";
                 obj.RoleName = drop.Role;
-                if (drop.IsInfo && !iList.Contains(obj) && !Results.Contains(obj))
+                if ( !iList.Contains(obj) && !Results.Contains(obj))
                     iList.Add(obj);
                 else
                      if (!Results.Contains(obj))
@@ -249,7 +261,29 @@ namespace NQN.Bus
             Results.AddRange(iList);
             return Results;
         }
-
+        // No subs on Special shifts, just dropins
+        public ObjectList<GuidesObject> RosterSpecial(int ShiftID)
+        {
+            ObjectList<GuidesObject> Results = new ObjectList<GuidesObject>();
+           GuideDropinsDM ddm = new GuideDropinsDM();
+            ObjectList<GuideDropinsObject> dList =  ddm.FetchOnSpecial(ShiftID);
+            foreach (GuideDropinsObject drop in dList)
+            {
+                GuidesObject obj = new GuidesObject();
+                obj.FirstName = drop.FirstName;
+                obj.LastName = drop.LastName;
+                obj.GuideName = drop.FirstName + " " + drop.LastName;
+                obj.Phone = drop.Phone;
+                obj.Email = drop.Email;
+                obj.VolID = drop.VolID;
+                obj.Sequence = drop.Sequence;
+                obj.GuideID = drop.GuideID;
+                obj.SubDescription = "Special";
+                obj.RoleName = drop.Role;
+                Results.Add(obj);
+            }
+            return Results;
+        }
         // Staff Update
         public void UpdateRoster( DateTime dt, bool SubRequested, string Sub,  int ShiftID, int GuideID)
         {

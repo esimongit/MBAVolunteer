@@ -33,7 +33,7 @@
                     <asp:Label ID="ShiftNameLabel" Text='<%#Eval("ShortName") %>' runat="server"></asp:Label> 
                        (<asp:Label ID="TypeLabel" Text='<%#Eval("Type") %>' runat="server"></asp:Label>) &nbsp;&nbsp;
                     Minimum: <asp:Label ID="ShiftQuotaLabel" Text='<%#Eval("ShiftQuota") %>' runat="server"></asp:Label>
-                     
+                     Current: <asp:Label ID="Label1" Text='<%#Eval("Attendance") %>' runat="server"></asp:Label> 
                 </td></tr>
              <tr><td class="formlabel">
                 Date:</td><td>
@@ -76,10 +76,30 @@
                 SortExpression="SubRequested" />
           <asp:BoundField DataField="Sub" HeaderText="Sub ID"  ControlStyle-Width="60"  />
             <asp:BoundField DataField="SubDescription" HeaderText="Sub Description"  ReadOnly="true"
-                SortExpression="SubDescription" />
-          
-            
-            
+                SortExpression="SubDescription" />        
+        </Columns>
+    </cc2:NQNGridView>
+      <cc2:NQNGridView ID="GridView2" runat="server" AutoGenerateColumns="False"  PageSize="50" Visible ="false"
+        DataSourceID="ObjectDataSource1" DataKeyNames="GuideID"  Caption="<b>Delete only removes drop-ins or special shifts.</b>"
+        AllowMultiColumnSorting="False" 
+        DeleteMessage="Are you sure you want to remove this guide from the shift for this date" Privilege="">
+        <Columns>
+         
+                 <asp:CommandField ButtonType="Image" CancelImageUrl="~/Images/cancel.gif"  ShowEditButton="false" 
+                     EditImageUrl="~/Images/iedit.gif" UpdateImageUrl="~/Images/save.gif" ShowDeleteButton="true" DeleteImageUrl="~/Images/delete.gif" />
+                 
+                 <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolInt"  ReadOnly="true"/>
+            <asp:BoundField DataField="FirstName" HeaderText="First Name"  ReadOnly="true"
+                SortExpression="FirstName" />
+            <asp:BoundField DataField="LastName" HeaderText="Last Name"  ReadOnly="true"
+                SortExpression="LastName" />
+            <asp:BoundField DataField="PreferredPhone" HeaderText="Phone" SortExpression="PreferredPhone"  ReadOnly="true" />
+            <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email"  ReadOnly="true" />
+            <asp:BoundField DataField="Notes" HeaderText="Notes" SortExpression="Notes"  ReadOnly="true"/> 
+            <asp:BoundField DataField="RoleName" HeaderText="Role"  ReadOnly="true"
+                SortExpression="RoleName" />
+           
+                 
         </Columns>
     </cc2:NQNGridView>
     <asp:FormView ID="DropinView" runat="server"  DataSourceID="ObjectDataSource1"   DefaultMode="Insert" Visible ="false">

@@ -107,6 +107,48 @@ namespace  NQN.DB
             }
             return Results;
         }
+
+        public ShiftsObject ShiftWithDate(int ShiftID, DateTime dt)
+        {
+            if (dt == DateTime.MinValue)
+                return null;
+            ShiftsObject obj = null;
+            string qry = @"SELECT
+                [ShiftID]
+                ,[ShiftName]
+                ,[DOW]
+                ,[AWeek]
+                ,[BWeek]
+                ,[Sequence]
+                ,[ShortName]
+                ,[Recurring]
+                ,[ShiftDate]
+                , s.ShiftTimeID
+                ,ShiftStart = cast(t.ShiftStart as DateTime)
+                ,ShiftEnd = cast(t.ShiftEnd as DateTime)
+                ,[Captains] = dbo.FlattenCaptains(ShiftID)
+                ,[Info] = dbo.FlattenInfo(ShiftID)
+                ,[Quota]
+                ,ShiftQuota = dbo.ShiftQuota(s.ShiftID)
+             ,Attendance = dbo.ShiftAttendance(@dt, s.ShiftID)
+		     FROM Shifts s left join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID
+		    WHERE ShiftID = @ShiftID ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                     obj = LoadFrom(reader);
+                    if (obj != null)
+                    {
+                        obj.Attendance = GetNullableInt32(reader, "Attendance", 0);
+                    }
+                }
+            }
+            return obj;
+        }
         public ObjectList<ShiftsObject> ShiftsForDate(DateTime dt)
         {
             if (dt == DateTime.MinValue)
@@ -368,7 +410,7 @@ namespace  NQN.DB
         }
 
         
-        public ObjectList<ShiftsObject> SpecialShiftsForGuide(int GuideID)
+        public ObjectList<ShiftsObject> SpecialShiftsForGuide(int GuideID, int RoleID)
         {
             ObjectList<ShiftsObject> Results = new ObjectList<ShiftsObject>();
             string qry = @"SELECT
@@ -389,13 +431,18 @@ namespace  NQN.DB
                 ,Attendance = (select count(*) from GuideDropins  where ShiftID = s.ShiftID)
                 ,[Captains] = dbo.FlattenCaptains(s.ShiftID)
                 ,[Info] = dbo.FlattenInfo(s.ShiftID)
-				,[Selected]  = (select cast(max(1) as bit) from GuideDropins where ShiftID = s.ShiftID and GuideID = @GuideID)
+				,[Selected]  = (select cast(max(1) as bit) from GuideDropins where ShiftID = s.ShiftID and GuideID = @GuideID ";
+            if (RoleID > 0)
+                qry += " and RoleID = @RoleID ";
+            qry += @")
                 FROM Shifts s join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID
-                WHERE Recurring = 0 and ShiftDate >= cast( getdate() as date)    order by ShiftDate, sequence";
+                WHERE Recurring = 0 and ShiftDate >= cast( getdate() as date)";       
+            qry += " order by ShiftDate, sequence";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("RoleID", RoleID));
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
                     ShiftsObject obj = LoadFrom(reader);
