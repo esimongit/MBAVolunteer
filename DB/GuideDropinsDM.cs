@@ -33,7 +33,7 @@ namespace  NQN.DB
         public ObjectList<GuideDropinsObject> FetchOnShift(int ShiftID, DateTime dt)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt and g.IrregularSchedule = 1 and OnShift = 1 ";
+            string qry = ReadAllCommand() + " WHERE d.ShiftID = @ShiftID and DropinDate = @dt  and OnShift = 1 ";
            
             qry += " order by d.GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
@@ -46,6 +46,7 @@ namespace  NQN.DB
                     GuideDropinsObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
+                        Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
                 }
@@ -294,10 +295,9 @@ namespace  NQN.DB
         }
         public void SaveOnShift(int GuideID, int ShiftID, DateTime dt, int RoleID)
         {
-           
+            DeleteForGuideAndDate(GuideID, ShiftID, dt);
             if (RoleID == 0)
-            {
-                DeleteForGuideAndDate(GuideID, ShiftID, dt);
+            { 
                 return;
             }
             GuideDropinsObject obj = new GuideDropinsObject();
