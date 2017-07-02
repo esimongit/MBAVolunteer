@@ -40,7 +40,7 @@
             <asp:HyperLinkField HeaderText="Date (Click to Edit)" DataNavigateUrlFormatString="~/SubRequest.aspx?dt={0}" Text="Select" DataNavigateUrlFields="dtString"  DataTextField="SubDate" DataTextFormatString="{0:D}" />
            
              <asp:BoundField DataField="ShortName" HeaderText="Shift" SortExpression="ShortName" />
-           
+             <asp:BoundField DataField="GuideName" HeaderText="Requestor" SortExpression="GuideName" />
             <asp:BoundField DataField="PartnerName" HeaderText="Working with" ReadOnly="True"   />
    <asp:TemplateField  HeaderText="Current Sub">
      <ItemTemplate>

@@ -6,6 +6,7 @@
 <SelectParameters>
  <asp:ControlParameter ControlID="ShiftSelect" Name="ShiftID" Type="Int32" DefaultValue="0" />
     <asp:SessionParameter SessionField="IsCaptain" Name="IsCaptain" Type="Boolean" DefaultValue="false" />
+      <asp:SessionParameter SessionField="RoleID" Name="RoleID" Type="Int32" DefaultValue="0" />
 </SelectParameters>
 </asp:ObjectDataSource>
 <style>

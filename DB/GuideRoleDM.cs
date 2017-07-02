@@ -38,7 +38,8 @@ namespace  NQN.DB
             obj.GuideID = GuideID;
             obj.RoleID = guide.RoleID;
             obj.RoleName = guide.RoleName;
-            Results.Add(obj);
+            if (!Results.Contains(obj))
+                Results.Add(obj);
             return Results;
         }
         public bool HasRole(int GuideID, string Role)

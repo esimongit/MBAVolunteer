@@ -44,6 +44,8 @@ namespace NQN.DB
                 _dateentered = value;
             }
         }
+
+        
         #endregion
         public string FirstName
         {

@@ -9,12 +9,15 @@ namespace  NQN.DB
 {
 	public class SubOffersDM : DBAccess<SubOffersObject>
 	{
-        public ObjectList<SubOffersObject> FetchForShift(int ShiftID, bool IsCaptain)
+        // RoleID is zero or the Role for Info. If RoleID > 0, we must only list Offers who have Info in their profile
+        public ObjectList<SubOffersObject> FetchForShift(int ShiftID, bool IsCaptain, int RoleID)
         {
             ObjectList<SubOffersObject> Results = new ObjectList<SubOffersObject>();
-            
 
-            string qry = ReadAllCommand() + " WHERE o.ShiftID = @ShiftID order by g.FirstName  ";
+
+            string qry = ReadAllCommand() + " WHERE o.ShiftID = @ShiftID ";
+          
+            qry += " order by g.FirstName  ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -26,7 +29,8 @@ namespace  NQN.DB
                     {
                         if (IsCaptain)
                             obj.MaskContactInfo = false;
-                        Results.Add(obj);
+                        if (RoleID == 0 || obj.HasInfoDesk)
+                            Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
                 }
@@ -60,18 +64,18 @@ namespace  NQN.DB
 		{
 			 string qry = @"INSERT INTO SubOffers (
 				[ShiftID]
-				,[GuideID]
+				,[GuideID] 
 				)
 			VALUES(
 				@ShiftID
-				,@GuideID
+				,@GuideID 
 				)";
 			 using (SqlConnection conn = ConnectionFactory.getNew())
 			{
 				SqlCommand myc = new SqlCommand(qry, conn);
 				myc.Parameters.Add(new SqlParameter("ShiftID",obj.ShiftID));
-				myc.Parameters.Add(new SqlParameter("GuideID",obj.GuideID));
-				myc.ExecuteNonQuery();
+				myc.Parameters.Add(new SqlParameter("GuideID",obj.GuideID)); 
+                myc.ExecuteNonQuery();
 			}
 		}
 
@@ -82,13 +86,13 @@ namespace  NQN.DB
             GuidesObject guide = dm.FetchGuide(GuideID);
             if (guide.ShiftID == ShiftID)
                 return false;
-            string qry = @"insert into SubOffers (GuideID, ShiftID) select @GuideID, @ShiftID where 
+            string qry = @"insert into SubOffers (GuideID, ShiftID ) select @GuideID, @ShiftID  where 
                     not exists (select 1 from SubOffers where ShiftID = @ShiftID and GuideID = @GuideID)";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
-                myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("GuideID", GuideID)); 
                 myc.ExecuteNonQuery();
             }
             return true;
@@ -127,7 +131,7 @@ namespace  NQN.DB
             obj.Email = GetNullableString(reader, "Email", String.Empty);
             obj.Phone = GetNullableString(reader, "Phone", String.Empty);         
             obj.VolID = GetNullableString(reader, "VolID", String.Empty);
-            obj.Sequence = GetNullableInt32(reader, "Sequence", 0);
+            obj.Sequence = GetNullableInt32(reader, "Sequence", 0); 
             obj.HomeShift = GetNullableString(reader, "HomeShift", String.Empty);
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.NotifySubRequests = GetNullableBoolean(reader, "NotifySubRequests", false);
@@ -150,7 +154,7 @@ namespace  NQN.DB
                 ,g.VolID
                 ,g.NotifySubRequests
                 ,HomeShift=dbo.FlattenShortShifts(o.GuideID)
-                ,s.Sequence
+                ,s.Sequence 
                 ,MaskContactInfo = r.[MaskContactInfo] | isnull(g.MaskPersonalInfo,0)
                 ,HasInfoDesk = case r.IsInfo WHEN 1 then r.IsInfo else (select cast(count(*) as bit)
                          from GuideRole gr join Roles r2 on gr.RoleID = r2.RoleID where gr.GuideID = g.GuideID and r2.IsInfo = 1) end

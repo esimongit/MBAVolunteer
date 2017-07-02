@@ -97,13 +97,15 @@ namespace NQN.Bus
             return subs;
              
         }
-        // For CalendarList on mbav
+        // For CalendarList on mbav for Info Center Only
         public ObjectList<GuideSubstituteObject> SelectAllRequests(int SubstituteID, int RoleID)
         {
+            if (RolesDM.GetInfo() != RoleID)
+                return null;
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
             GuidesDM gdm = new GuidesDM();
             GuideSubstituteDM sdm = new GuideSubstituteDM();
-            ObjectList<GuideSubstituteObject> dList = sdm.FetchAllRequests(SubstituteID, RoleID);
+            ObjectList<GuideSubstituteObject> dList = sdm.FetchAllRequests(SubstituteID);
             foreach (GuideSubstituteObject obj in dList)
             {
                 ObjectList<GuidesObject> guides = gdm.FetchInfoForShift(obj.ShiftID);
@@ -367,7 +369,7 @@ namespace NQN.Bus
             {
 
                 bool doPrint = false;
-                dList = sdm.FetchRequests(offer.GuideID);
+                dList = sdm.FetchRequests(offer.GuideID, 0);
                 if (dList.Count == 0)
                     continue;
 
@@ -472,12 +474,14 @@ namespace NQN.Bus
             SubOffersDM dm = new SubOffersDM();
             GuidesDM gdm = new GuidesDM();
             GuidesObject guide = gdm.FetchGuide(GuideID);
-            ObjectList<SubOffersObject> dList = dm.FetchForShift(ShiftID, false);
+            ObjectList<SubOffersObject> dList = dm.FetchForShift(ShiftID, false, 0);
             MailTextDM mtdm = new MailTextDM();
             MailTextObject mtobj = mtdm.FetchForSymbol("InterestNotify");
             foreach(SubOffersObject obj in dList)
             {
                 if (!obj.NotifySubRequests)
+                    continue;
+                if (guide.IsInfo && !obj.HasInfoDesk)
                     continue;
                 obj.dt = dt;
                 obj.RequestorID = guide.VolID;

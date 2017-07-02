@@ -17,7 +17,7 @@
  
      <div class="row">
          <div class="col-xs-offset-1 col-xs-10" style="align-content:center">
-<h3 ">Volunteer Guide Contact Info</h3>
+<h3 ">Volunteer Contact Info</h3>
          </div>
          </div>
      <div class="row"> 

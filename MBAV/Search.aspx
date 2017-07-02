@@ -16,7 +16,7 @@
  </style>
    <div class="row"> 
  <div class="col-md-10 col-md-offset-2">
-<asp:Label ID="TitleLabel" runat="server" Font-Bold="true" ForeColor="Black" Font-Size="X-Large">Find Guides</asp:Label>
+<asp:Label ID="TitleLabel" runat="server" Font-Bold="true" ForeColor="Black" Font-Size="X-Large">Find Volunteers</asp:Label>
    </div>
       </div>
  <div class="row"> 

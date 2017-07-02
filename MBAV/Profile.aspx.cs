@@ -25,6 +25,7 @@ namespace MBAV
             {
                 GuidesObject guide = dm.FetchGuide(GuideID);
                 IrregularButton.Visible = guide.IrregularSchedule;
+                 
             }
             
         }
@@ -65,6 +66,15 @@ namespace MBAV
         protected void CheckChanged(object sender, EventArgs e)
         {
             SubOffersDM dm = new SubOffersDM();
+            //int RoleID = 0;
+            //try
+            //{
+            //    RoleID = Convert.ToInt32(OfferRoleSelect.SelectedValue);
+            //}
+            //catch { }
+            //// Session Role is either 0 or Info Desk depending on whether the person is Info only
+            //if (RoleID == 0)
+            //    RoleID = Convert.ToInt32(Session["RoleID"]);
             int GuideID = Convert.ToInt32(Session["GuideID"]);
             if (GuideID == 0)
                 return;

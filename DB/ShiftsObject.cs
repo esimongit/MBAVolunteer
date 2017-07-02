@@ -169,6 +169,10 @@ namespace NQN.DB
         {
             get;set;
         }
+        public int RoleID
+        {
+            get;set;
+        }
         public bool NonRecurring
         {
             get
@@ -180,7 +184,8 @@ namespace NQN.DB
         {
             get
             {
-                return ShiftQuota - Attendance;
+                int need =  ShiftQuota - Attendance;
+                return need >= 0 ? need : 0;
             }
         }
         public int ShiftQuota

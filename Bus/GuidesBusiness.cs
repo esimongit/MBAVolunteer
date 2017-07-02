@@ -90,10 +90,7 @@ namespace NQN.Bus
                     GuideSubstituteObject newsubs = new GuideSubstituteObject(obj);
 
                     if (!shift.Recurring)
-                    {
-                        newsubs.FirstName = shift.ShortName;
-                        newsubs.LastName = String.Empty;
-                    }
+                        continue;
                     newsubs.NoSub = false;
                     newsubs.HasSub = false;
                   
@@ -107,7 +104,7 @@ namespace NQN.Bus
         {
             ObjectList<GuideSubstituteObject> dList = new ObjectList<GuideSubstituteObject>();
             GuideSubstituteDM dm = new GuideSubstituteDM();
-            foreach (GuideSubstituteObject obj in dm.FetchRequests(GuideID))
+            foreach (GuideSubstituteObject obj in dm.FetchRequests(GuideID, 0))
             {
                 if (obj.SubstituteID == 0)
                 {
@@ -201,6 +198,26 @@ namespace NQN.Bus
             ObjectList<GuideDropinsObject> pList = ddm.FetchForShift(ShiftID, dt);
             ObjectList<GuideDropinsObject> rList = ddm.FetchOnShift(ShiftID, dt);
             ObjectList<GuidesObject> iList = new ObjectList<GuidesObject>();
+
+            // Onshift dropins are like regular shift members
+            foreach (GuideDropinsObject drop in rList)
+            {
+                GuidesObject obj = new GuidesObject();
+                obj.FirstName = drop.FirstName;
+                obj.LastName = drop.LastName;
+                obj.GuideName = drop.FirstName + " " + drop.LastName;
+                obj.Phone = drop.Phone;
+                obj.Email = drop.Email;
+                obj.VolID = drop.VolID;
+                obj.Sequence = drop.Sequence;
+                obj.GuideID = drop.GuideID;
+                obj.SubDescription = "Special";
+                obj.RoleName = drop.Role;
+                obj.Roles = drop.Roles;
+                obj.RoleID = drop.RoleID;
+                obj.IsInfo = drop.IsInfo;
+                dList.Add(obj);
+            }
             foreach (GuidesObject obj in dList)
             {
                 GuideSubstituteObject sub = sList.Find(x => x.GuideID == obj.GuideID);
@@ -232,34 +249,27 @@ namespace NQN.Bus
                 obj.GuideID = drop.GuideID;
                 obj.SubDescription = "Drop In";
                 obj.RoleName = drop.Role;
+                obj.IsInfo = drop.IsInfo;
+                obj.Roles = drop.Roles;
+                obj.RoleID = drop.RoleID;
                 if (drop.IsInfo && !iList.Contains(obj) && !Results.Contains(obj))
                     iList.Add(obj);
                 else
                     if (!Results.Contains(obj))
                         Results.Add(obj); 
             }
-            foreach (GuideDropinsObject drop in rList)
-            {
-                GuidesObject obj = new GuidesObject();
-                obj.FirstName = drop.FirstName;
-                obj.LastName = drop.LastName;
-                obj.GuideName = drop.FirstName + " " + drop.LastName;
-                obj.Phone = drop.Phone;
-                obj.Email = drop.Email;
-                obj.VolID = drop.VolID;
-                obj.Sequence = drop.Sequence;
-                obj.GuideID = drop.GuideID;
-                obj.SubDescription = "Special";
-                obj.RoleName = drop.Role;
-                if ( !iList.Contains(obj) && !Results.Contains(obj))
-                    iList.Add(obj);
-                else
-                     if (!Results.Contains(obj))
-                        Results.Add(obj);
-            }
-            Results.Sort((x, y) => x.FirstName.CompareTo(y.FirstName));
+           
+           
             Results.AddRange(iList);
+            Results.Sort(GuideSort);
+           // Results.Sort((x, y) => x.FirstName.CompareTo(y.FirstName));
             return Results;
+        }
+        public static int GuideSort(GuidesObject x, GuidesObject y)
+        {
+            if (x.IsInfo == y.IsInfo)
+                return x.FirstName.CompareTo(y.FirstName);
+            return x.IsInfo.CompareTo(y.IsInfo);
         }
         // No subs on Special shifts, just dropins
         public ObjectList<GuidesObject> RosterSpecial(int ShiftID)
@@ -280,11 +290,16 @@ namespace NQN.Bus
                 obj.GuideID = drop.GuideID;
                 obj.SubDescription = "Special";
                 obj.RoleName = drop.Role;
+                obj.IsInfo = drop.IsInfo;
+                obj.Roles = drop.Roles;
+                obj.RoleID = drop.RoleID;
                 Results.Add(obj);
             }
+
+            Results.Sort(GuideSort);
             return Results;
         }
-        // Staff Update
+        // Staff Updates
         public void UpdateRoster( DateTime dt, bool SubRequested, string Sub,  int ShiftID, int GuideID)
         {
             SubstitutesBusiness sb = new SubstitutesBusiness();
@@ -315,9 +330,7 @@ namespace NQN.Bus
                     // Re-fetch to populate fields
                     obj = dm.FetchRecord("GuideSubstituteID", dm.GetLast());
                     sb.NotifyCaptains(obj);
-                    // Immediate notification if the request is for today
-                    if (obj.SubDate == DateTime.Today && SubstituteID == 0)
-                        sb.NotifyOffers(GuideID, ShiftID, dt);
+                   
                 }
                 else
                 {
@@ -344,6 +357,14 @@ namespace NQN.Bus
                     sb.NotifyCaptains(obj);
                 }
             }
+        }
+        // Used to change roles on shift for Dropins
+        public void UpdateRoster(DateTime dt, int ShiftID, int RoleID, int GuideID)
+        {
+            GuideDropinsDM dm = new GuideDropinsDM();
+            GuideDropinsObject obj = dm.FetchForGuide(GuideID, dt, ShiftID );
+            obj.RoleID = RoleID;
+            dm.Update(obj);
         }
         public void AddDropIn(string VolID, DateTime dt, int ShiftID)
         {

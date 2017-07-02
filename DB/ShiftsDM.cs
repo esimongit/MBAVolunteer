@@ -85,11 +85,12 @@ namespace  NQN.DB
                 ,s.[ShiftTimeID]
                 ,[Quota]
                 ,[ShiftQuota] = 0
+                ,o.RoleID 
                 ,ShiftStart=cast (t.ShiftStart as DateTime)
                 ,ShiftEnd=cast (t.ShiftEnd as DateTime)
 				FROM Shifts s join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID left join SubOffers o on s.ShiftID = o.ShiftID and GuideID = @GuideID 
-                where DOW is not null
-                    order by dow, BWeek, Sequence";
+                where DOW is not null ";
+                qry += "    order by dow, BWeek, Sequence";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
@@ -98,7 +99,7 @@ namespace  NQN.DB
                 {
                     ShiftsObject obj = LoadFrom(reader);
                     while (obj != null)
-                    {
+                    { 
                         obj.Selected = GetNullableInt32(reader, "GuideID", 0) > 0;
                         Results.Add(obj);
                         obj = LoadFrom(reader);

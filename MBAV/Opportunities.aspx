@@ -3,6 +3,7 @@
     <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" TypeName="NQN.DB.GuideSubstituteDM" SelectMethod="FetchRequests">
         <SelectParameters>
             <asp:SessionParameter SessionField="GuideID" Name="SubstituteID" Type="Int32" DefaultValue="0" />
+            <asp:SessionParameter SessionField="RoleID" Name="RoleID" Type="Int32" DefaultValue="0" />
         </SelectParameters>
     </asp:ObjectDataSource>
       <style type="text/css">
@@ -25,8 +26,8 @@
         <Columns>
             <asp:HyperLinkField HeaderText="Date (Click to Sub)" DataNavigateUrlFormatString="~/SubRequest.aspx?dt={0}" Text="Select" DataNavigateUrlFields="dtString"  DataTextField="SubDate" DataTextFormatString="{0:D}" />
              <asp:BoundField DataField="ShortName" HeaderText="Shift" SortExpression="ShortName" />
-            <asp:BoundField DataField="VolID" HeaderText="Guide ID" SortExpression="VolID" />
-            <asp:BoundField DataField="GuideName" HeaderText="Guide Name" ReadOnly="True" SortExpression="GuideName" />
+            <asp:BoundField DataField="VolID" HeaderText="Volunteer #" SortExpression="VolID" />
+            <asp:BoundField DataField="GuideName" HeaderText="Volunteer Name" ReadOnly="True" SortExpression="GuideName" />
             <asp:BoundField DataField="Role" HeaderText="Role" SortExpression="Role" />
             <asp:TemplateField HeaderText="Email" SortExpression="Email">
                

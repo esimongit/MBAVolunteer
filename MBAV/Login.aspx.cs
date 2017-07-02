@@ -45,7 +45,7 @@ namespace MBAV
                 e.Cancel = true;
             }
             else
-                 InstructionText.Text = "Please enter your Guide ID and password.";
+                 InstructionText.Text = "Please enter your Volunteer # and password.";
 
 
 
@@ -66,7 +66,7 @@ namespace MBAV
             string name = LoginUser.UserName;
             if (string.IsNullOrEmpty(name))
             {
-                AlertMsg.Show("You must enter a valid Guide ID to request a password reset.");
+                AlertMsg.Show("You must enter a valid Volunteer # to request a password reset.");
             }
             MembershipBusiness mb = new MembershipBusiness();
             try

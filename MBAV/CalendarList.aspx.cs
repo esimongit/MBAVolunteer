@@ -62,7 +62,7 @@ namespace MBAV
             ObjectList<GuidesObject> NotifyList = new ObjectList<GuidesObject>();
             DateTime dt = DateTime.Parse(Request.QueryString["dt"]);
             int NotifyInterestedSubs = 0;
-            bool NeedSub = false;
+          
             bool DoSub = false;
             InfoLabel.Visible = false;
             bool RequestProcessed = false;
@@ -132,14 +132,14 @@ namespace MBAV
                 
 
                 MultiView1.SetActiveView(View2);
-                if (NeedSub)
-                {
-                    InfoLabel.Visible = true;
-                    InfoLabel.Text = @" Please remember that you are <b>always responsible</b> for finding a substitute.
-            This on-line request system is just for your convenience. <b> If you do not get a substitute,
-              or five responses to your request within a week  of the date you will be absent,
-                    it is recommended that you get on the phone and call volunteers to find a substitute directly.</b> ";
-                }
+            //    if (NeedSub)
+            //    {
+            //        InfoLabel.Visible = true;
+            //        InfoLabel.Text = @" Please remember that you are <b>always responsible</b> for finding a substitute.
+            //This on-line request system is just for your convenience. <b> If you do not get a substitute,
+            //  or five responses to your request within a week  of the date you will be absent,
+            //        it is recommended that you get on the phone and call volunteers to find a substitute directly.</b> ";
+            //    }
                 if (DoSub)
                 {
                     InfoLabel.Visible = true;

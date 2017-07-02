@@ -82,7 +82,11 @@ namespace  NQN.DB
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             if (dt == DateTime.MinValue)
                 return Results;
-            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and isnull(OnShift,0) = 0 and isnull(IrregularSchedule,0) = 0 order by s.Sequence, d.GuideID ";
+            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and isnull(OnShift,0) = 0 and isnull(IrregularSchedule,0) = 0 ";
+            qry += " union ";
+            // All Special shifts -- everybody gets a reminder
+            qry += ReadAllCommand() + " WHERE s.Recurring = 0 and DropinDate = @dt ";
+            qry += " order by s.Sequence, d.GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
                 SqlCommand myc = new SqlCommand(qry, conn); 
@@ -404,7 +408,8 @@ namespace  NQN.DB
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.OnShift = GetNullableBoolean(reader, "OnShift", false);
             obj.IsInfo = GetNullableBoolean(reader, "IsInfo", false);
-           
+            GuideRoleDM dm = new GuideRoleDM();
+            obj.Roles = dm.FetchAllRoles(obj.GuideID);
             return obj;
 		}
 

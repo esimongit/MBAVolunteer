@@ -147,7 +147,10 @@ namespace NQN.DB
         {
             get; set;
         }
-       
+        public ObjectList<GuideRoleObject> Roles
+        {
+            get; set;
+        }
         public GuideDropinsObject()
 		{
 			_tablename = "GuideDropins";

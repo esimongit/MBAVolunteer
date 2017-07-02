@@ -65,7 +65,7 @@
       </div>
      <div class="row" > 
         <div class="col-md-5 col-xs-6" style="margin-left:0px;padding-top:16px; padding-bottom:10px"> 
-             <asp:HyperLink ID="SearchLink" runat="server"  CssClass="btn btn-info" Text="Search Guides"  NavigateUrl="Search.aspx"/>
+             <asp:HyperLink ID="SearchLink" runat="server"  CssClass="btn btn-info" Text="Search Volunteers"  NavigateUrl="Search.aspx"/>
             </div>
             <div  runat="server" id="ToggleDiv" class="col-md-5 col-xs-6" style="margin-left:0px;padding-top:16px; padding-bottom:10px"> 
              <asp:Button ID="ToggleCalendar" runat="server"  CssClass="btn btn-info" Text="Info Center Calendar"  OnClick="CalendarToggle"/>

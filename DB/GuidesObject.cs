@@ -287,14 +287,16 @@ namespace NQN.DB
         {
             get
             {
-                ObjectList<GuideRoleObject> AllRoles = new ObjectList<GuideRoleObject>();              
+                ObjectList<GuideRoleObject> AllRoles = new ObjectList<GuideRoleObject>();
+                if (Roles != null && Roles.Count > 0)
+                    AllRoles.AddRange(Roles);
                 GuideRoleObject obj = new GuideRoleObject();
                 obj.RoleID = _roleid;
                 obj.RoleName = RoleName;
                 obj.GuideID = _guideid;
-                AllRoles.Add(obj);
-                if (Roles != null && Roles.Count > 0)
-                    AllRoles.AddRange(Roles);
+                if (!AllRoles.Contains(obj))
+                    AllRoles.Add(obj);
+                
                 return AllRoles;
             }
         }

@@ -28,7 +28,14 @@ namespace MBAV
                 }
                 ShiftsDM dm = new ShiftsDM();
                 ShiftsObject shift = dm.FetchRecord("ShiftID", ShiftID);
-                TitleLabel.Text = String.Format("Guide Substitutes Available for {0}", shift.ShortName);
+                int RoleID = 0;
+                try
+                {
+                    RoleID = Convert.ToInt32(Session["RoleID"]);
+                }
+                catch { }
+                string RoleName = RoleID == 0 ? String.Empty : "Info Center";
+                TitleLabel.Text = String.Format("{0} Substitutes Available for {1}", RoleName, shift.ShortName);
                 ShiftSelect.SelectedValue=ShiftID.ToString();
                 GridView1.DataBind();
             }
@@ -46,7 +53,7 @@ namespace MBAV
             {
                 ShiftsDM dm = new ShiftsDM();
                 ShiftsObject shift = dm.FetchRecord("ShiftID", ShiftID);
-                TitleLabel.Text = String.Format("Guide Substitutes Available for {0}", shift.ShortName);
+                TitleLabel.Text = String.Format("Substitutes Available for {0}", shift.ShortName);
             }
         }
     }

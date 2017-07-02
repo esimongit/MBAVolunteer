@@ -10,6 +10,7 @@
  <asp:ObjectDataSource ID="ShiftsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchWithSubOffers">
   <SelectParameters>
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
+      
  </SelectParameters>
 </asp:ObjectDataSource>
     <asp:ObjectDataSource ID="ObjectDataSource2" runat='server' TypeName="NQN.Bus.SubstitutesBusiness" SelectMethod="FutureDatesForShift"
@@ -20,11 +21,7 @@
        <asp:ControlParameter ControlID="RoleSelect" Name="RoleID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
  </asp:ObjectDataSource>
- <asp:ObjectDataSource ID="ObjectDataSource3" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="FetchWithSubOffers">
-  <SelectParameters>
-   <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
- </SelectParameters>
-</asp:ObjectDataSource>
+  
     <asp:ObjectDataSource ID="SubRequestsDataSource" runat="server" TypeName="NQN.DB.GuideSubstituteDM" SelectMethod="FetchAllForGuide"
  DeleteMethod="Delete">
  <SelectParameters>
@@ -37,8 +34,7 @@
             <asp:SessionParameter Name="GuideID" SessionField="GuideID" DefaultValue="0" Type="Int32" />
         </SelectParameters>
 </asp:ObjectDataSource>
-  
-      <asp:ObjectDataSource ID="RolesDataSource" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="RolesForGuide">
+ <asp:ObjectDataSource ID="RolesDataSource" runat="server" TypeName="NQN.Bus.GuidesBusiness" SelectMethod="RolesForGuide">
   <SelectParameters>
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
  </SelectParameters>
@@ -209,9 +205,16 @@
 </asp:View>
      <asp:View runat="server" ID="View2">
 <div class="row"><div class="col-xs-12">
-<h3>In the table below,  check all the boxes for shifts on which 
-you can substitute. </h3><hr/>
+<h3>In the table below,  check all the boxes for shifts on which you can substitute. </h3> 
     </div></div>
+     <%--<div class="row"  style="padding-bottom:5px" >
+      <div class="col-md-12">
+         <asp:DropDownList ID="OfferRoleSelect" runat="server" DataSourceID="RolesDataSource" DataTextField="RoleName" DataValueField="RoleID" AppendDataBoundItems="true"
+  AutoPostBack="true" OnSelectedIndexChanged="StoreRole">
+  <asp:ListItem Value="0" Text="(All Roles)"></asp:ListItem>
+ </asp:DropDownList> 
+          </div>
+              </div>--%>
   <div class="row">
       <div class="col-md-3">
           <asp:HyperLink runat="server" ID="OpportunitiesLink" Text="View All Requests for these Shifts" CssClass="btn btn-info"
@@ -220,6 +223,7 @@ you can substitute. </h3><hr/>
          <asp:LinkButton ID="LinkButton2" runat="server" CssClass="btn btn-info"
              CausesValidation="False" CommandName="Cancel" Text="Return to Profile"    OnClick="ToView1" />
   </div></div>
+    
     <div class="row" style="padding-top:10px"><div class="col-md-5">
 <asp:Repeater ID="Repeater1" runat="server" DataSourceID="ShiftsDataSource" >
 <HeaderTemplate><table cellpadding="5"></HeaderTemplate>
@@ -259,7 +263,7 @@ you can substitute. </h3><hr/>
    
 <div class="row" style="padding-top:10px; padding-bottom:20px; font-size:large; margin-left:5px">
     In the table below,  check all the boxes for dates  
-you plan to be a guide for this shift with this role, then click "Submit".  </div>
+you plan to be a volunteer for this shift with this role, then click "Submit".  </div>
   
 <asp:Repeater ID="Repeater2" runat="server" DataSourceID="ObjectDataSource2" >
 <HeaderTemplate><table cellpadding="5"></HeaderTemplate>

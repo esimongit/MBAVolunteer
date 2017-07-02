@@ -80,12 +80,12 @@
         </Columns>
     </cc2:NQNGridView>
       <cc2:NQNGridView ID="GridView2" runat="server" AutoGenerateColumns="False"  PageSize="50" Visible ="false"
-        DataSourceID="ObjectDataSource1" DataKeyNames="GuideID"  Caption="<b>Delete only removes drop-ins or special shifts.</b>"
+        DataSourceID="ObjectDataSource1" DataKeyNames="GuideID"  Caption="<b>Special Shift: Delete removes guides from shift.</b>"
         AllowMultiColumnSorting="False" 
         DeleteMessage="Are you sure you want to remove this guide from the shift for this date" Privilege="">
         <Columns>
          
-                 <asp:CommandField ButtonType="Image" CancelImageUrl="~/Images/cancel.gif"  ShowEditButton="false" 
+                 <asp:CommandField ButtonType="Image" CancelImageUrl="~/Images/cancel.gif"  ShowEditButton="true" 
                      EditImageUrl="~/Images/iedit.gif" UpdateImageUrl="~/Images/save.gif" ShowDeleteButton="true" DeleteImageUrl="~/Images/delete.gif" />
                  
                  <asp:BoundField DataField="VolID" HeaderText="ID" SortExpression="VolInt"  ReadOnly="true"/>
@@ -96,8 +96,16 @@
             <asp:BoundField DataField="PreferredPhone" HeaderText="Phone" SortExpression="PreferredPhone"  ReadOnly="true" />
             <asp:BoundField DataField="Email" HeaderText="Email" SortExpression="Email"  ReadOnly="true" />
             <asp:BoundField DataField="Notes" HeaderText="Notes" SortExpression="Notes"  ReadOnly="true"/> 
-            <asp:BoundField DataField="RoleName" HeaderText="Role"  ReadOnly="true"
-                SortExpression="RoleName" />
+            <asp:TemplateField HeaderText="Role">
+                <ItemTemplate>
+                    <asp:Label ID="RoleLabel" runat="server" Text='<%#Eval("RoleName") %>'></asp:Label>
+                </ItemTemplate>
+                <EditItemTemplate>
+                    <asp:DropDownList ID="RoleSelect" runat="server" DataSource='<%#Eval("Roles") %>' SelectedValue='<%#Bind("RoleID") %>'
+                         DataTextField="RoleName" DataValueField="RoleID"></asp:DropDownList>
+                </EditItemTemplate>
+            </asp:TemplateField>
+           
            
                  
         </Columns>
