@@ -32,7 +32,7 @@
                 Shift Name:</td><td>
                     <asp:Label ID="ShiftNameLabel" Text='<%#Eval("ShortName") %>' runat="server"></asp:Label> 
                        (<asp:Label ID="TypeLabel" Text='<%#Eval("Type") %>' runat="server"></asp:Label>) &nbsp;&nbsp;
-                    Minimum: <asp:Label ID="ShiftQuotaLabel" Text='<%#Eval("ShiftQuota") %>' runat="server"></asp:Label>
+                    Minimum: <asp:Label ID="ShiftQuotaLabel" Text='<%#Eval("Quota") %>' runat="server"></asp:Label>
                      Current: <asp:Label ID="Label1" Text='<%#Eval("Attendance") %>' runat="server"></asp:Label> 
                 </td></tr>
              <tr><td class="formlabel">

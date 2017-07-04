@@ -3,7 +3,7 @@
    <asp:ObjectDataSource ID="SpecialsDataSource" runat="server" TypeName="NQN.DB.ShiftsDM" SelectMethod="SpecialShiftsForGuide">
   <SelectParameters>
    <asp:SessionParameter SessionField="GuideID" Name="GuideID" Type="Int32" DefaultValue="0" />
-      <asp:ControlParameter ControlID="RoleSelect" Name="RoleID" DefaultValue="0" Type="Int32" />
+      <asp:SessionParameter SessionField="RoleID" Name="RoleID" DefaultValue="0" Type="Int32" />
  </SelectParameters>
 </asp:ObjectDataSource>
      <style type="text/css">
@@ -16,15 +16,11 @@
    
 <div class="row"><div class="col-xs-12">
 <h3>In the table below,  check all the boxes for special shifts on which 
-you can participate. </h3><hr/>
+you can participate as <asp:Label ID="RoleLabel" Font-Bold="true" runat="server"></asp:Label> </h3><hr/>
   <div class="row" style="padding-bottom:10px"><div class="col-md-6 col-md-offset-2 col-xs-12">
          <asp:HyperLink ID="HyperLink2" runat="server"   CssClass="btn btn-info"  Text="Return to Calendar"  NavigateUrl="SubstituteCalendar.aspx"/>
   </div></div>
-     <div class="row" style="padding-bottom:8px">
-        <div class="col-xs-12">
-            <asp:DropDownList ID="RoleSelect" runat="server" Font-Bold="true" DataTextField="RoleName" AutoPostBack="true" DataValueField="RoleID"></asp:DropDownList>
-        </div>
-    </div>
+      
 <asp:Repeater ID="SpecialRepeater" runat="server" DataSourceID="SpecialsDataSource" >
 <HeaderTemplate><table cellpadding="5" border="1">
     <tr><th>Check to Join</th><th>Shift</th><th>Date</th><th>DOW</th><th>Start Time</th><th>End Time</th><th>Count</th><th>Needed</th></tr></HeaderTemplate>

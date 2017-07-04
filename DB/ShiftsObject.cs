@@ -126,6 +126,18 @@ namespace NQN.DB
                 _quota = value;
             }
         }
+        private int _infoquota = 0;
+        public int InfoQuota
+        {
+            get
+            {
+                return _infoquota;
+            }
+            set
+            {
+                _infoquota = value;
+            }
+        }
         private DateTime _shiftdate = DateTime.MinValue;
         public DateTime ShiftDate
         {
@@ -184,14 +196,11 @@ namespace NQN.DB
         {
             get
             {
-                int need =  ShiftQuota - Attendance;
+                int need =  Quota - Attendance;
                 return need >= 0 ? need : 0;
             }
         }
-        public int ShiftQuota
-        {
-            get; set;
-        }
+      
         public string Type
         {
             get
@@ -248,9 +257,16 @@ namespace NQN.DB
         { get; set; }
         public string Info
         { get; set; }
+        public int InfoCnt
+        {
+            get; set;
+        }
         public int Total
-        { get
-            { return BaseCnt - SubRequests + Substitutes + Dropins; }
+        {
+            get
+            {
+                return BaseCnt - SubRequests + Substitutes + Dropins;
+            }
         }
         public int BaseCnt
         {
@@ -260,9 +276,13 @@ namespace NQN.DB
         {
             get; set;
         }
-        public int ShiftQuota
+        public int Quota
         {
             get;set;
+        }
+        public int InfoQuota
+        {
+            get; set;
         }
         public int Substitutes
         { get; set; }

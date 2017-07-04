@@ -191,7 +191,7 @@ namespace NQN.Bus
                 // Lookup the shift 
                 foreach (ShiftsObject shift in tList.FindAll(x => x.ShiftDate == CurDay))
                 {
-                    if (shift.ShiftQuota > shift.Attendance)
+                    if (shift.Quota > shift.Attendance)
                         obj.Critical = true;
                 }
                 // No volunteers on Christmas day
@@ -373,7 +373,7 @@ namespace NQN.Bus
                 if (dList.Count == 0)
                     continue;
 
-                string msg = String.Format("Dear {0}<br/><br/> <p>Here is a list of Guides who have outstanding requests for substitutes on shifts in which you have expressed an interest</p><ul>",
+                string msg = String.Format("Dear {0}<br/><br/> <p>Here is a list of Volunteers who have outstanding requests for substitutes on shifts in which you have expressed an interest</p><ul>",
                     offer.FirstName);
                 DateTime odate = DateTime.Today;
          

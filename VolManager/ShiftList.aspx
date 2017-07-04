@@ -50,6 +50,7 @@
             <asp:BoundField DataField="Sequence" HeaderText="Sequence" ReadOnly="true" />
             <asp:BoundField DataField="ShortName" HeaderText="Short Name" />
             <asp:BoundField DataField="Quota" HeaderText="Quota" />
+              <asp:BoundField DataField="InfoQuota" HeaderText="Info Quota" />
             <asp:BoundField DataField="ShiftStart" DataFormatString="{0:h\:mm tt}" HeaderText="Shift Start" ItemStyle-HorizontalAlign="Right">
             <ItemStyle HorizontalAlign="Right" />
             </asp:BoundField>
@@ -97,7 +98,11 @@
                    </td></tr>
                         <tr><td class="formlabel">
                     Quota:</td><td>
-                    <asp:TextBox ID="TextBox1" runat="server" Width="20" Text='<%# Bind("Quota") %>' />
+                    <asp:TextBox ID="QuotaTextBox" runat="server" Width="20" Text='<%# Bind("Quota") %>' />
+                   </td></tr>
+                   <tr><td class="formlabel">
+                    Info Quota:</td><td>
+                    <asp:TextBox ID="InfoQuotaTextBox" runat="server" Width="20" Text='<%# Bind("InfoQuota") %>' />
                    </td></tr>
                     <tr><td class="formlabel">
                     Short Name:</td><td>
@@ -195,6 +200,20 @@
                     Short Name:</td><td>
                     <asp:TextBox ID="ShortNameTextBox" runat="server" Text='<%# Bind("ShortName") %>' />
                       </td></tr>
+                     <tr><td class="formlabel">
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="QuotaTextBox" ErrorMessage="Enter a number for the minimum required Guides on this shift."
+                             Display="Dynamic">*</asp:RequiredFieldValidator>
+                        <asp:RangeValidator runat="server" ControlToValidate="QuotaTextBox" Type="Integer" MinimumValue="0" MaximumValue="30" Display="Dynamic"  ErrorMessage="Minimum number of guides must be between 0 and 30."></asp:RangeValidator>
+                    Minimum Guides:</td><td>
+                    <asp:TextBox ID="QuotaTextBox" runat="server"   Text='<%# Bind("Quota") %>' />
+                   </td></tr>
+                   <tr><td class="formlabel">
+                        <asp:RequiredFieldValidator runat="server" ControlToValidate="InfoQuotaTextBox" ErrorMessage="Enter a number for the minimum required Info Center on this shift."
+                             Display="Dynamic">*</asp:RequiredFieldValidator>
+                        <asp:RangeValidator runat="server" ControlToValidate="InfoQuotaTextBox" Type="Integer" MinimumValue="0" MaximumValue="2" Display="Dynamic"  ErrorMessage="Minimum number of Info Center must be between 0 and 2."></asp:RangeValidator>
+                    Minimum Info Center:</td><td>
+                    <asp:TextBox ID="InfoQuotaTextBox" runat="server"   Text='<%# Bind("InfoQuota") %>' />
+                   </td></tr>
                     <tr><td class="formlabel">
                     Shift Time:</td><td>
                     <asp:DropDownList ID="ShiftTimeSelect" DataValueField="ShiftTimeID" DataTextField="TimeString" DataSourceID="ShiftTimesDataSource" runat="server" Text='<%# Bind("ShiftTimeID") %>' />

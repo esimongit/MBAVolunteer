@@ -14,19 +14,19 @@ namespace MBAV
         {
             if (!Page.IsPostBack)
             {
-                RoleSelect.Visible = false;
                 int GuideID = Convert.ToInt32(Session["GuideID"]);
                 if (GuideID == 0)
                     return;
                 GuidesDM dm = new GuidesDM();
                 GuidesObject guide = dm.FetchGuide(GuideID);
-                if (guide.Roles.Count > 0)
+                int RoleID = Convert.ToInt32(Session["RoleID"]);
+                if (RoleID == 0)
+                    RoleLabel.Text = guide.RoleName;
+                else
                 {
-                    RoleSelect.Visible = true;
-                    foreach (GuideRoleObject role in guide.AllRoles)
-                    {
-                        RoleSelect.Items.Add(new ListItem(role.RoleName, role.RoleID.ToString()));
-                    }
+                    RolesDM rdm = new RolesDM();
+                    RolesObject role = rdm.FetchRecord("RoleID", RoleID);
+                    RoleLabel.Text = role.RoleName;
                 }
             }
         }
@@ -38,9 +38,9 @@ namespace MBAV
                 return;
             GuidesDM gdm = new GuidesDM();
             GuidesObject guide = gdm.FetchGuide(GuideID);
-            int RoleID = guide.RoleID;
-            if (RoleSelect.SelectedIndex > -1)
-                RoleID = Convert.ToInt32(RoleSelect.SelectedValue);
+            int RoleID = Convert.ToInt32(Session["RoleID"]);
+            if (RoleID == 0)
+                RoleID = guide.RoleID;
             CheckBox cb = (CheckBox)sender;
             HiddenField hf = (HiddenField)(cb.Parent.FindControl("ShiftIDHidden"));
             int ShiftID = Convert.ToInt32(hf.Value);

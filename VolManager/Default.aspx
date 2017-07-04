@@ -33,8 +33,10 @@
              <asp:BoundField DataField="SubRequests" HeaderText="Requests" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
               <asp:BoundField DataField="Substitutes" HeaderText="Subs" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
              <asp:BoundField DataField="Dropins" HeaderText="Drop-ins" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
-            <asp:BoundField DataField="Total" HeaderText="Planned Number" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
-             <asp:BoundField DataField="ShiftQuota" HeaderText="Minimum" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+            <asp:BoundField DataField="Total" HeaderText="Planned" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+             <asp:BoundField DataField="Quota" HeaderText="Minimum" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+             <asp:BoundField DataField="InfoCnt" HeaderText="Info Count" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
+             <asp:BoundField DataField="InfoQuota" HeaderText="Min Info" ItemStyle-Font-Bold="true" ItemStyle-HorizontalAlign="Right" />
         </Columns>
 
     </cc2:NQNGridView>

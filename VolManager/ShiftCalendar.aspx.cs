@@ -64,7 +64,7 @@ namespace VolManager
                 e.Cell.Controls.Add(txt);
                 HyperLink lc = new HyperLink();
                 lc.Text = shift.ShiftName;
-                if (shift.Attendance < shift.ShiftQuota)
+                if (shift.Attendance < shift.Quota)
                     lc.ForeColor = System.Drawing.Color.Red;
                 lc.NavigateUrl = shift.Url(dt);
                 e.Cell.Controls.Add(lc);
