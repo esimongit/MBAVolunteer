@@ -284,6 +284,13 @@ namespace NQN.DB
         {
             get; set;
         }
+        public string Times
+        {
+            get
+            {
+                return ShiftStart.ToShortTimeString() + " " + ShiftEnd.ToShortTimeString();
+            }
+        }
         public int Substitutes
         { get; set; }
         public int Dropins

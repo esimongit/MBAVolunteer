@@ -30,7 +30,27 @@ namespace  NQN.DB
             }
             return Results;
         }
-       
+        public ObjectList<GuideSubstituteObject> FetchInfoForShift(int ShiftID, DateTime dt)
+        {
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            string qry = ReadAllCommand() + " WHERE s.ShiftID = @ShiftID and r.IsInfo = 1 and SubDate = @dt order by g.VolID";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    GuideSubstituteObject obj = LoadFrom(reader);
+                    while (obj != null)
+                    {
+                        Results.Add(obj);
+                        obj = LoadFrom(reader);
+                    }
+                }
+            }
+            return Results;
+        }
         public  GuideSubstituteObject FetchForGuide(int GuideID, int ShiftID,  DateTime dt )
         {
             GuideSubstituteObject obj = null;
@@ -446,6 +466,19 @@ namespace  NQN.DB
 				 myc.ExecuteNonQuery();
 			}
 		}
+
+        public void DeleteForSubAndDate(int SubstituteID, DateTime dt, int ShiftID)
+        {
+            string qry = @"UPDATE GuideSubstitute Set SubstituteID = null WHERE SubstituteID = @SubstituteID and SubDate = @dt and ShiftID = @ShiftID ";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("SubstituteID", SubstituteID));
+                myc.Parameters.Add(new SqlParameter("ShiftID", ShiftID));
+                myc.Parameters.Add(new SqlParameter("dt", dt));
+                myc.ExecuteNonQuery();
+            }
+        }
         public void DeleteForSubAndDate(int SubstituteID, DateTime dt)
         {
             string qry = @"UPDATE GuideSubstitute Set SubstituteID = null WHERE SubstituteID = @SubstituteID and SubDate = @dt ";

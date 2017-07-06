@@ -60,6 +60,8 @@ namespace MBAV
             Session["RoleID"] = (guide.RoleID == RolesDM.GetInfo()) ? guide.RoleID : 0;
 
             Session["GuideID"] = guide.GuideID;
+            if (guide.RoleID == RolesDM.GetInfo())
+                Response.Redirect("~/CalendarList.aspx");
         }
         protected void ResetPW(object sender, EventArgs e)
         {

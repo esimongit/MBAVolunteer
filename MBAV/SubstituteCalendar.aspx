@@ -85,7 +85,7 @@
          <asp:Label ID="CalendarTypeLabel" runat="server" Text="Guide Calendar"   Font-Bold="true" Font-Size="24pt"></asp:Label></div>  
   
    
-         <div id="ListLink" runat="server" class="col-xs-3"><asp:HyperLink ID="CalendarListLink" runat="server"   Text="List View" ForeColor="Black" CssClass="btn btn-lg btn-info" Target="_blank" NavigateUrl="CalendarList.aspx"></asp:HyperLink>
+         <div id="ListLink" runat="server" class="col-xs-3"><asp:HyperLink ID="CalendarListLink" runat="server"   Text="Signup View" ForeColor="Black" CssClass="btn btn-lg btn-info" Target="_blank" NavigateUrl="CalendarList.aspx"></asp:HyperLink>
         </div>
                 
     </div>

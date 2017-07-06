@@ -59,7 +59,10 @@ namespace MBAV
            
             DropinCell.Visible = tdm.ShiftsForDateAndGuide(dt, GuideID).Count > 0;
             if (Convert.ToInt32(Session["RoleID"]) > 0)
-                    DropinCell.Visible = false;
+            {
+                DropinCell.Visible = false;
+                RoleLabel.Text = "Info Center";
+            }
             SubstitutesBusiness sb = new SubstitutesBusiness();
             string SubShifts = sb.SubShiftsForGuideAndDate(GuideID, dt);
             CurrentSubCell.Visible = false;
@@ -101,7 +104,7 @@ namespace MBAV
             ShiftsDM sdm = new ShiftsDM();
             ObjectList<GuidesObject> NotifyList = new ObjectList<GuidesObject>();
             DateTime dt = (DateTime)Session["dt"];
-            
+            int RoleID = Convert.ToInt32(Session["RoleID"]);
             int NotifyInterestedSubs = 0;
             bool NeedSub = false;
             bool DoSub = false;
@@ -140,7 +143,7 @@ namespace MBAV
                         if (sub.SubstituteID > 0)
                         {
                             NotifyList.Add(gdm.FetchGuide(sub.SubstituteID));
-                            msg += String.Format(" {0} ({1}) will be substituting for this Guide.", sub.SubName, sub.Sub);
+                            msg += String.Format(" {0} ({1}) will be substituting for this slot.", sub.SubName, sub.Sub);
                         }
                         NotifyInterestedSubs = (sub.SubstituteID == 0 && dt < DateTime.Today.AddDays(2)) ? ShiftID : 0;
                     }
@@ -334,7 +337,7 @@ namespace MBAV
                         RequestProcessed = true;
                         dropin = ddm.FetchForGuide(GuideID, dt, dropin.ShiftID);
                         NotifyList.AddRange(gdm.FetchCaptains(dropin.ShiftID));
-                        msg = String.Format("{0} ({1}) is planning to be a Drop-in guide for shift {2} on {3}.",
+                        msg = String.Format("{0} ({1}) is planning to Drop in for shift {2} on {3}.",
                             dropin.GuideName, dropin.VolID, dropin.Sequence, dropin.DropinDate.ToLongDateString());
                     }
                     catch (Exception ex)
@@ -386,7 +389,7 @@ namespace MBAV
                 }
 
                 
-                sb.Notify(NotifyList, msg);
+                sb.Notify(NotifyList, msg, RoleID);
                 if (NotifyInterestedSubs > 0)
                 { 
                    sb.NotifyOffers(GuideID, NotifyInterestedSubs, dt);

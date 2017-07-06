@@ -98,29 +98,56 @@ namespace NQN.Bus
              
         }
         // For CalendarList on mbav for Info Center Only
-        public ObjectList<GuideSubstituteObject> SelectAllRequests(int SubstituteID, int RoleID)
+        public ObjectList<GuideSubstituteObject> SelectInfoCommitments(int GuideID)
         {
-            if (RolesDM.GetInfo() != RoleID)
-                return null;
+            
             ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
-            GuidesDM gdm = new GuidesDM();
-            GuideSubstituteDM sdm = new GuideSubstituteDM();
-            ObjectList<GuideSubstituteObject> dList = sdm.FetchAllRequests(SubstituteID);
-            foreach (GuideSubstituteObject obj in dList)
+            GuideSubstituteDM dm = new GuideSubstituteDM();
+            foreach (GuideSubstituteObject sub in  dm.FetchAllForSub(GuideID))
             {
-                ObjectList<GuidesObject> guides = gdm.FetchInfoForShift(obj.ShiftID);
-                foreach (GuidesObject guide in guides)
-                {
-                    if (!dList.Exists(x => (x.GuideID == guide.GuideID) && (x.ShiftID == obj.ShiftID)))
-                    {
-                        if (obj.GuideID != SubstituteID)
-                            obj.PartnerName = guide.GuideName;
-                        
-                    }
-                        
-                }
-                Results.Add(obj);
+                if (!sub.IsInfo)
+                    continue;
+                Results.Add(sub);
             }
+            GuideDropinsDM gdm = new GuideDropinsDM();
+            foreach (GuideDropinsObject dropin in gdm.FetchAllForGuide(GuideID, false))
+            {
+                if (!dropin.IsInfo)
+                    continue;
+                if (dropin.Recurring && dropin.OnShift)
+                    continue;
+                GuideSubstituteObject sub = new GuideSubstituteObject(dropin);
+                
+                sub.ShortName = dropin.ShiftName;
+                Results.Add(sub);
+            }
+            return Results;
+        }
+
+        // For CalendarList on mbav for Info Center Only
+        public ObjectList<GuideSubstituteObject> SelectInfoRequests()
+        {
+            
+            ObjectList<GuideSubstituteObject> Results = new ObjectList<GuideSubstituteObject>();
+            ShiftsDM dm = new ShiftsDM();
+            ObjectList<ShiftSummaryObject> dList = dm.MissingInfo(DateTime.Today, DateTime.Today.AddMonths(4));
+         
+            foreach (ShiftSummaryObject obj in dList)
+            {
+                for (int i = 1; i < 1 + obj.InfoQuota - obj.InfoCnt; i++)
+                {
+                    GuideSubstituteObject sub = new GuideSubstituteObject();
+                    sub.ShiftID = obj.ShiftID;
+                    sub.GuideID = i;
+                    sub.SubDate = obj.ShiftDate;
+                    sub.PartnerName = obj.Info;
+                    sub.ShortName = obj.ShortName;
+                    sub.ShiftStart = obj.ShiftStart;
+                    sub.ShiftEnd = obj.ShiftEnd;
+                    Results.Add(sub);
+                }
+            }
+
             return Results;
         }
         public  GuideSubstituteObject SelectSubstituteShift(int GuideID, DateTime dt, int ShiftID)
@@ -165,11 +192,18 @@ namespace NQN.Bus
            
             while (CurDay.Month == Month)
             {
+                GuideDropinsObject drop = dList.Find(x => x.DropinDate == CurDay);
                 CalendarDateObject obj = new CalendarDateObject();
                 obj.Critical = false;
                 obj.Dt = CurDay;
-                if (!guide.IrregularSchedule && sdm.IsShiftOnDate(guide.ShiftID, CurDay))
+                // Regular volunteers on shift -- IsSubstitute means you are on shift for that day
+                if (!guide.IrregularSchedule && sdm.IsShiftOnDate(guide.ShiftID, CurDay) && (RoleID == 0  || RoleID == guide.RoleID))
                     obj.IsSubstitute = true;
+
+                if (drop != null && guide.IrregularSchedule && drop.OnShift && ((RoleID == RolesDM.GetInfo() && drop.IsInfo) || (RoleID == 0 && !drop.IsInfo)))
+                    obj.IsSubstitute = true;
+                // Substitutes. If you asked for a sub, you are not on shift that day, so remove the prior IsSubstitute
+                // If you are a sub, you are on shift for the day
                 foreach (GuideSubstituteObject sub in sList.FindAll(x => x.SubDate == CurDay))
                 {
                     if (sub.HasSub)
@@ -182,10 +216,11 @@ namespace NQN.Bus
                         obj.IsSubstitute = false;
                   
                 }
-                GuideDropinsObject drop = dList.Find(x => x.DropinDate == CurDay);
-                if (drop != null)
-                {
-                    obj.IsSubstitute = (RoleID == drop.RoleID || (RoleID == 0 && !drop.IsInfo));
+                // If you are dropping in without an OnShift flag, you are on shift, adjust for Info on RoleID filter
+              
+                if (drop != null && !guide.IrregularSchedule)
+                {                   
+                    obj.IsSubstitute = (!drop.OnShift && ((RoleID == RolesDM.GetInfo() && drop.IsInfo) || (RoleID == 0 && !drop.IsInfo)));
                 }
 
                 // Lookup the shift 
@@ -432,7 +467,7 @@ namespace NQN.Bus
                 DateTime dt = DateTime.Today;
                 dt = dt.AddDays(ndays);
                 ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(dt,0);
-                ObjectList<GuideDropinsObject> eList = ddm.FetchForDate(dt);
+                ObjectList<GuideDropinsObject> eList = ddm.FetchForDate(dt, 0);
                 EmailBusiness eb = new EmailBusiness();
                 MailTextDM mtdm = new MailTextDM();
                 MailTextObject mtobj = mtdm.FetchForSymbol("SubReminder");
@@ -493,19 +528,21 @@ namespace NQN.Bus
                 
             }
         }
-        public void NotifyCaptains(GuideSubstituteObject obj)
+        public void NotifyCaptains(GuideSubstituteObject obj, int RoleID)
         {
             GuidesDM dm = new GuidesDM();
             MailTextDM mtdm = new MailTextDM();
             ObjectList<GuidesObject> captains = dm.FetchCaptains(obj.ShiftID);
             MailTextObject mtobj = mtdm.FetchForSymbol("NotifyCaptains");
             string msg = mtobj.CompletedText(obj);
-            Notify(captains, msg);
+            Notify(captains, msg, RoleID);
         }
-        public void NotifyVO(string msg)
+
+        // Info Center notify
+        public void NotifyGE(string msg)
         {
             MailTextDM mtdm = new MailTextDM();
-            EmailBusiness eb = new EmailBusiness(); 
+            EmailBusiness eb = new EmailBusiness();
             MailTextObject mtobj = mtdm.FetchForSymbol("NotifyCaptains");
             string Email = StaticFieldsObject.StaticValue("GuideNotificationEmail");
             string Subject = "Guide Substitute or Drop-in Notice.";
@@ -514,7 +551,19 @@ namespace NQN.Bus
                 eb.SendMail(mtobj.MailFrom, Email, Subject, msg, true);
             }
         }
-        public void Notify (ObjectList<GuidesObject> recipients, string msg)
+        public void NotifyVO(string msg)
+        {
+            MailTextDM mtdm = new MailTextDM();
+            EmailBusiness eb = new EmailBusiness(); 
+            MailTextObject mtobj = mtdm.FetchForSymbol("NotifyCaptains");
+            string Email = StaticFieldsObject.StaticValue("InfoNotificationEmail");
+            string Subject = "Info Center Substitute Notice.";
+            if (mtobj != null & mtobj.Enabled)
+            {
+                eb.SendMail(mtobj.MailFrom, Email, Subject, msg, true);
+            }
+        }
+        public void Notify (ObjectList<GuidesObject> recipients, string msg, int RoleID)
         {
             if (recipients.Count == 0)
                 return;
@@ -535,6 +584,8 @@ namespace NQN.Bus
                 }
             }
             NotifyVO(msg);
+            if (RoleID == RolesDM.GetInfo())
+                NotifyGE(msg);
         }
 
         protected int SubSort(GuideSubstituteObject x, GuideSubstituteObject y)

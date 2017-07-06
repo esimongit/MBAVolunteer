@@ -275,6 +275,15 @@ namespace NQN.DB
         {
             get; set;
         }
+        public string Times
+        {
+            get
+            {
+                if (ShiftStart == null)
+                    return String.Empty;
+                return ShiftStart.ToShortTimeString() + " - " + ShiftEnd.ToShortTimeString();
+            }
+        }
         public GuideSubstituteObject()
 		{
 			_tablename = "GuideSubstitute";

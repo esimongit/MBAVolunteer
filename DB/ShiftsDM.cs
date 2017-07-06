@@ -84,8 +84,7 @@ namespace  NQN.DB
                 ,[Recurring]
                 ,s.[ShiftTimeID]
                 ,[Quota] 
-                ,[InfoQuota]
-                ,o.RoleID 
+                ,[InfoQuota] 
                 ,ShiftStart=cast (t.ShiftStart as DateTime)
                 ,ShiftEnd=cast (t.ShiftEnd as DateTime)
 				FROM Shifts s join ShiftTimes t on s.ShiftTimeID = t.ShiftTimeID left join SubOffers o on s.ShiftID = o.ShiftID and GuideID = @GuideID 
@@ -753,6 +752,37 @@ namespace  NQN.DB
                 SqlCommand myc = new SqlCommand(qry, conn);
                 return Convert.ToInt32(myc.ExecuteScalar());
             }
+        }
+
+        public ObjectList<ShiftSummaryObject> MissingInfo(DateTime StartDate, DateTime EndDate)
+        {
+            ObjectList<ShiftSummaryObject> Results = new ObjectList<ShiftSummaryObject>();
+            string qry = @"select ShiftID, ShiftDate, ShortName, InfoCnt, InfoQuota, ShiftStart, ShiftEnd, Info from dbo.ShiftSummary(@StartDate, @EndDate) 
+                where InfoCnt < InfoQuota
+                order by ShiftDate";
+            using (SqlConnection conn = ConnectionFactory.getNew())
+            {
+                SqlCommand myc = new SqlCommand(qry, conn);
+                myc.Parameters.Add(new SqlParameter("StartDate", StartDate));
+                myc.Parameters.Add(new SqlParameter("EndDate", EndDate));
+                using (SqlDataReader reader = myc.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        ShiftSummaryObject obj = new ShiftSummaryObject();
+                        obj.ShiftID = GetNullableInt32(reader, "ShiftID", 0);
+                        obj.InfoCnt = GetNullableInt32(reader, "InfoCnt", 0);
+                        obj.InfoQuota = GetNullableInt32(reader, "InfoQuota", 0);
+                        obj.ShiftDate = GetNullableDateTime(reader, "ShiftDate", DateTime.MinValue);
+                        obj.ShortName = GetNullableString(reader, "ShortName", String.Empty);
+                        obj.Info = GetNullableString(reader, "Info", "sub");
+                        obj.ShiftStart = GetNullableDateTime(reader, "ShiftStart", DateTime.MinValue);
+                        obj.ShiftEnd = GetNullableDateTime(reader, "ShiftEnd", DateTime.MinValue);
+                        Results.Add(obj);
+                    }
+                }
+            }
+            return Results;
         }
 
         public ObjectList<ShiftSummaryObject> ShiftCountReport(DateTime StartDate, DateTime EndDate)

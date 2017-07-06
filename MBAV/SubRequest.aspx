@@ -77,7 +77,7 @@
          <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />
          <div class="row td1"   runat="server">
              <div class="col-md-5 ">
-                 If you need a substitute for shift <asp:Label ID="SequenceLabel1" runat="server" Text='<%#Eval("Sequence") %>'></asp:Label>, 
+                 If you need a substitute for shift <asp:Label ID="SequenceLabel1" runat="server" Text='<%#Eval("ShortName") %>'></asp:Label>, 
                  check here:
                 <asp:CheckBox ID="NeedSubCheckBox" runat="server" />
              </div>
@@ -94,7 +94,7 @@
          <div class="row td4"  runat="server">
              <div class="col-md-6  ">
                  I no longer need a substitute for shift
-                 <asp:Label ID="SeqLabel" runat="server"  Text='<%#Eval("Sequence") %>'></asp:Label>, check here:  
+                 <asp:Label ID="SeqLabel" runat="server"  Text='<%#Eval("ShortName") %>'></asp:Label>, check here:  
         <asp:CheckBox ID="NoNeedCheckbox" runat="server" />
              </div>
          </div>
@@ -106,7 +106,7 @@
          <asp:HiddenField ID="ShiftIDHidden" runat="server" Value='<%#Eval("ShiftID") %>' />
          <div class="row td2"  runat="server">
              <div class="col-md-6  ">
-                 If you have arranged a substitute for shift  <asp:Label ID="Label1" runat="server"  Text='<%#Eval("Sequence") %>'></asp:Label> ,<br />
+                 If you have arranged a substitute for shift  <asp:Label ID="Label1" runat="server"  Text='<%#Eval("ShortName") %>'></asp:Label> ,<br />
                  enter the  substitute's Volunteer ID number in this field:&nbsp;&nbsp;&nbsp;
     <asp:TextBox ID="SubTextBox" runat="server" Width="80"></asp:TextBox>
              </div>
@@ -127,7 +127,7 @@ If you can no longer substitute for shift <asp:Label ID="SequenceLabel" runat="s
             HostName='<%#GetHostName() %>'
              Title='Volunteer Substitute Commitment'
              UseTimes='true'
-            Description='<%#DataBinder.Eval(Container.DataItem, "Sequence", "Shift {0}") %>'
+            Description='<%#DataBinder.Eval(Container.DataItem, "ShortName" ) %>'
            Notes =''
             Date='<%#DataBinder.Eval(Container.DataItem,"SubDate") %>'
              StartTime= '<%#DataBinder.Eval(Container.DataItem,"ShiftStart") %>'

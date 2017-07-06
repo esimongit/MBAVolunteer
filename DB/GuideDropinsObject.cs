@@ -147,6 +147,17 @@ namespace NQN.DB
         {
             get; set;
         }
+        public bool Recurring
+        {
+            get; set;
+        }
+        public string dtString
+        {
+            get
+            {
+                return _dropindate.ToShortDateString();
+            }
+        }
         public ObjectList<GuideRoleObject> Roles
         {
             get; set;

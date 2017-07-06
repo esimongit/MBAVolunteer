@@ -58,14 +58,14 @@ namespace NQN.Bus
             dList.Sort(SubSort);
             return dList;
         }
-        public ObjectList<GuideSubstituteObject> SelectForDate( DateTime dt, int GuideID, int RoleID)
+        public ObjectList<GuideSubstituteObject> SelectForDate(DateTime dt, int GuideID, int RoleID)
         {
             GuideSubstituteDM dm = new GuideSubstituteDM();
             ShiftsDM sdm = new ShiftsDM();
             ObjectList<GuideSubstituteObject> eList = dm.FetchForSub(GuideID, dt);
-            ObjectList<GuideSubstituteObject> dList = dm.FetchForDate( dt, RoleID);
+            ObjectList<GuideSubstituteObject> dList = dm.FetchForDate(dt, RoleID);
             List<int> ShiftsOccupied = new List<int>();
-            foreach(GuideSubstituteObject obj in eList)
+            foreach (GuideSubstituteObject obj in eList)
             {
                 if (!ShiftsOccupied.Contains(obj.Sequence))
                     ShiftsOccupied.Add(obj.Sequence);
@@ -77,26 +77,25 @@ namespace NQN.Bus
                     dList[i].NoSub = false;
                     dList[i].IsSub = true;
                 }
-                 
-                dList[i].CanSub = (dList[i].NoSub   && (dList[i].GuideID != GuideID));
+
+                dList[i].CanSub = (dList[i].NoSub && (dList[i].GuideID != GuideID));
             }
             GuideDropinsDM ddm = new GuideDropinsDM();
-            if (RoleID == 0)
-            {
-                // Only list Drop-ins for non-InfoCenter queries
-                foreach (GuideDropinsObject obj in ddm.FetchForDate(dt))
-                {
-                    ShiftsObject shift = sdm.FetchShift(obj.ShiftID);
-                    GuideSubstituteObject newsubs = new GuideSubstituteObject(obj);
 
-                    if (!shift.Recurring)
-                        continue;
-                    newsubs.NoSub = false;
-                    newsubs.HasSub = false;
-                  
-                    dList.Add(newsubs);
-                }
+           
+            foreach (GuideDropinsObject obj in ddm.FetchForDate(dt, RoleID))
+            {
+                ShiftsObject shift = sdm.FetchShift(obj.ShiftID);
+                GuideSubstituteObject newsubs = new GuideSubstituteObject(obj);
+
+                if (!shift.Recurring)
+                    continue;
+                newsubs.NoSub = false;
+                newsubs.HasSub = false;
+
+                dList.Add(newsubs);
             }
+
             dList.Sort((x, y) => x.Sequence.CompareTo(y.Sequence));
             return dList;
         }
@@ -154,7 +153,7 @@ namespace NQN.Bus
                     dList.Add(obj);
             }
             GuideDropinsDM ddm = new GuideDropinsDM();
-            foreach (GuideDropinsObject obj in ddm.FetchForDate(dt))
+            foreach (GuideDropinsObject obj in ddm.FetchForDate(dt, RoleID))
             {
                 GuideSubstituteObject newsubs = new GuideSubstituteObject(obj);
                 ShiftsObject shift = sdm.FetchShift(obj.ShiftID);
@@ -329,7 +328,7 @@ namespace NQN.Bus
                     dm.Save(obj);
                     // Re-fetch to populate fields
                     obj = dm.FetchRecord("GuideSubstituteID", dm.GetLast());
-                    sb.NotifyCaptains(obj);
+                    sb.NotifyCaptains(obj, guide.RoleID);
                    
                 }
                 else
@@ -342,7 +341,7 @@ namespace NQN.Bus
                     {
                         // Refetch to get the new Sub info (or "Need Sub")
                         obj = dm.FetchRecord("GuideSubstituteID", obj.GuideSubstituteID);
-                        sb.NotifyCaptains(obj);
+                        sb.NotifyCaptains(obj, guide.RoleID);
                     }
                 }
             }
@@ -354,7 +353,7 @@ namespace NQN.Bus
                     dm.Delete(obj.GuideSubstituteID);
                     obj.GuideSubstituteID = 0;
 
-                    sb.NotifyCaptains(obj);
+                    sb.NotifyCaptains(obj, guide.RoleID);
                 }
             }
         }

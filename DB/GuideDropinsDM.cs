@@ -76,16 +76,18 @@ namespace  NQN.DB
             }
             return Results;
         }
-        public ObjectList<GuideDropinsObject> FetchForDate(DateTime dt)
+        public ObjectList<GuideDropinsObject> FetchForDate(DateTime dt, int RoleID)
         {
            
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
             if (dt == DateTime.MinValue)
                 return Results;
-            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and isnull(OnShift,0) = 0 and isnull(IrregularSchedule,0) = 0 ";
+            string qry = ReadAllCommand() + " WHERE  DropinDate = @dt and isnull(OnShift,0) = 0 ";
+            
             qry += " union ";
             // All Special shifts -- everybody gets a reminder
             qry += ReadAllCommand() + " WHERE s.Recurring = 0 and DropinDate = @dt ";
+          
             qry += " order by s.Sequence, d.GuideID ";
             using (SqlConnection conn = ConnectionFactory.getNew())
             {
@@ -96,7 +98,8 @@ namespace  NQN.DB
                     GuideDropinsObject obj = LoadFrom(reader);
                     while (obj != null)
                     {
-                        Results.Add(obj);
+                        if (RoleID == 0 || obj.IsInfo)
+                            Results.Add(obj);
                         obj = LoadFrom(reader);
                     }
                 }
@@ -192,7 +195,7 @@ namespace  NQN.DB
         public ObjectList<GuideDropinsObject> FetchAllForGuide(int GuideID,  bool SpecialsOnly)
         {
             ObjectList<GuideDropinsObject> Results = new ObjectList<GuideDropinsObject>();
-            string qry = ReadAllCommand() + " WHERE  DropinDate >= getdate() and d.GuideID = @GuideID and isnull(OnShift,0) = 0 ";
+            string qry = ReadAllCommand() + " WHERE  DropinDate >= @dt and d.GuideID = @GuideID and isnull(OnShift,0) = 0 ";
             if (SpecialsOnly)
                 qry += " and s.recurring = 0 ";
             qry += " order by DropinDate, s.Sequence  ";
@@ -200,6 +203,7 @@ namespace  NQN.DB
             {
                 SqlCommand myc = new SqlCommand(qry, conn);
                 myc.Parameters.Add(new SqlParameter("GuideID", GuideID));
+                myc.Parameters.Add(new SqlParameter("dt", DateTime.Today));
                 using (SqlDataReader reader = myc.ExecuteReader())
                 {
                     GuideDropinsObject obj = LoadFrom(reader);
@@ -408,6 +412,7 @@ namespace  NQN.DB
             obj.MaskContactInfo = GetNullableBoolean(reader, "MaskContactInfo", false);
             obj.OnShift = GetNullableBoolean(reader, "OnShift", false);
             obj.IsInfo = GetNullableBoolean(reader, "IsInfo", false);
+            obj.Recurring = GetNullableBoolean(reader, "Recurring", false);
             GuideRoleDM dm = new GuideRoleDM();
             obj.Roles = dm.FetchAllRoles(obj.GuideID);
             return obj;
@@ -435,6 +440,7 @@ namespace  NQN.DB
                 ,MaskContactInfo = (select MaskContactInfo from Roles where RoleID = g.RoleID) | g.MaskPersonalInfo
                 ,s.Sequence
                 ,s.ShiftName 
+                ,s.Recurring
 				FROM GuideDropins d join Guides g on d.GuideID= g.GuideID
                 join Shifts s on d.ShiftID= s.ShiftID ";
 		}
