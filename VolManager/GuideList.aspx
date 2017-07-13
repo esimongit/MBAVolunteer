@@ -49,7 +49,7 @@
             <asp:BoundField DataField="LastName" HeaderText="Last Name" 
                 SortExpression="LastName" />
              <asp:BoundField DataField="ShiftName" HeaderText="Shift" 
-                SortExpression="Sequence" />
+                SortExpression="dow,sequence" />
            <asp:BoundField DataField="RoleName" HeaderText="Role" 
                 SortExpression="RoleName" />
             <asp:BoundField DataField="PreferredPhone" HeaderText="Phone" SortExpression="PreferredPhone" />

@@ -544,8 +544,8 @@ namespace NQN.Bus
             MailTextDM mtdm = new MailTextDM();
             EmailBusiness eb = new EmailBusiness();
             MailTextObject mtobj = mtdm.FetchForSymbol("NotifyCaptains");
-            string Email = StaticFieldsObject.StaticValue("GuideNotificationEmail");
-            string Subject = "Guide Substitute or Drop-in Notice.";
+            string Email = StaticFieldsObject.StaticValue("InfoNotificationEmail");
+            string Subject = "Info Center Substitute Notice";
             if (mtobj != null & mtobj.Enabled)
             {
                 eb.SendMail(mtobj.MailFrom, Email, Subject, msg, true);
@@ -556,8 +556,8 @@ namespace NQN.Bus
             MailTextDM mtdm = new MailTextDM();
             EmailBusiness eb = new EmailBusiness(); 
             MailTextObject mtobj = mtdm.FetchForSymbol("NotifyCaptains");
-            string Email = StaticFieldsObject.StaticValue("InfoNotificationEmail");
-            string Subject = "Info Center Substitute Notice.";
+            string Email = StaticFieldsObject.StaticValue("GuideNotificationEmail");
+            string Subject = "Guide Substitute or Drop-in Notice";
             if (mtobj != null & mtobj.Enabled)
             {
                 eb.SendMail(mtobj.MailFrom, Email, Subject, msg, true);
